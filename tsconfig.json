@@ -1,0 +1,7 @@
+{
+  "extends": "@graphprotocol/graph-ts/tsconfig",
+  "include": ["src"],
+  "compilerOptions": {
+    "target": "es2017"
+  }
+}

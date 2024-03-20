@@ -1,0 +1,49 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: BookManager
+    network: localhost
+    source:
+      abi: BookManager
+      address: "0x0A3a2c27e4641aB9Ed80369D799Dc1166055048e"
+      startBlock: 24725420
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - Book
+        - Depth
+        - OpenOrder
+        - ChartLog
+      abis:
+        - name: BookManager
+          file: ./abis/BookManager.json
+        - name: Controller
+          file: ./abis/Controller.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: Multicall3
+          file: ./abis/Multicall3.json
+      eventHandlers:
+        - event: Open(indexed uint192,indexed address,indexed
+            address,uint64,uint24,uint24,address)
+          handler: handleOpen
+        - event: Make(indexed uint192,indexed address,int24,uint256,uint64,address)
+          handler: handleMake
+        - event: Take(indexed uint192,indexed address,int24,uint64)
+          handler: handleTake
+        - event: Cancel(indexed uint256,uint64)
+          handler: handleCancel
+        - event: Claim(indexed uint256,uint64)
+          handler: handleClaim
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+      file: ./src/book-manager.ts

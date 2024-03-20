@@ -1,0 +1,53 @@
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+
+name: CI
+
+env:
+  IMAGE_TAG: ${{ github.ref_name }}
+
+jobs:
+  build-and-push:
+    name: Build & Push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Extract tag suffix and set envs
+        run: |
+          ENVIRONMENT=$(echo "${{ github.ref_name }}")
+          echo "ENVIRONMENT=$ENVIRONMENT" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.12'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ matrix.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ matrix.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn install && yarn global add @graphprotocol/graph-cli@0.53.0
+
+      - name: Run GraphQL codegen
+        run: yarn codegen
+
+      - name: Build project
+        run: yarn build
+
+      - name: Deploy Arbitrum Sepolia
+        run: graph deploy v2-core-subgraph --version-label $ENVIRONMENT --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key ${{ secrets.ALCHEMY_API_KEY }} --ipfs https://ipfs.satsuma.xyz --network arbitrum-sepolia
