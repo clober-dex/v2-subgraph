@@ -40,6 +40,7 @@ export function handleOpen(event: Open): void {
   book.hooks = event.params.hooks.toHexString()
   book.latestTick = BigInt.zero()
   book.latestPrice = BigInt.zero()
+  book.latestTimestamp = BigInt.zero()
   book.save()
 }
 
@@ -124,6 +125,7 @@ export function handleTake(event: Take): void {
   const price = controller.toPrice(tick.toI32())
   book.latestTick = tick
   book.latestPrice = price
+  book.latestTimestamp = event.block.timestamp
   book.save()
 
   // update depth & open order

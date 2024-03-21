@@ -18,6 +18,7 @@ type Book @entity {
     openOrders: [OpenOrder!]! @derivedFrom(field: "book")
     latestTick: BigInt!
     latestPrice: BigInt!
+    latestTimestamp: BigInt!
 }
 
 type Depth @entity {
