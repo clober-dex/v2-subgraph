@@ -44,15 +44,7 @@ export function rawToBase(
   rawAmount: BigInt,
   price: BigInt,
 ): BigInt {
-  const base = Token.load(book.base) as Token
-  const quote = Token.load(book.quote) as Token
-  const basePrecision = BigInt.fromI32(10).pow(base.decimals.toI32() as u8)
-  const quotePrecision = BigInt.fromI32(10).pow(quote.decimals.toI32() as u8)
-  return rawAmount
-    .times(book.unit)
-    .times(pricePrecision)
-    .times(basePrecision)
-    .div(quotePrecision.times(price))
+  return rawAmount.times(book.unit).times(pricePrecision).div(price)
 }
 
 export function rawToQuote(book: Book, rawAmount: BigInt): BigInt {
