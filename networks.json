@@ -1,30 +1,30 @@
 {
   "localhost": {
     "BookManager": {
-      "address": "0x0A3a2c27e4641aB9Ed80369D799Dc1166055048e",
-      "startBlock": 24725420
+      "address": "0xe10D92B75Bdb0925f3ABAa2c3E0f93f4ef4b2491",
+      "startBlock": 25615220
     },
     "BookViewer": {
-      "address": "0x56319f390C3B85Fb8eb18B03b8E14440F3a8c66b",
-      "startBlock": 24725460
+      "address": "0x30a5460B801CA79F74e2A4D3b83A34af5D45c6b3",
+      "startBlock": 25615240
     },
     "Controller": {
-      "address": "0xc895AB5b17069aB411F049Ec4248D5660b588B59",
-      "startBlock": 24725490
+      "address": "0xcD79DE6Ee6644A225A87D2F40D3E3DeA8f9F7B39",
+      "startBlock": 25615250
     }
   },
   "arbitrum-sepolia": {
     "BookManager": {
-      "address": "0x0A3a2c27e4641aB9Ed80369D799Dc1166055048e",
-      "startBlock": 24725420
+      "address": "0xe10D92B75Bdb0925f3ABAa2c3E0f93f4ef4b2491",
+      "startBlock": 25615220
     },
     "BookViewer": {
-      "address": "0x56319f390C3B85Fb8eb18B03b8E14440F3a8c66b",
-      "startBlock": 24725460
+      "address": "0x30a5460B801CA79F74e2A4D3b83A34af5D45c6b3",
+      "startBlock": 25615240
     },
     "Controller": {
-      "address": "0xc895AB5b17069aB411F049Ec4248D5660b588B59",
-      "startBlock": 24725490
+      "address": "0xcD79DE6Ee6644A225A87D2F40D3E3DeA8f9F7B39",
+      "startBlock": 25615250
     }
   }
 }
