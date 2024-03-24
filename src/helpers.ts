@@ -56,12 +56,12 @@ export function buildDepthId(bookId: string, tick: BigInt): string {
 }
 
 export function buildChartLogId(
-  token0: Token,
-  token1: Token,
+  base: Token,
+  quote: Token,
   intervalType: string,
   timestamp: i64,
 ): string {
-  const marketCode = buildMarketCode(token0, token1)
+  const marketCode = buildMarketCode(base, quote)
   return marketCode
     .concat('-')
     .concat(intervalType)
@@ -69,10 +69,8 @@ export function buildChartLogId(
     .concat(timestamp.toString())
 }
 
-export function buildMarketCode(token0: Token, token1: Token): string {
-  return token0.id < token1.id
-    ? token0.id.concat('-').concat(token1.id)
-    : token1.id.concat('-').concat(token0.id)
+export function buildMarketCode(base: Token, quote: Token): string {
+  return base.id.concat('/').concat(quote.id)
 }
 
 export function createToken(tokenAddress: Address): Token {
@@ -91,6 +89,12 @@ export function formatPrice(price: BigInt): BigDecimal {
   return BigDecimal.fromString(price.toString()).div(
     pricePrecision.toBigDecimal(),
   )
+}
+
+export function formatInvertedPrice(price: BigInt): BigDecimal {
+  return pricePrecision
+    .toBigDecimal()
+    .div(BigDecimal.fromString(price.toString()))
 }
 
 export function formatUnits(
