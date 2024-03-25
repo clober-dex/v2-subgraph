@@ -85,16 +85,37 @@ export function createToken(tokenAddress: Address): Token {
   return token
 }
 
-export function formatPrice(price: BigInt): BigDecimal {
-  return BigDecimal.fromString(price.toString()).div(
-    pricePrecision.toBigDecimal(),
-  )
+export function formatPrice(
+  price: BigInt,
+  baseDecimals: BigInt,
+  quoteDecimals: BigInt,
+): BigDecimal {
+  return BigDecimal.fromString(price.toString())
+    .div(pricePrecision.toBigDecimal())
+    .times(
+      BigDecimal.fromString(
+        BigInt.fromI32(10)
+          .pow(baseDecimals.minus(quoteDecimals).toI32() as u8)
+          .toString(),
+      ),
+    )
 }
 
-export function formatInvertedPrice(price: BigInt): BigDecimal {
+export function formatInvertedPrice(
+  price: BigInt,
+  baseDecimals: BigInt,
+  quoteDecimals: BigInt,
+): BigDecimal {
   return pricePrecision
     .toBigDecimal()
     .div(BigDecimal.fromString(price.toString()))
+    .times(
+      BigDecimal.fromString(
+        BigInt.fromI32(10)
+          .pow(quoteDecimals.minus(baseDecimals).toI32() as u8)
+          .toString(),
+      ),
+    )
 }
 
 export function formatUnits(

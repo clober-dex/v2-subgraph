@@ -202,7 +202,11 @@ export function handleTake(event: Take): void {
   const quoteTakenAmount = rawToQuote(book, event.params.amount)
   const baseToken = Token.load(book.base) as Token
   const quoteToken = Token.load(book.quote) as Token
-  const formattedPrice = formatPrice(price)
+  const formattedPrice = formatPrice(
+    price,
+    baseToken.decimals,
+    quoteToken.decimals,
+  )
   const formattedBaseTakenAmount = formatUnits(
     baseTakenAmount,
     baseToken.decimals.toI32() as u8,
@@ -247,7 +251,11 @@ export function handleTake(event: Take): void {
     chartLog.save()
 
     // inverted chart log
-    const formattedInvertedPrice = formatInvertedPrice(price)
+    const formattedInvertedPrice = formatInvertedPrice(
+      price,
+      baseToken.decimals,
+      quoteToken.decimals,
+    )
     const formattedQuoteTakenAmount = formatUnits(
       quoteTakenAmount,
       quoteToken.decimals.toI32() as u8,
