@@ -21,6 +21,7 @@ import {
   createToken,
   decodeBookIdFromOrderId,
   encodeOrderId,
+  formatInvertedPrice,
   formatPrice,
   formatUnits,
   rawToBase,
@@ -198,9 +199,14 @@ export function handleTake(event: Take): void {
 
   // update chart
   const baseTakenAmount = rawToBase(book, event.params.amount, price)
+  const quoteTakenAmount = rawToQuote(book, event.params.amount)
   const baseToken = Token.load(book.base) as Token
   const quoteToken = Token.load(book.quote) as Token
-  const formattedPrice = formatPrice(price)
+  const formattedPrice = formatPrice(
+    price,
+    baseToken.decimals,
+    quoteToken.decimals,
+  )
   const formattedBaseTakenAmount = formatUnits(
     baseTakenAmount,
     baseToken.decimals.toI32() as u8,
@@ -212,6 +218,8 @@ export function handleTake(event: Take): void {
     const timestampForAcc = (Math.floor(
       (event.block.timestamp.toI64() as number) / intervalInNumber,
     ) * intervalInNumber) as i64
+
+    // natural chart log
     const chartLogId = buildChartLogId(
       baseToken,
       quoteToken,
@@ -241,6 +249,48 @@ export function handleTake(event: Take): void {
       chartLog.baseVolume = chartLog.baseVolume.plus(formattedBaseTakenAmount)
     }
     chartLog.save()
+
+    // inverted chart log
+    const formattedInvertedPrice = formatInvertedPrice(
+      price,
+      baseToken.decimals,
+      quoteToken.decimals,
+    )
+    const formattedQuoteTakenAmount = formatUnits(
+      quoteTakenAmount,
+      quoteToken.decimals.toI32() as u8,
+    )
+    const invertedChartLogId = buildChartLogId(
+      quoteToken,
+      baseToken,
+      intervalType,
+      timestampForAcc,
+    )
+    const invertedMarketCode = buildMarketCode(quoteToken, baseToken)
+    let invertedChartLog = ChartLog.load(invertedChartLogId)
+    if (invertedChartLog === null) {
+      invertedChartLog = new ChartLog(invertedChartLogId)
+      invertedChartLog.marketCode = invertedMarketCode
+      invertedChartLog.intervalType = intervalType
+      invertedChartLog.timestamp = BigInt.fromI64(timestampForAcc)
+      invertedChartLog.open = formattedInvertedPrice
+      invertedChartLog.high = formattedInvertedPrice
+      invertedChartLog.low = formattedInvertedPrice
+      invertedChartLog.close = formattedInvertedPrice
+      invertedChartLog.baseVolume = formattedQuoteTakenAmount
+    } else {
+      if (formattedInvertedPrice.gt(invertedChartLog.high)) {
+        invertedChartLog.high = formattedInvertedPrice
+      }
+      if (formattedInvertedPrice.lt(invertedChartLog.low)) {
+        invertedChartLog.low = formattedInvertedPrice
+      }
+      invertedChartLog.close = formattedInvertedPrice
+      invertedChartLog.baseVolume = invertedChartLog.baseVolume.plus(
+        formattedQuoteTakenAmount,
+      )
+    }
+    invertedChartLog.save()
   }
 }
 
