@@ -66,9 +66,9 @@ type OpenOrder @entity {
 }
 
 type ChartLog @entity {
-    # `${token0}-${token1}-${intervalType}-${timestamp}`
+    # `${baseToken}/${quoteToekn}-${intervalType}-${timestamp}`
     id: ID!
-    # `${token0}-${token1}`
+    # `${baseToken}/${quoteToekn}`
     marketCode: String!
     # interval type: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 1d, 1w
     intervalType: String!
