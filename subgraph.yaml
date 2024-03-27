@@ -7,8 +7,8 @@ dataSources:
     network: localhost
     source:
       abi: BookManager
-      address: "0x0A3a2c27e4641aB9Ed80369D799Dc1166055048e"
-      startBlock: 24725420
+      address: "0xe10D92B75Bdb0925f3ABAa2c3E0f93f4ef4b2491"
+      startBlock: 25615220
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
