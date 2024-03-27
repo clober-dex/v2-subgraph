@@ -44,6 +44,9 @@ export function rawToBase(
   rawAmount: BigInt,
   price: BigInt,
 ): BigInt {
+  if (price.isZero()) {
+    return BigInt.fromI32(0)
+  }
   return rawAmount.times(book.unit).times(pricePrecision).div(price)
 }
 
@@ -95,7 +98,14 @@ export function formatPrice(
     .times(
       BigDecimal.fromString(
         BigInt.fromI32(10)
-          .pow(baseDecimals.minus(quoteDecimals).toI32() as u8)
+          .pow(baseDecimals.toI32() as u8)
+          .toString(),
+      ),
+    )
+    .div(
+      BigDecimal.fromString(
+        BigInt.fromI32(10)
+          .pow(quoteDecimals.toI32() as u8)
           .toString(),
       ),
     )
@@ -106,16 +116,12 @@ export function formatInvertedPrice(
   baseDecimals: BigInt,
   quoteDecimals: BigInt,
 ): BigDecimal {
-  return pricePrecision
-    .toBigDecimal()
-    .div(BigDecimal.fromString(price.toString()))
-    .times(
-      BigDecimal.fromString(
-        BigInt.fromI32(10)
-          .pow(quoteDecimals.minus(baseDecimals).toI32() as u8)
-          .toString(),
-      ),
-    )
+  if (price.isZero()) {
+    return BigDecimal.fromString('0')
+  }
+  return BigDecimal.fromString('1').div(
+    formatPrice(price, baseDecimals, quoteDecimals),
+  )
 }
 
 export function formatUnits(
