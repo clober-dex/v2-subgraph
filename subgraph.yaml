@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: BookManager
-    network: localhost
+    network: arbitrum-sepolia
     source:
       abi: BookManager
-      address: "0xe10D92B75Bdb0925f3ABAa2c3E0f93f4ef4b2491"
-      startBlock: 25615220
+      address: "0x4a4eaF7382821da4Fb85e8A8d515f5555383d58A"
+      startBlock: 31527072
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
