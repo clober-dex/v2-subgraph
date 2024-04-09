@@ -422,6 +422,12 @@
       },
       {
         "indexed": true,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": true,
         "internalType": "Currency",
         "name": "currency",
         "type": "address"
@@ -837,7 +843,7 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "provider",
+        "name": "recipient",
         "type": "address"
       },
       {
@@ -847,7 +853,13 @@
       }
     ],
     "name": "collect",
-    "outputs": [],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -955,6 +967,57 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "Currency",
+            "name": "base",
+            "type": "address"
+          },
+          {
+            "internalType": "uint64",
+            "name": "unit",
+            "type": "uint64"
+          },
+          {
+            "internalType": "Currency",
+            "name": "quote",
+            "type": "address"
+          },
+          {
+            "internalType": "FeePolicy",
+            "name": "makerPolicy",
+            "type": "uint24"
+          },
+          {
+            "internalType": "contract IHooks",
+            "name": "hooks",
+            "type": "address"
+          },
+          {
+            "internalType": "FeePolicy",
+            "name": "takerPolicy",
+            "type": "uint24"
+          }
+        ],
+        "internalType": "struct IBookManager.BookKey",
+        "name": "key",
+        "type": "tuple"
+      }
+    ],
+    "name": "encodeBookKey",
+    "outputs": [
+      {
+        "internalType": "BookId",
+        "name": "",
+        "type": "uint192"
+      }
+    ],
+    "stateMutability": "pure",
     "type": "function"
   },
   {
@@ -1181,6 +1244,25 @@
       }
     ],
     "name": "isEmpty",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "BookId",
+        "name": "id",
+        "type": "uint192"
+      }
+    ],
+    "name": "isOpened",
     "outputs": [
       {
         "internalType": "bool",

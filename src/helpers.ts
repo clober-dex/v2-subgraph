@@ -21,7 +21,7 @@ CHART_LOG_INTERVALS.set('6h', 6 * 60 * 60)
 CHART_LOG_INTERVALS.set('1d', 24 * 60 * 60)
 CHART_LOG_INTERVALS.set('1w', 7 * 24 * 60 * 60)
 
-export const pricePrecision = BigInt.fromI32(2).pow(128)
+export const pricePrecision = BigInt.fromI32(2).pow(96)
 
 export function encodeOrderId(
   bookId: string,

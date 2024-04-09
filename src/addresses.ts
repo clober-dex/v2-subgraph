@@ -13,8 +13,8 @@ export function getChainId(): BigInt {
 export function getControllerAddress(): string {
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
-    return '0x2489e8daffb7A4900074840C24e8096A25e2Eeb0'
+    return '0xfAe4A04fa491DC21F77796394532a1B62d8331BF'
   } else {
-    return '0x2489e8daffb7A4900074840C24e8096A25e2Eeb0'
+    return '0xfAe4A04fa491DC21F77796394532a1B62d8331BF'
   }
 }
