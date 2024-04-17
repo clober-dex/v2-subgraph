@@ -8,6 +8,7 @@
     "remove-local": "graph remove --node http://localhost:8020/ v2-core-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 v2-core-subgraph --network localhost",
     "deploy-arbitrum": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network arbitrum-sepolia",
+    "deploy-base": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph-base --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network base",
     "test": "graph test"
   },
   "dependencies": {
