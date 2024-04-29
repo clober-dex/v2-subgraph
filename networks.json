@@ -29,16 +29,30 @@
   },
   "base": {
     "BookManager": {
-      "address": "0x93A43391978BFC0bc708d5f55b0Abe7A9ede1B91",
-      "startBlock": 13269610
+      "address": "0x59fAD5b95e755034572702991ABBA937Cc90254a",
+      "startBlock": 13787160
     },
     "BookViewer": {
-      "address": "0x6d928455050b3b71490fe3B73DD84daD094299c4",
-      "startBlock": 13269610
+      "address": "0x0e7fc8F067470424589Cc25DceEd0dA9a1a8E72A",
+      "startBlock": 13795540
     },
     "Controller": {
-      "address": "0x3A2875239c3947A9e2e76C4DE21D3050bc16b4Ee",
-      "startBlock": 13269620
+      "address": "0x4ed2804b5409298290654D665619c7b092297dB2",
+      "startBlock": 13795560
+    }
+  },
+  "berachain-public-testnet": {
+    "BookManager": {
+      "address": "0x982c57388101D012846aDC4997E9b073F3bC16BD",
+      "startBlock": 1848400
+    },
+    "BookViewer": {
+      "address": "0xb735FdD82497Dd9AbfEEAdc659b960473BF896E0",
+      "startBlock": 1849850
+    },
+    "Controller": {
+      "address": "0xce3F3C90970C08Fe451998441b30879560AA6757",
+      "startBlock": 1849850
     }
   }
 }
