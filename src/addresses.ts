@@ -13,6 +13,8 @@ export function getChainId(): BigInt {
 }
 
 export function getControllerAddress(): string {
+  // for zksync sepolia test, just return directly
+  // return '0xBc3F57AB4046a5C47997e0791C2D664aA3fa0574'
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
     return '0xfAe4A04fa491DC21F77796394532a1B62d8331BF'

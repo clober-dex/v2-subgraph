@@ -10,6 +10,7 @@
     "deploy-arbitrum": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network arbitrum-sepolia",
     "deploy-base": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph-base --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network base",
     "deploy-berachain-public-testnet": "graph build --network=berachain-public-testnet && dotenv -e .env -- cross-var goldsky subgraph deploy v2-core-subgraph/%DEPLOY_VERSION% --path .",
+    "deploy-zksync-era-sepolia": "graph build --network=zksync-era-sepolia && dotenv -e .env -- cross-var goldsky subgraph deploy v2-core-subgraph-zksync-era-sepolia/%DEPLOY_VERSION% --path .",
     "test": "graph test"
   },
   "dependencies": {

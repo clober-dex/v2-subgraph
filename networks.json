@@ -54,5 +54,19 @@
       "address": "0xce3F3C90970C08Fe451998441b30879560AA6757",
       "startBlock": 1849850
     }
+  },
+  "zksync-era-sepolia": {
+    "BookManager": {
+      "address": "0xd95424eEDC5a9Da8378d762B0620FDD9ae457AE2",
+      "startBlock": 1988850
+    },
+    "BookViewer": {
+      "address": "0x4E52Bb3Ce586C33adbf6DB24d32277b75A25ae0e",
+      "startBlock": 1989040
+    },
+    "Controller": {
+      "address": "0xBc3F57AB4046a5C47997e0791C2D664aA3fa0574",
+      "startBlock": 1989030
+    }
   }
 }
