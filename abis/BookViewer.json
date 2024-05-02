@@ -194,7 +194,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "spendBaseAmount",
+        "name": "spentBaseAmount",
         "type": "uint256"
       }
     ],
@@ -245,7 +245,7 @@
       },
       {
         "internalType": "uint256",
-        "name": "spendBaseAmount",
+        "name": "spentBaseAmount",
         "type": "uint256"
       }
     ],

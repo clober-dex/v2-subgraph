@@ -239,7 +239,7 @@
   },
   {
     "inputs": [],
-    "name": "InvalidUnit",
+    "name": "InvalidUnitSize",
     "type": "error"
   },
   {
@@ -385,7 +385,7 @@
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "canceledAmount",
+        "name": "unit",
         "type": "uint64"
       }
     ],
@@ -404,7 +404,7 @@
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "rawAmount",
+        "name": "unit",
         "type": "uint64"
       }
     ],
@@ -491,7 +491,7 @@
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "amount",
+        "name": "unit",
         "type": "uint64"
       },
       {
@@ -528,7 +528,7 @@
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "unit",
+        "name": "unitSize",
         "type": "uint64"
       },
       {
@@ -628,7 +628,7 @@
       {
         "indexed": false,
         "internalType": "uint64",
-        "name": "amount",
+        "name": "unit",
         "type": "uint64"
       }
     ],
@@ -767,7 +767,7 @@
           },
           {
             "internalType": "uint64",
-            "name": "to",
+            "name": "toUnit",
             "type": "uint64"
           }
         ],
@@ -877,30 +877,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "locker",
-        "type": "address"
-      },
-      {
-        "internalType": "Currency",
-        "name": "currency",
-        "type": "address"
-      }
-    ],
-    "name": "currencyDelta",
-    "outputs": [
-      {
-        "internalType": "int256",
-        "name": "currencyDelta",
-        "type": "int256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "defaultProvider",
     "outputs": [
@@ -980,7 +956,7 @@
           },
           {
             "internalType": "uint64",
-            "name": "unit",
+            "name": "unitSize",
             "type": "uint64"
           },
           {
@@ -1058,7 +1034,7 @@
           },
           {
             "internalType": "uint64",
-            "name": "unit",
+            "name": "unitSize",
             "type": "uint64"
           },
           {
@@ -1085,6 +1061,30 @@
         "internalType": "struct IBookManager.BookKey",
         "name": "",
         "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "locker",
+        "type": "address"
+      },
+      {
+        "internalType": "Currency",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "getCurrencyDelta",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "",
+        "type": "int256"
       }
     ],
     "stateMutability": "view",
@@ -1372,7 +1372,7 @@
               },
               {
                 "internalType": "uint64",
-                "name": "unit",
+                "name": "unitSize",
                 "type": "uint64"
               },
               {
@@ -1407,7 +1407,7 @@
           },
           {
             "internalType": "uint64",
-            "name": "amount",
+            "name": "unit",
             "type": "uint64"
           },
           {
@@ -1509,7 +1509,7 @@
           },
           {
             "internalType": "uint64",
-            "name": "unit",
+            "name": "unitSize",
             "type": "uint64"
           },
           {
@@ -1803,7 +1803,7 @@
               },
               {
                 "internalType": "uint64",
-                "name": "unit",
+                "name": "unitSize",
                 "type": "uint64"
               },
               {
@@ -1838,7 +1838,7 @@
           },
           {
             "internalType": "uint64",
-            "name": "maxAmount",
+            "name": "maxUnit",
             "type": "uint64"
           }
         ],

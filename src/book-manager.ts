@@ -24,8 +24,8 @@ import {
   formatInvertedPrice,
   formatPrice,
   formatUnits,
-  rawToBase,
-  rawToQuote,
+  unitToBase,
+  unitToQuote,
 } from './helpers'
 import { getControllerAddress } from './addresses'
 
@@ -35,7 +35,7 @@ export function handleOpen(event: Open): void {
   const book = new Book(event.params.id.toString())
   book.base = base.id
   book.quote = quote.id
-  book.unit = event.params.unit
+  book.unitSize = event.params.unitSize
   book.makerPolicy = BigInt.fromI32(event.params.makerPolicy)
   book.takerPolicy = BigInt.fromI32(event.params.takerPolicy)
   book.hooks = event.params.hooks.toHexString()
@@ -55,10 +55,10 @@ export function handleMake(event: Make): void {
   const user = event.params.user.toHexString()
   const tick = BigInt.fromI32(event.params.tick)
   const orderIndex = event.params.orderIndex
-  const rawAmount = event.params.amount
+  const unitAmount = event.params.unit
   const price = controller.toPrice(tick.toI32())
-  const baseAmount = rawToBase(book, rawAmount, price)
-  const quoteAmount = rawToQuote(book, rawAmount)
+  const baseAmount = unitToBase(book, unitAmount, price)
+  const quoteAmount = unitToQuote(book, unitAmount)
   const orderId = encodeOrderId(book.id, tick, orderIndex)
   const orderInfo = bookManager.getOrder(orderId)
 
@@ -71,25 +71,25 @@ export function handleMake(event: Make): void {
   openOrder.user = user
   openOrder.txHash = event.transaction.hash.toHexString()
   openOrder.createdAt = event.block.timestamp
-  openOrder.rawAmount = rawAmount
+  openOrder.unitAmount = unitAmount
   openOrder.baseAmount = baseAmount
   openOrder.quoteAmount = quoteAmount
-  openOrder.rawFilledAmount = BigInt.zero()
+  openOrder.unitFilledAmount = BigInt.zero()
   openOrder.baseFilledAmount = BigInt.zero()
   openOrder.quoteFilledAmount = BigInt.zero()
-  openOrder.rawClaimedAmount = BigInt.zero()
+  openOrder.unitClaimedAmount = BigInt.zero()
   openOrder.baseClaimedAmount = BigInt.zero()
   openOrder.quoteClaimedAmount = BigInt.zero()
-  openOrder.rawClaimableAmount = orderInfo.claimable
-  openOrder.baseClaimableAmount = rawToBase(book, orderInfo.claimable, price)
-  openOrder.quoteClaimableAmount = rawToQuote(book, orderInfo.claimable)
-  openOrder.rawOpenAmount = orderInfo.open
-  openOrder.baseOpenAmount = rawToBase(book, orderInfo.open, price)
-  openOrder.quoteOpenAmount = rawToQuote(book, orderInfo.open)
+  openOrder.unitClaimableAmount = orderInfo.claimable
+  openOrder.baseClaimableAmount = unitToBase(book, orderInfo.claimable, price)
+  openOrder.quoteClaimableAmount = unitToQuote(book, orderInfo.claimable)
+  openOrder.unitOpenAmount = orderInfo.open
+  openOrder.baseOpenAmount = unitToBase(book, orderInfo.open, price)
+  openOrder.quoteOpenAmount = unitToQuote(book, orderInfo.open)
   openOrder.save()
 
   // update depth
-  const rawDepthAmount = bookManager.getDepth(
+  const unitDepthAmount = bookManager.getDepth(
     BigInt.fromString(book.id),
     tick.toI32(),
   )
@@ -102,11 +102,11 @@ export function handleMake(event: Make): void {
     depth.price = price
     depth.latestTakenOrderIndex = BigInt.zero()
   }
-  depth.rawAmount = rawDepthAmount
-  depth.baseAmount = rawToBase(book, rawDepthAmount, price)
-  depth.quoteAmount = rawToQuote(book, rawDepthAmount)
+  depth.unitAmount = unitDepthAmount
+  depth.baseAmount = unitToBase(book, unitDepthAmount, price)
+  depth.quoteAmount = unitToQuote(book, unitDepthAmount)
 
-  if (rawDepthAmount.isZero()) {
+  if (unitDepthAmount.isZero()) {
     store.remove('Depth', depthId)
   } else {
     depth.save()
@@ -135,17 +135,17 @@ export function handleTake(event: Take): void {
   if (depth === null) {
     return
   }
-  const rawDepthAmount = bookManager.getDepth(
+  const unitDepthAmount = bookManager.getDepth(
     BigInt.fromString(book.id),
     tick.toI32(),
   )
-  depth.rawAmount = rawDepthAmount
-  depth.baseAmount = rawToBase(book, rawDepthAmount, price)
-  depth.quoteAmount = rawToQuote(book, rawDepthAmount)
+  depth.unitAmount = unitDepthAmount
+  depth.baseAmount = unitToBase(book, unitDepthAmount, price)
+  depth.quoteAmount = unitToQuote(book, unitDepthAmount)
 
   let currentOrderIndex = depth.latestTakenOrderIndex
-  let remainingTakenRawAmount = event.params.amount
-  while (remainingTakenRawAmount.gt(BigInt.zero())) {
+  let remainingTakenUnitAmount = event.params.unit
+  while (remainingTakenUnitAmount.gt(BigInt.zero())) {
     const orderId = encodeOrderId(book.id, tick, currentOrderIndex)
     const openOrder = OpenOrder.load(orderId.toString())
     if (openOrder === null) {
@@ -153,53 +153,54 @@ export function handleTake(event: Take): void {
       continue
     }
     const orderInfo = bookManager.getOrder(orderId)
-    openOrder.rawClaimableAmount = orderInfo.claimable
-    openOrder.baseClaimableAmount = rawToBase(
+    openOrder.unitClaimableAmount = orderInfo.claimable
+    openOrder.baseClaimableAmount = unitToBase(
       book,
       orderInfo.claimable,
       openOrder.price,
     )
-    openOrder.quoteClaimableAmount = rawToQuote(book, orderInfo.claimable)
-    openOrder.rawOpenAmount = orderInfo.open
-    openOrder.baseOpenAmount = rawToBase(book, orderInfo.open, openOrder.price)
-    openOrder.quoteOpenAmount = rawToQuote(book, orderInfo.open)
+    openOrder.quoteClaimableAmount = unitToQuote(book, orderInfo.claimable)
+    openOrder.unitOpenAmount = orderInfo.open
+    openOrder.baseOpenAmount = unitToBase(book, orderInfo.open, openOrder.price)
+    openOrder.quoteOpenAmount = unitToQuote(book, orderInfo.open)
 
-    const openOrderRemainingRawAmount = openOrder.rawAmount.minus(
-      openOrder.rawFilledAmount,
+    const openOrderRemainingUnitAmount = openOrder.unitAmount.minus(
+      openOrder.unitFilledAmount,
     )
-    const filledRawAmount = remainingTakenRawAmount.lt(
-      openOrderRemainingRawAmount,
+    const filledUnitAmount = remainingTakenUnitAmount.lt(
+      openOrderRemainingUnitAmount,
     )
-      ? remainingTakenRawAmount
-      : openOrderRemainingRawAmount
+      ? remainingTakenUnitAmount
+      : openOrderRemainingUnitAmount
 
-    remainingTakenRawAmount = remainingTakenRawAmount.minus(filledRawAmount)
-    const newRawFilledAmount = openOrder.rawFilledAmount.plus(filledRawAmount)
-    openOrder.rawFilledAmount = newRawFilledAmount
-    openOrder.baseFilledAmount = rawToBase(
+    remainingTakenUnitAmount = remainingTakenUnitAmount.minus(filledUnitAmount)
+    const newUnitFilledAmount =
+      openOrder.unitFilledAmount.plus(filledUnitAmount)
+    openOrder.unitFilledAmount = newUnitFilledAmount
+    openOrder.baseFilledAmount = unitToBase(
       book,
-      newRawFilledAmount,
+      newUnitFilledAmount,
       openOrder.price,
     )
-    openOrder.quoteFilledAmount = rawToQuote(book, newRawFilledAmount)
+    openOrder.quoteFilledAmount = unitToQuote(book, newUnitFilledAmount)
     openOrder.save()
 
-    if (openOrder.rawAmount == openOrder.rawFilledAmount) {
+    if (openOrder.unitAmount == openOrder.unitFilledAmount) {
       currentOrderIndex = currentOrderIndex.plus(BigInt.fromI32(1))
     }
   }
 
   depth.latestTakenOrderIndex = currentOrderIndex
 
-  if (rawDepthAmount.isZero()) {
+  if (unitDepthAmount.isZero()) {
     store.remove('Depth', depthId)
   } else {
     depth.save()
   }
 
   // update chart
-  const baseTakenAmount = rawToBase(book, event.params.amount, price)
-  const quoteTakenAmount = rawToQuote(book, event.params.amount)
+  const baseTakenAmount = unitToBase(book, event.params.unit, price)
+  const quoteTakenAmount = unitToQuote(book, event.params.unit)
   const baseToken = Token.load(book.base) as Token
   const quoteToken = Token.load(book.quote) as Token
   const formattedPrice = formatPrice(
@@ -304,17 +305,17 @@ export function handleCancel(event: Cancel): void {
     return
   }
   const orderInfo = bookManager.getOrder(orderId)
-  const newRawAmount = openOrder.rawAmount.minus(event.params.canceledAmount)
-  openOrder.rawAmount = newRawAmount
-  openOrder.baseAmount = rawToBase(book, newRawAmount, openOrder.price)
-  openOrder.quoteAmount = rawToQuote(book, newRawAmount)
+  const newUnitAmount = openOrder.unitAmount.minus(event.params.unit)
+  openOrder.unitAmount = newUnitAmount
+  openOrder.baseAmount = unitToBase(book, newUnitAmount, openOrder.price)
+  openOrder.quoteAmount = unitToQuote(book, newUnitAmount)
 
-  openOrder.rawOpenAmount = orderInfo.open
-  openOrder.baseOpenAmount = rawToBase(book, orderInfo.open, openOrder.price)
-  openOrder.quoteOpenAmount = rawToQuote(book, orderInfo.open)
+  openOrder.unitOpenAmount = orderInfo.open
+  openOrder.baseOpenAmount = unitToBase(book, orderInfo.open, openOrder.price)
+  openOrder.quoteOpenAmount = unitToQuote(book, orderInfo.open)
 
-  const rawPendingAmount = orderInfo.open.plus(orderInfo.claimable)
-  if (rawPendingAmount.isZero()) {
+  const unitPendingAmount = orderInfo.open.plus(orderInfo.claimable)
+  if (unitPendingAmount.isZero()) {
     store.remove('OpenOrder', orderId.toString())
   } else {
     openOrder.save()
@@ -326,15 +327,15 @@ export function handleCancel(event: Cancel): void {
   if (depth === null) {
     return
   }
-  const rawDepthAmount = bookManager.getDepth(
+  const unitDepthAmount = bookManager.getDepth(
     BigInt.fromString(book.id),
     openOrder.tick.toI32(),
   )
-  depth.rawAmount = rawDepthAmount
-  depth.baseAmount = rawToBase(book, rawDepthAmount, openOrder.price)
-  depth.quoteAmount = rawToQuote(book, rawDepthAmount)
+  depth.unitAmount = unitDepthAmount
+  depth.baseAmount = unitToBase(book, unitDepthAmount, openOrder.price)
+  depth.quoteAmount = unitToQuote(book, unitDepthAmount)
 
-  if (rawDepthAmount.isZero()) {
+  if (unitDepthAmount.isZero()) {
     store.remove('Depth', depthId)
   } else {
     depth.save()
@@ -351,28 +352,28 @@ export function handleClaim(event: Claim): void {
     return
   }
   const orderInfo = bookManager.getOrder(orderId)
-  const newRawClaimedAmount = openOrder.rawClaimedAmount.plus(
-    event.params.rawAmount,
+  const newUnitClaimedAmount = openOrder.unitClaimedAmount.plus(
+    event.params.unit,
   )
 
-  openOrder.rawClaimedAmount = newRawClaimedAmount
-  openOrder.baseClaimedAmount = rawToBase(
+  openOrder.unitClaimedAmount = newUnitClaimedAmount
+  openOrder.baseClaimedAmount = unitToBase(
     book,
-    newRawClaimedAmount,
+    newUnitClaimedAmount,
     openOrder.price,
   )
-  openOrder.quoteClaimedAmount = rawToQuote(book, newRawClaimedAmount)
+  openOrder.quoteClaimedAmount = unitToQuote(book, newUnitClaimedAmount)
 
-  openOrder.rawClaimableAmount = orderInfo.claimable
-  openOrder.baseClaimableAmount = rawToBase(
+  openOrder.unitClaimableAmount = orderInfo.claimable
+  openOrder.baseClaimableAmount = unitToBase(
     book,
     orderInfo.claimable,
     openOrder.price,
   )
-  openOrder.quoteClaimableAmount = rawToQuote(book, orderInfo.claimable)
+  openOrder.quoteClaimableAmount = unitToQuote(book, orderInfo.claimable)
 
-  const rawPendingAmount = orderInfo.open.plus(orderInfo.claimable)
-  if (rawPendingAmount.isZero()) {
+  const unitPendingAmount = orderInfo.open.plus(orderInfo.claimable)
+  if (unitPendingAmount.isZero()) {
     store.remove('OpenOrder', orderId.toString())
   } else {
     openOrder.save()
