@@ -10,7 +10,7 @@ type Book @entity {
     id: ID!
     base: Token!
     quote: Token!
-    unit: BigInt!
+    unitSize: BigInt!
     makerPolicy: BigInt!
     takerPolicy: BigInt!
     hooks: String!
@@ -27,7 +27,7 @@ type Depth @entity {
     book: Book!
     tick: BigInt!
     price: BigInt!
-    rawAmount: BigInt!
+    unitAmount: BigInt!
     baseAmount: BigInt!
     quoteAmount: BigInt!
     latestTakenOrderIndex: BigInt!
@@ -44,23 +44,23 @@ type OpenOrder @entity {
     txHash: String!
     createdAt: BigInt!
 
-    rawAmount: BigInt!
+    unitAmount: BigInt!
     baseAmount: BigInt!
     quoteAmount: BigInt!
 
-    rawFilledAmount: BigInt!
+    unitFilledAmount: BigInt!
     baseFilledAmount: BigInt!
     quoteFilledAmount: BigInt!
 
-    rawClaimedAmount: BigInt!
+    unitClaimedAmount: BigInt!
     baseClaimedAmount: BigInt!
     quoteClaimedAmount: BigInt!
 
-    rawClaimableAmount: BigInt!
+    unitClaimableAmount: BigInt!
     baseClaimableAmount: BigInt!
     quoteClaimableAmount: BigInt!
 
-    rawOpenAmount: BigInt!
+    unitOpenAmount: BigInt!
     baseOpenAmount: BigInt!
     quoteOpenAmount: BigInt!
 }

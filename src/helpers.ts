@@ -39,19 +39,19 @@ export function decodeBookIdFromOrderId(orderId: BigInt): string {
   return orderId.div(BigInt.fromI32(2).pow(64)).toString()
 }
 
-export function rawToBase(
+export function unitToBase(
   book: Book,
-  rawAmount: BigInt,
+  unitAmount: BigInt,
   price: BigInt,
 ): BigInt {
   if (price.isZero()) {
     return BigInt.fromI32(0)
   }
-  return rawAmount.times(book.unit).times(pricePrecision).div(price)
+  return unitAmount.times(book.unitSize).times(pricePrecision).div(price)
 }
 
-export function rawToQuote(book: Book, rawAmount: BigInt): BigInt {
-  return rawAmount.times(book.unit)
+export function unitToQuote(book: Book, unitAmount: BigInt): BigInt {
+  return unitAmount.times(book.unitSize)
 }
 
 export function buildDepthId(bookId: string, tick: BigInt): string {
