@@ -43,16 +43,16 @@
   },
   "berachain-public-testnet": {
     "BookManager": {
-      "address": "0x982c57388101D012846aDC4997E9b073F3bC16BD",
-      "startBlock": 1848400
+      "address": "0x10C08D40918F93fEb7D48749d72842aDE0aF3c20",
+      "startBlock": 2003640
     },
     "BookViewer": {
-      "address": "0xb735FdD82497Dd9AbfEEAdc659b960473BF896E0",
-      "startBlock": 1849850
+      "address": "0xe57FcB298Ce2d778886d4e3B3709E86D1A2FfB46",
+      "startBlock": 2003640
     },
     "Controller": {
-      "address": "0xce3F3C90970C08Fe451998441b30879560AA6757",
-      "startBlock": 1849850
+      "address": "0x743f6375B3DacF0eedbF285B158E30298f1E693C",
+      "startBlock": 2003640
     }
   },
   "zksync-era-sepolia": {
