@@ -21,7 +21,7 @@ export function getControllerAddress(): string {
   } else if (chainId == BASE) {
     return '0x4ed2804b5409298290654D665619c7b092297dB2'
   } else if (chainId == BERA_TESTNET) {
-    return '0x743f6375B3DacF0eedbF285B158E30298f1E693C'
+    return '0x1Aa68597c14F3f950E2683fA7a975fc9CdAcC484'
   } else {
     return '0x3e15fee68C06A0Cd3aF5430A665a9dd502C8544e'
   }
