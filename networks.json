@@ -55,6 +55,20 @@
       "startBlock": 2017800
     }
   },
+  "zksync-era": {
+    "BookManager": {
+      "address": "0x5961268BFd6b057c3ffA4709eDb920bD97011B13",
+      "startBlock": 33610880
+    },
+    "BookViewer": {
+      "address": "0x7D206e3A8B785Dce75Bc755772Bd9eacdC77F5A9",
+      "startBlock": 33611270
+    },
+    "Controller": {
+      "address": "0x46D949cb444feF1a1BF63767F513f5091de6b5f5",
+      "startBlock": 33611260
+    }
+  },
   "zksync-era-sepolia": {
     "BookManager": {
       "address": "0x419DD5a4e74f96e57C1F8B8B46ae6855395A9de7",
