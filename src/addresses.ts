@@ -19,12 +19,12 @@ export function getControllerAddress(): string {
   // return '0x46D949cb444feF1a1BF63767F513f5091de6b5f5'
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
-    return '0x3e15fee68C06A0Cd3aF5430A665a9dd502C8544e'
+    return '0x91101543D3Bd3e919dAd034Bf978ef9d87290993'
   } else if (chainId == BASE) {
-    return '0x4ed2804b5409298290654D665619c7b092297dB2'
+    return '0xA694fDd88E7FEE1f5EBF878153B68ADb2ce6EbbF'
   } else if (chainId == BERA_TESTNET) {
     return '0x1Aa68597c14F3f950E2683fA7a975fc9CdAcC484'
   } else {
-    return '0x3e15fee68C06A0Cd3aF5430A665a9dd502C8544e'
+    return '0x91101543D3Bd3e919dAd034Bf978ef9d87290993'
   }
 }

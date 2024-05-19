@@ -1,44 +1,44 @@
 {
   "localhost": {
     "BookManager": {
-      "address": "0x3a90fbD5DbE4C82018A4Ac28406A50917dB91def",
-      "startBlock": 37644800
+      "address": "0xC528b9ED5d56d1D0d3C18A2342954CE1069138a4",
+      "startBlock": 44586120
     },
     "BookViewer": {
-      "address": "0x46f4661D64BCb4dE9AD5a2fAd7b49EBfC6c27caE",
-      "startBlock": 38386240
+      "address": "0x73c524e103C94Bf2743659d739586395B1A9e1BE",
+      "startBlock": 44843170
     },
     "Controller": {
-      "address": "0x3e15fee68C06A0Cd3aF5430A665a9dd502C8544e",
-      "startBlock": 38642380
+      "address": "0x91101543D3Bd3e919dAd034Bf978ef9d87290993",
+      "startBlock": 44843190
     }
   },
   "arbitrum-sepolia": {
     "BookManager": {
-      "address": "0x3a90fbD5DbE4C82018A4Ac28406A50917dB91def",
-      "startBlock": 37644800
+      "address": "0xC528b9ED5d56d1D0d3C18A2342954CE1069138a4",
+      "startBlock": 44586120
     },
     "BookViewer": {
-      "address": "0x46f4661D64BCb4dE9AD5a2fAd7b49EBfC6c27caE",
-      "startBlock": 38386240
+      "address": "0x73c524e103C94Bf2743659d739586395B1A9e1BE",
+      "startBlock": 44843170
     },
     "Controller": {
-      "address": "0x3e15fee68C06A0Cd3aF5430A665a9dd502C8544e",
-      "startBlock": 38642380
+      "address": "0x91101543D3Bd3e919dAd034Bf978ef9d87290993",
+      "startBlock": 44843190
     }
   },
   "base": {
     "BookManager": {
-      "address": "0x59fAD5b95e755034572702991ABBA937Cc90254a",
-      "startBlock": 13787160
+      "address": "0x382CCccbD3b142D7DA063bF68cd0c89634767F76",
+      "startBlock": 14528050
     },
     "BookViewer": {
-      "address": "0x0e7fc8F067470424589Cc25DceEd0dA9a1a8E72A",
-      "startBlock": 13795540
+      "address": "0xcAf89a60D0911AeB8C2b997B5eF9b2017a19Be0d",
+      "startBlock": 14560850
     },
     "Controller": {
-      "address": "0x4ed2804b5409298290654D665619c7b092297dB2",
-      "startBlock": 13795560
+      "address": "0xA694fDd88E7FEE1f5EBF878153B68ADb2ce6EbbF",
+      "startBlock": 14560860
     }
   },
   "berachain-public-testnet": {
