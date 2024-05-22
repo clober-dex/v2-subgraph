@@ -16,7 +16,7 @@ export function getControllerAddress(): string {
   // for zksync sepolia test, just return directly
   // return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   // for zksync, just return directly
-  // return '0x46D949cb444feF1a1BF63767F513f5091de6b5f5'
+  // return '0x11BB911a7F0EE10d4cEB569f3D7d6b741dEbdfcc'
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
     return '0x91101543D3Bd3e919dAd034Bf978ef9d87290993'
