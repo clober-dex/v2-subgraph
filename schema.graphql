@@ -79,4 +79,5 @@ type ChartLog @entity {
     low: BigDecimal!
     close: BigDecimal!
     baseVolume: BigDecimal!
+    inverted: Boolean!
 }
