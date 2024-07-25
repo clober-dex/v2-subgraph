@@ -239,7 +239,6 @@ export function handleTake(event: Take): void {
       chartLog.low = formattedPrice
       chartLog.close = formattedPrice
       chartLog.baseVolume = formattedBaseTakenAmount
-      chartLog.inverted = false
     } else {
       if (formattedPrice.gt(chartLog.high)) {
         chartLog.high = formattedPrice
@@ -280,7 +279,6 @@ export function handleTake(event: Take): void {
       invertedChartLog.low = formattedInvertedPrice
       invertedChartLog.close = formattedInvertedPrice
       invertedChartLog.baseVolume = formattedQuoteTakenAmount
-      invertedChartLog.inverted = true
     } else {
       if (formattedInvertedPrice.gt(invertedChartLog.high)) {
         invertedChartLog.high = formattedInvertedPrice
