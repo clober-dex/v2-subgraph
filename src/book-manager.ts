@@ -1,4 +1,4 @@
-import { Address, BigInt, store } from '@graphprotocol/graph-ts'
+import { Address, BigDecimal, BigInt, store } from '@graphprotocol/graph-ts'
 
 import {
   BookManager,
@@ -239,6 +239,8 @@ export function handleTake(event: Take): void {
       chartLog.low = formattedPrice
       chartLog.close = formattedPrice
       chartLog.baseVolume = formattedBaseTakenAmount
+      chartLog.bidBookBaseVolume = formattedBaseTakenAmount
+      chartLog.askBookBaseVolume = BigDecimal.zero()
     } else {
       if (formattedPrice.gt(chartLog.high)) {
         chartLog.high = formattedPrice
@@ -248,6 +250,9 @@ export function handleTake(event: Take): void {
       }
       chartLog.close = formattedPrice
       chartLog.baseVolume = chartLog.baseVolume.plus(formattedBaseTakenAmount)
+      chartLog.bidBookBaseVolume = chartLog.bidBookBaseVolume.plus(
+        formattedBaseTakenAmount,
+      )
     }
     chartLog.save()
 
@@ -279,6 +284,8 @@ export function handleTake(event: Take): void {
       invertedChartLog.low = formattedInvertedPrice
       invertedChartLog.close = formattedInvertedPrice
       invertedChartLog.baseVolume = formattedQuoteTakenAmount
+      invertedChartLog.bidBookBaseVolume = BigDecimal.zero()
+      invertedChartLog.askBookBaseVolume = formattedQuoteTakenAmount
     } else {
       if (formattedInvertedPrice.gt(invertedChartLog.high)) {
         invertedChartLog.high = formattedInvertedPrice
@@ -290,6 +297,8 @@ export function handleTake(event: Take): void {
       invertedChartLog.baseVolume = invertedChartLog.baseVolume.plus(
         formattedQuoteTakenAmount,
       )
+      invertedChartLog.askBookBaseVolume =
+        invertedChartLog.askBookBaseVolume.plus(formattedQuoteTakenAmount)
     }
     invertedChartLog.save()
   }

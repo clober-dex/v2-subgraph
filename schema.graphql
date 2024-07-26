@@ -79,4 +79,6 @@ type ChartLog @entity {
     low: BigDecimal!
     close: BigDecimal!
     baseVolume: BigDecimal!
+    bidBookBaseVolume: BigDecimal!
+    askBookBaseVolume: BigDecimal!
 }
