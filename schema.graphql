@@ -82,3 +82,9 @@ type ChartLog @entity {
     bidBookBaseVolume: BigDecimal!
     askBookBaseVolume: BigDecimal!
 }
+
+type LatestBlock @entity {
+    id: ID!
+    blockNumber: BigInt!
+    timestamp: BigInt!
+}

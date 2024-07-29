@@ -1,4 +1,10 @@
-import { Address, BigDecimal, BigInt, store } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigDecimal,
+  BigInt,
+  ethereum,
+  store,
+} from '@graphprotocol/graph-ts'
 
 import {
   BookManager,
@@ -9,7 +15,14 @@ import {
   Take,
   Transfer,
 } from '../generated/BookManager/BookManager'
-import { Book, ChartLog, Depth, OpenOrder, Token } from '../generated/schema'
+import {
+  Book,
+  ChartLog,
+  Depth,
+  LatestBlock,
+  OpenOrder,
+  Token,
+} from '../generated/schema'
 import { Controller } from '../generated/BookManager/Controller'
 
 import {
@@ -28,6 +41,17 @@ import {
   unitToQuote,
 } from './helpers'
 import { getControllerAddress } from './addresses'
+
+export function handleBlock(block: ethereum.Block): void {
+  const latestBlockId: string = 'latest'
+  let latestBlock = LatestBlock.load(latestBlockId)
+  if (latestBlock === null) {
+    latestBlock = new LatestBlock(latestBlockId)
+  }
+  latestBlock.blockNumber = block.number
+  latestBlock.timestamp = block.timestamp
+  latestBlock.save()
+}
 
 export function handleOpen(event: Open): void {
   const base = createToken(event.params.base)

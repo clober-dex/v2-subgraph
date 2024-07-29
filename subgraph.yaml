@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: BookManager
-    network: localhost
+    network: zksync-era
     source:
       abi: BookManager
-      address: "0x4a4eaF7382821da4Fb85e8A8d515f5555383d58A"
-      startBlock: 31527070
+      address: "0xAaA0e933e1EcC812fc075A81c116Aa0a82A5bbb8"
+      startBlock: 34448160
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -46,4 +46,7 @@ dataSources:
           handler: handleClaim
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+      blockHandlers:
+        - handler: handleBlock
+
       file: ./src/book-manager.ts
