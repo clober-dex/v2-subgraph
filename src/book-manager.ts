@@ -216,12 +216,6 @@ export function handleTake(event: Take): void {
 
   depth.latestTakenOrderIndex = currentOrderIndex
 
-  if (unitDepthAmount.isZero()) {
-    store.remove('Depth', depthId)
-  } else {
-    depth.save()
-  }
-
   // update chart
   const baseTakenAmount = unitToBase(book, event.params.unit, price)
   const quoteTakenAmount = unitToQuote(book, event.params.unit)
@@ -326,6 +320,12 @@ export function handleTake(event: Take): void {
     }
     invertedChartLog.save()
   }
+
+  if (unitDepthAmount.isZero()) {
+    store.remove('Depth', depthId)
+  } else {
+    depth.save()
+  }
 }
 
 export function handleCancel(event: Cancel): void {
@@ -348,11 +348,6 @@ export function handleCancel(event: Cancel): void {
   openOrder.quoteOpenAmount = unitToQuote(book, orderInfo.open)
 
   const unitPendingAmount = orderInfo.open.plus(orderInfo.claimable)
-  if (unitPendingAmount.isZero()) {
-    store.remove('OpenOrder', orderId.toString())
-  } else {
-    openOrder.save()
-  }
 
   // update depth
   const depthId = buildDepthId(book.id, openOrder.tick)
@@ -368,6 +363,11 @@ export function handleCancel(event: Cancel): void {
   depth.baseAmount = unitToBase(book, unitDepthAmount, openOrder.price)
   depth.quoteAmount = unitToQuote(book, unitDepthAmount)
 
+  if (unitPendingAmount.isZero()) {
+    store.remove('OpenOrder', orderId.toString())
+  } else {
+    openOrder.save()
+  }
   if (unitDepthAmount.isZero()) {
     store.remove('Depth', depthId)
   } else {
