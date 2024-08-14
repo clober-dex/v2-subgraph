@@ -32,7 +32,7 @@ export function getControllerAddress(): string {
   if (chainId == ARBITRUM_SEPOLIA) {
     return '0x91101543D3Bd3e919dAd034Bf978ef9d87290993'
   } else if (chainId == BASE) {
-    return '0xA694fDd88E7FEE1f5EBF878153B68ADb2ce6EbbF'
+    return '0x4FaC849f948E59f9AEB62d9f7E628138DeF03BfA'
   } else if (chainId == BERA_TESTNET) {
     return '0x1Aa68597c14F3f950E2683fA7a975fc9CdAcC484'
   } else if (chainId == ZKSYNC_ERA) {
