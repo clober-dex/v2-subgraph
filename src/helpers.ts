@@ -3,7 +3,7 @@ import { Address, BigDecimal, BigInt, TypedMap } from '@graphprotocol/graph-ts'
 import { ERC20 } from '../generated/BookManager/ERC20'
 import { ERC20SymbolBytes } from '../generated/BookManager/ERC20SymbolBytes'
 import { ERC20NameBytes } from '../generated/BookManager/ERC20NameBytes'
-import { Book, Token } from '../generated/schema'
+import { Book, OpenOrder, Token } from '../generated/schema'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
@@ -37,6 +37,10 @@ export function encodeOrderId(
 
 export function decodeBookIdFromOrderId(orderId: BigInt): string {
   return orderId.div(BigInt.fromI32(2).pow(64)).toString()
+}
+
+export function getPendingAmount(openOrder: OpenOrder): BigInt {
+  return openOrder.unitOpenAmount.plus(openOrder.unitClaimableAmount)
 }
 
 export function unitToBase(
