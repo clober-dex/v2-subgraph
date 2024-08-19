@@ -3,6 +3,7 @@ import {
   BigDecimal,
   BigInt,
   ethereum,
+  log,
   store,
 } from '@graphprotocol/graph-ts'
 
@@ -37,6 +38,7 @@ import {
   formatInvertedPrice,
   formatPrice,
   formatUnits,
+  getPendingAmount,
   unitToBase,
   unitToQuote,
 } from './helpers'
@@ -72,6 +74,7 @@ export function handleOpen(event: Open): void {
 export function handleMake(event: Make): void {
   const book = Book.load(event.params.bookId.toString())
   if (book === null) {
+    log.error('[MAKE] Book not found: {}', [event.params.bookId.toString()])
     return
   }
   const controller = Controller.bind(Address.fromString(getControllerAddress()))
@@ -130,9 +133,10 @@ export function handleMake(event: Make): void {
     orderIndexEntity.price = price
     orderIndexEntity.latestTakenOrderIndex = BigInt.zero()
   }
-  depth.unitAmount = depth.unitAmount.plus(unitAmount)
-  depth.baseAmount = depth.baseAmount.plus(baseAmount)
-  depth.quoteAmount = depth.quoteAmount.plus(quoteAmount)
+  const newUnitAmount = depth.unitAmount.plus(unitAmount)
+  depth.unitAmount = newUnitAmount
+  depth.baseAmount = unitToBase(book, newUnitAmount, price)
+  depth.quoteAmount = unitToQuote(book, newUnitAmount)
 
   depth.save()
   orderIndexEntity.save()
@@ -144,6 +148,7 @@ export function handleTake(event: Take): void {
   // update book
   const book = Book.load(event.params.bookId.toString())
   if (book === null) {
+    log.error('[TAKE] Book not found: {}', [event.params.bookId.toString()])
     return
   }
   const tick = BigInt.fromI32(event.params.tick)
@@ -158,16 +163,18 @@ export function handleTake(event: Take): void {
   const depth = Depth.load(depthId)
   const orderIndexEntity = OrderIndex.load(depthId)
   if (depth === null || orderIndexEntity === null) {
+    log.error('[TAKE] Depth or OrderIndex not found: {}', [depthId])
     return
   }
   const takenUnitAmount = event.params.unit
-  depth.unitAmount = depth.unitAmount.minus(takenUnitAmount)
-  depth.baseAmount = depth.baseAmount.minus(
-    unitToBase(book, takenUnitAmount, price),
-  )
-  depth.quoteAmount = depth.quoteAmount.minus(
-    unitToQuote(book, takenUnitAmount),
-  )
+  const newUnitAmount = depth.unitAmount.minus(takenUnitAmount)
+  depth.unitAmount = newUnitAmount
+  depth.baseAmount = unitToBase(book, newUnitAmount, price)
+  depth.quoteAmount = unitToQuote(book, newUnitAmount)
+
+  if (newUnitAmount.lt(BigInt.zero())) {
+    log.error('[TAKE] Negative depth unit amount: {}', [depthId])
+  }
 
   let currentOrderIndex = orderIndexEntity.latestTakenOrderIndex
   let remainingTakenUnitAmount = event.params.unit
@@ -217,6 +224,9 @@ export function handleTake(event: Take): void {
       openOrder.price,
     )
     openOrder.quoteOpenAmount = unitToQuote(book, newUnitOpenAmount)
+    if (newUnitOpenAmount.lt(BigInt.zero())) {
+      log.error('[TAKE] Negative open unit amount: {}', [orderId.toString()])
+    }
     openOrder.save()
 
     if (openOrder.unitAmount == openOrder.unitFilledAmount) {
@@ -226,12 +236,6 @@ export function handleTake(event: Take): void {
 
   orderIndexEntity.latestTakenOrderIndex = currentOrderIndex
   orderIndexEntity.save()
-
-  if (depth.unitAmount.isZero()) {
-    store.remove('Depth', depthId)
-  } else {
-    depth.save()
-  }
 
   // update chart
   const baseTakenAmount = unitToBase(book, event.params.unit, price)
@@ -337,6 +341,12 @@ export function handleTake(event: Take): void {
     }
     invertedChartLog.save()
   }
+
+  if (depth.unitAmount.isZero()) {
+    store.remove('Depth', depthId)
+  } else {
+    depth.save()
+  }
 }
 
 export function handleCancel(event: Cancel): void {
@@ -345,12 +355,20 @@ export function handleCancel(event: Cancel): void {
   const book = Book.load(bookId)
   const openOrder = OpenOrder.load(orderId.toString())
   if (openOrder === null || book === null) {
+    log.error('[CANCEL] Book or OpenOrder not found: {} {}', [
+      bookId,
+      orderId.toString(),
+    ])
     return
   }
   const newUnitAmount = openOrder.unitAmount.minus(event.params.unit)
   openOrder.unitAmount = newUnitAmount
   openOrder.baseAmount = unitToBase(book, newUnitAmount, openOrder.price)
   openOrder.quoteAmount = unitToQuote(book, newUnitAmount)
+
+  if (newUnitAmount.lt(BigInt.zero())) {
+    log.error('[CANCEL] Negative unit amount: {}', [orderId.toString()])
+  }
 
   const newUnitOpenAmount = openOrder.unitOpenAmount.minus(event.params.unit)
   openOrder.unitOpenAmount = newUnitOpenAmount
@@ -361,25 +379,33 @@ export function handleCancel(event: Cancel): void {
   )
   openOrder.quoteOpenAmount = unitToQuote(book, newUnitOpenAmount)
 
-  const unitPendingAmount = openOrder.unitOpenAmount.plus(
-    openOrder.unitClaimableAmount,
-  )
-  if (unitPendingAmount.isZero()) {
-    store.remove('OpenOrder', orderId.toString())
-  } else {
-    openOrder.save()
+  if (newUnitOpenAmount.lt(BigInt.zero())) {
+    log.error('[CANCEL] Negative open unit amount: {}', [orderId.toString()])
   }
+
+  const unitPendingAmount = getPendingAmount(openOrder)
 
   // update depth
   const depthId = buildDepthId(book.id, openOrder.tick)
   const depth = Depth.load(depthId)
   if (depth === null) {
+    log.error('[CANCEL] Depth not found: {}', [depthId])
     return
   }
   const newUnitDepthAmount = depth.unitAmount.minus(event.params.unit)
   depth.unitAmount = newUnitDepthAmount
   depth.baseAmount = unitToBase(book, newUnitDepthAmount, openOrder.price)
   depth.quoteAmount = unitToQuote(book, newUnitDepthAmount)
+
+  if (newUnitDepthAmount.lt(BigInt.zero())) {
+    log.error('[CANCEL] Negative depth unit amount: {}', [depthId])
+  }
+
+  if (unitPendingAmount.isZero()) {
+    store.remove('OpenOrder', orderId.toString())
+  } else {
+    openOrder.save()
+  }
 
   if (newUnitDepthAmount.isZero()) {
     store.remove('Depth', depthId)
@@ -394,6 +420,10 @@ export function handleClaim(event: Claim): void {
   const openOrder = OpenOrder.load(orderId.toString())
   const book = Book.load(bookId)
   if (openOrder === null || book === null) {
+    log.error('[CLAIM] Book or OpenOrder not found: {} {}', [
+      bookId,
+      orderId.toString(),
+    ])
     return
   }
   const newUnitClaimedAmount = openOrder.unitClaimedAmount.plus(
@@ -419,9 +449,13 @@ export function handleClaim(event: Claim): void {
   )
   openOrder.quoteClaimableAmount = unitToQuote(book, newUnitClaimableAmount)
 
-  const unitPendingAmount = openOrder.unitOpenAmount.plus(
-    openOrder.unitClaimableAmount,
-  )
+  if (newUnitClaimableAmount.lt(BigInt.zero())) {
+    log.error('[CLAIM] Negative claimable unit amount: {}', [
+      orderId.toString(),
+    ])
+  }
+
+  const unitPendingAmount = getPendingAmount(openOrder)
   if (unitPendingAmount.isZero()) {
     store.remove('OpenOrder', orderId.toString())
   } else {
@@ -442,6 +476,7 @@ export function handleTransfer(event: Transfer): void {
   const openOrder = OpenOrder.load(orderId.toString())
 
   if (openOrder === null) {
+    log.error('[TRANSFER] OpenOrder not found: {}', [orderId.toString()])
     return
   }
 
