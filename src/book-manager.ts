@@ -143,6 +143,9 @@ export function handleMake(event: Make): void {
 }
 
 export function handleTake(event: Take): void {
+  if (event.params.unit.isZero()) {
+    return
+  }
   const controller = Controller.bind(Address.fromString(getControllerAddress()))
 
   // update book
@@ -350,6 +353,9 @@ export function handleTake(event: Take): void {
 }
 
 export function handleCancel(event: Cancel): void {
+  if (event.params.unit.isZero()) {
+    return
+  }
   const orderId = event.params.orderId
   const bookId = decodeBookIdFromOrderId(orderId)
   const book = Book.load(bookId)
@@ -415,6 +421,9 @@ export function handleCancel(event: Cancel): void {
 }
 
 export function handleClaim(event: Claim): void {
+  if (event.params.unit.isZero()) {
+    return
+  }
   const orderId = event.params.orderId
   const bookId = decodeBookIdFromOrderId(orderId)
   const openOrder = OpenOrder.load(orderId.toString())
