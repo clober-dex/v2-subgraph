@@ -41,18 +41,18 @@
       "startBlock": 14560860
     }
   },
-  "berachain-public-testnet": {
+  "berachain-bartio": {
     "BookManager": {
-      "address": "0xA7e0051561D5b955F1014939FB54F71C7F4AEdF1",
-      "startBlock": 2017260
+      "address": "0x874b1B795993653fbFC3f1c1fc0469214cC9F4A5",
+      "startBlock": 3310440
     },
     "BookViewer": {
-      "address": "0xc0d74f9C1c27BC5EC195066863F4de7Ee1152998",
-      "startBlock": 2017800
+      "address": "0x5C91A02B8B5D10597fc6cA23faF56F9718D1feD0",
+      "startBlock": 3310440
     },
     "Controller": {
-      "address": "0x1Aa68597c14F3f950E2683fA7a975fc9CdAcC484",
-      "startBlock": 2017800
+      "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
+      "startBlock": 3310440
     }
   },
   "zksync-era": {
