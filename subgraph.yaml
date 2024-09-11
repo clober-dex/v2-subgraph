@@ -7,8 +7,8 @@ dataSources:
     network: zksync-era
     source:
       abi: BookManager
-      address: "0xAaA0e933e1EcC812fc075A81c116Aa0a82A5bbb8"
-      startBlock: 34448160
+      address: "0xAc6AdB2727F99C309acd511D942c0b2812e03614"
+      startBlock: 43525520
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -48,5 +48,4 @@ dataSources:
           handler: handleTransfer
       blockHandlers:
         - handler: handleBlock
-
       file: ./src/book-manager.ts
