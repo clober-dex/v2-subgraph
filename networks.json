@@ -11,6 +11,14 @@
     "Controller": {
       "address": "0xFbbA685a39bE6640B8EB08c6E6DDf2664fD1D668",
       "startBlock": 44843190
+    },
+    "Rebalancer": {
+      "address": "0xCF556d850277BC579c99C0729F4E72e62C57D811",
+      "startBlock": 83612610
+    },
+    "SimpleOracleStrategy": {
+      "address": "0x8aDF62b0b6078EaE5a2D54e9e5DD2AA71F6748C4",
+      "startBlock": 83612710
     }
   },
   "arbitrum-sepolia": {
@@ -25,6 +33,14 @@
     "Controller": {
       "address": "0xFbbA685a39bE6640B8EB08c6E6DDf2664fD1D668",
       "startBlock": 44843190
+    },
+    "Rebalancer": {
+      "address": "0xCF556d850277BC579c99C0729F4E72e62C57D811",
+      "startBlock": 83612610
+    },
+    "SimpleOracleStrategy": {
+      "address": "0x8aDF62b0b6078EaE5a2D54e9e5DD2AA71F6748C4",
+      "startBlock": 83612710
     }
   },
   "base": {
