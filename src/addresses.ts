@@ -47,7 +47,7 @@ export function getControllerAddress(): string {
 export function getRebalancerAddress(): string {
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
-    return '0xCF556d850277BC579c99C0729F4E72e62C57D811'
+    return '0xa5A1A5E13B874F0d855327E89E53222808cf531b'
   } else if (chainId == BASE) {
     return '0x57dDD0d3DF50685444442076AC59F9c7Df75D150'
   } else if (chainId == BERA_TESTNET) {
@@ -57,14 +57,14 @@ export function getRebalancerAddress(): string {
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else {
-    return '0xCF556d850277BC579c99C0729F4E72e62C57D811'
+    return '0xa5A1A5E13B874F0d855327E89E53222808cf531b'
   }
 }
 
 export function getSimpleOracleStrategyAddress(): string {
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
-    return '0x8aDF62b0b6078EaE5a2D54e9e5DD2AA71F6748C4'
+    return '0xA6A062B512Ab3D930f5f267eff2545774f1b4589'
   } else if (chainId == BASE) {
     return '0x57dDD0d3DF50685444442076AC59F9c7Df75D150'
   } else if (chainId == BERA_TESTNET) {
@@ -74,6 +74,6 @@ export function getSimpleOracleStrategyAddress(): string {
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else {
-    return '0x8aDF62b0b6078EaE5a2D54e9e5DD2AA71F6748C4'
+    return '0xA6A062B512Ab3D930f5f267eff2545774f1b4589'
   }
 }

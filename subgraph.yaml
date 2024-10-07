@@ -78,10 +78,8 @@ dataSources:
         - name: Multicall3
           file: ./abis/Multicall3.json
       eventHandlers:
-        - event: Burn(indexed address,indexed bytes32,uint256,uint256,uint256)
-          handler: handleBurn
-        - event: Rebalance(indexed bytes32)
-          handler: handleRebalance
+        - event: Clear(indexed bytes32,uint256,uint256,uint256,uint256)
+          handler: handleClear
       file: ./src/pool.ts
   - kind: ethereum
     name: SimpleOracleStrategy

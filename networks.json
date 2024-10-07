@@ -13,11 +13,11 @@
       "startBlock": 44843190
     },
     "Rebalancer": {
-      "address": "0xCF556d850277BC579c99C0729F4E72e62C57D811",
+      "address": "0xa5A1A5E13B874F0d855327E89E53222808cf531b",
       "startBlock": 83612610
     },
     "SimpleOracleStrategy": {
-      "address": "0x8aDF62b0b6078EaE5a2D54e9e5DD2AA71F6748C4",
+      "address": "0xA6A062B512Ab3D930f5f267eff2545774f1b4589",
       "startBlock": 83612710
     }
   },
@@ -35,11 +35,11 @@
       "startBlock": 44843190
     },
     "Rebalancer": {
-      "address": "0xCF556d850277BC579c99C0729F4E72e62C57D811",
+      "address": "0xa5A1A5E13B874F0d855327E89E53222808cf531b",
       "startBlock": 83612610
     },
     "SimpleOracleStrategy": {
-      "address": "0x8aDF62b0b6078EaE5a2D54e9e5DD2AA71F6748C4",
+      "address": "0xA6A062B512Ab3D930f5f267eff2545774f1b4589",
       "startBlock": 83612710
     }
   },
