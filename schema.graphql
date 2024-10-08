@@ -96,3 +96,30 @@ type LatestBlock @entity {
     blockNumber: BigInt!
     timestamp: BigInt!
 }
+
+type PoolVolume @entity {
+    # `{poolKey}-{intervalType}-{timestamp}`
+    id: ID!
+    poolKey: String!
+    # interval type: 1d
+    intervalType: String!
+    # normalized candle timestamp of the block where this trade occurred (second)
+    timestamp: BigInt!
+    currencyAVolume: BigInt!
+    currencyBVolume: BigInt!
+    bookACurrencyAVolume: BigInt!
+    bookACurrencyBVolume: BigInt!
+    bookBCurrencyAVolume: BigInt!
+    bookBCurrencyBVolume: BigInt!
+}
+
+type PoolSnapshot @entity {
+    # `{poolKey}-{timestamp}`
+    id: ID!
+    poolKey: String!
+    timestamp: BigInt!
+    price: BigInt!
+    liquidityA: BigInt!
+    liquidityB: BigInt!
+    totalSupply: BigInt!
+}

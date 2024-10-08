@@ -1,4 +1,10 @@
-import { Address, BigDecimal, BigInt, TypedMap } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigDecimal,
+  BigInt,
+  Bytes,
+  TypedMap,
+} from '@graphprotocol/graph-ts'
 
 import { ERC20 } from '../generated/BookManager/ERC20'
 import { ERC20SymbolBytes } from '../generated/BookManager/ERC20SymbolBytes'
@@ -58,6 +64,10 @@ export function unitToQuote(book: Book, unitAmount: BigInt): BigInt {
   return unitAmount.times(book.unitSize)
 }
 
+export function baseToQuote(baseAmount: BigInt, price: BigInt): BigInt {
+  return baseAmount.times(price).div(pricePrecision)
+}
+
 export function buildDepthId(bookId: string, tick: BigInt): string {
   return bookId.concat('-').concat(tick.toString())
 }
@@ -74,6 +84,23 @@ export function buildChartLogId(
     .concat(intervalType)
     .concat('-')
     .concat(timestamp.toString())
+}
+
+export function buildPoolVolumeId(
+  poolKey: Bytes,
+  intervalType: string,
+  timestamp: i64,
+): string {
+  return poolKey
+    .toHexString()
+    .concat('-')
+    .concat(intervalType)
+    .concat('-')
+    .concat(timestamp.toString())
+}
+
+export function buildPoolSnapshotId(poolKey: Bytes, timestamp: i64): string {
+  return poolKey.toHexString().concat('-').concat(timestamp.toString())
 }
 
 export function buildMarketCode(base: Token, quote: Token): string {
