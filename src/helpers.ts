@@ -86,7 +86,7 @@ export function buildChartLogId(
     .concat(timestamp.toString())
 }
 
-export function buildPoolVolumeId(
+export function buildPoolVolumeAndSnapshotId(
   poolKey: Bytes,
   intervalType: string,
   timestamp: i64,
@@ -97,10 +97,6 @@ export function buildPoolVolumeId(
     .concat(intervalType)
     .concat('-')
     .concat(timestamp.toString())
-}
-
-export function buildPoolSnapshotId(poolKey: Bytes, timestamp: i64): string {
-  return poolKey.toHexString().concat('-').concat(timestamp.toString())
 }
 
 export function buildMarketCode(base: Token, quote: Token): string {

@@ -114,9 +114,12 @@ type PoolVolume @entity {
 }
 
 type PoolSnapshot @entity {
-    # `{poolKey}-{timestamp}`
+    # `{poolKey}-{intervalType}-{timestamp}`
     id: ID!
     poolKey: String!
+    # interval type: 1h
+    intervalType: String!
+    # normalized candle timestamp of the block where this trade occurred (second)
     timestamp: BigInt!
     price: BigInt!
     liquidityA: BigInt!

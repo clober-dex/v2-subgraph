@@ -15,8 +15,7 @@ import {
 } from './addresses'
 import {
   baseToQuote,
-  buildPoolSnapshotId,
-  buildPoolVolumeId,
+  buildPoolVolumeAndSnapshotId,
   CHART_LOG_INTERVALS,
 } from './helpers'
 
@@ -47,7 +46,11 @@ export function handleClear(event: Clear): void {
     (event.block.timestamp.toI64() as number) / intervalInNumber,
   ) * intervalInNumber) as i64
 
-  const poolVolumeId = buildPoolVolumeId(poolKey, intervalType, timestampForAcc)
+  const poolVolumeId = buildPoolVolumeAndSnapshotId(
+    poolKey,
+    intervalType,
+    timestampForAcc,
+  )
   let poolVolume = PoolVolume.load(poolVolumeId)
   if (poolVolume === null) {
     poolVolume = new PoolVolume(poolVolumeId)
@@ -94,15 +97,25 @@ export function handleUpdatePrice(event: UpdatePrice): void {
     BigInt.fromString(poolKey.toHexString()),
   )
 
-  const poolSnapshotId = buildPoolSnapshotId(
+  const intervalEntry = CHART_LOG_INTERVALS.getEntry('1h')! // only use 1h interval for now
+  const intervalType = intervalEntry.key
+  const intervalInNumber = intervalEntry.value
+  const timestampForAcc = (Math.floor(
+    (event.block.timestamp.toI64() as number) / intervalInNumber,
+  ) * intervalInNumber) as i64
+
+  const poolSnapshotId = buildPoolVolumeAndSnapshotId(
     poolKey,
-    event.block.timestamp.toI64(),
+    intervalType,
+    timestampForAcc,
   )
+
   let poolSnapshot = PoolSnapshot.load(poolSnapshotId)
   if (poolSnapshot === null) {
     poolSnapshot = new PoolSnapshot(poolSnapshotId)
     poolSnapshot.poolKey = poolKey.toHexString()
-    poolSnapshot.timestamp = event.block.timestamp
+    poolSnapshot.intervalType = intervalType
+    poolSnapshot.timestamp = BigInt.fromI64(timestampForAcc)
     poolSnapshot.price = event.params.oraclePrice
     poolSnapshot.liquidityA = totalLiquidityA
     poolSnapshot.liquidityB = totalLiquidityB
