@@ -36,7 +36,7 @@ export function getControllerAddress(): string {
   } else if (chainId == BERA_TESTNET) {
     return '0x1A0E22870dE507c140B7C765a04fCCd429B8343F'
   } else if (chainId == ZKSYNC_ERA) {
-    return '0x11BB911a7F0EE10d4cEB569f3D7d6b741dEbdfcc'
+    return '0x9aF80CC61AAd734604f139A53E22c56Cdbf9a158'
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else {

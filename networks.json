@@ -81,16 +81,16 @@
   },
   "zksync-era": {
     "BookManager": {
-      "address": "0xAaA0e933e1EcC812fc075A81c116Aa0a82A5bbb8",
-      "startBlock": 34448160
+      "address": "0xAc6AdB2727F99C309acd511D942c0b2812e03614",
+      "startBlock": 43525520
     },
     "BookViewer": {
-      "address": "0xc1925FaeB02aD934e000B4698367C9B9eAd0b666",
-      "startBlock": 34448250
+      "address": "0x13E8F7b988013729EcF00b0A3F8e0E47915aA893",
+      "startBlock": 43525520
     },
     "Controller": {
-      "address": "0x11BB911a7F0EE10d4cEB569f3D7d6b741dEbdfcc",
-      "startBlock": 34448230
+      "address": "0x9aF80CC61AAd734604f139A53E22c56Cdbf9a158",
+      "startBlock": 43525520
     }
   },
   "zksync-era-sepolia": {
