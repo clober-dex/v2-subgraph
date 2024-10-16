@@ -30,17 +30,17 @@ export function getChainId(): BigInt {
 export function getControllerAddress(): string {
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
-    return '0xFbbA685a39bE6640B8EB08c6E6DDf2664fD1D668'
+    return '0x91101543D3Bd3e919dAd034Bf978ef9d87290993'
   } else if (chainId == BASE) {
-    return '0x57dDD0d3DF50685444442076AC59F9c7Df75D150'
+    return '0xA694fDd88E7FEE1f5EBF878153B68ADb2ce6EbbF'
   } else if (chainId == BERA_TESTNET) {
-    return '0x7d06c636bA86BD1fc2C38B11F1e5701145CABc30'
+    return '0x1A0E22870dE507c140B7C765a04fCCd429B8343F'
   } else if (chainId == ZKSYNC_ERA) {
-    return '0x9aF80CC61AAd734604f139A53E22c56Cdbf9a158'
+    return '0x11BB911a7F0EE10d4cEB569f3D7d6b741dEbdfcc'
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else {
-    return '0xFbbA685a39bE6640B8EB08c6E6DDf2664fD1D668'
+    return '0x91101543D3Bd3e919dAd034Bf978ef9d87290993'
   }
 }
 
