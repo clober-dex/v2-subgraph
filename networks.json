@@ -1,46 +1,46 @@
 {
   "localhost": {
     "BookManager": {
-      "address": "0xC528b9ED5d56d1D0d3C18A2342954CE1069138a4",
-      "startBlock": 44586120
+      "address": "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A",
+      "startBlock": 87385460
     },
     "BookViewer": {
-      "address": "0x73c524e103C94Bf2743659d739586395B1A9e1BE",
-      "startBlock": 44843170
+      "address": "0x3e22d091F90ae759733B7CB06a6f7b440d84a425",
+      "startBlock": 87392620
     },
     "Controller": {
-      "address": "0x91101543D3Bd3e919dAd034Bf978ef9d87290993",
-      "startBlock": 44843190
+      "address": "0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0",
+      "startBlock": 87392720
     },
     "Rebalancer": {
-      "address": "0xa5A1A5E13B874F0d855327E89E53222808cf531b",
-      "startBlock": 86591120
+      "address": "0x6A35651C455898021492d236149Afb7bF354bE1F",
+      "startBlock": 88829440
     },
     "SimpleOracleStrategy": {
-      "address": "0xA6A062B512Ab3D930f5f267eff2545774f1b4589",
-      "startBlock": 86599490
+      "address": "0x888E1fafb5f2574b901142f877D186DE6C5ef89d",
+      "startBlock": 88829520
     }
   },
   "arbitrum-sepolia": {
     "BookManager": {
-      "address": "0xC528b9ED5d56d1D0d3C18A2342954CE1069138a4",
-      "startBlock": 44586120
+      "address": "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A",
+      "startBlock": 87385460
     },
     "BookViewer": {
-      "address": "0x73c524e103C94Bf2743659d739586395B1A9e1BE",
-      "startBlock": 44843170
+      "address": "0x3e22d091F90ae759733B7CB06a6f7b440d84a425",
+      "startBlock": 87392620
     },
     "Controller": {
-      "address": "0x91101543D3Bd3e919dAd034Bf978ef9d87290993",
-      "startBlock": 44843190
+      "address": "0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0",
+      "startBlock": 87392720
     },
     "Rebalancer": {
-      "address": "0xa5A1A5E13B874F0d855327E89E53222808cf531b",
-      "startBlock": 86591120
+      "address": "0x6A35651C455898021492d236149Afb7bF354bE1F",
+      "startBlock": 88829440
     },
     "SimpleOracleStrategy": {
-      "address": "0xA6A062B512Ab3D930f5f267eff2545774f1b4589",
-      "startBlock": 86599490
+      "address": "0x888E1fafb5f2574b901142f877D186DE6C5ef89d",
+      "startBlock": 88829520
     }
   },
   "base": {

@@ -30,7 +30,7 @@ export function getChainId(): BigInt {
 export function getControllerAddress(): string {
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
-    return '0x91101543D3Bd3e919dAd034Bf978ef9d87290993'
+    return '0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0'
   } else if (chainId == BASE) {
     return '0xA694fDd88E7FEE1f5EBF878153B68ADb2ce6EbbF'
   } else if (chainId == BERA_TESTNET) {
@@ -40,14 +40,14 @@ export function getControllerAddress(): string {
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else {
-    return '0x91101543D3Bd3e919dAd034Bf978ef9d87290993'
+    return '0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0'
   }
 }
 
 export function getRebalancerAddress(): string {
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
-    return '0xa5A1A5E13B874F0d855327E89E53222808cf531b'
+    return '0x6A35651C455898021492d236149Afb7bF354bE1F'
   } else if (chainId == BASE) {
     return '0x57dDD0d3DF50685444442076AC59F9c7Df75D150'
   } else if (chainId == BERA_TESTNET) {
@@ -57,14 +57,14 @@ export function getRebalancerAddress(): string {
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else {
-    return '0xa5A1A5E13B874F0d855327E89E53222808cf531b'
+    return '0x6A35651C455898021492d236149Afb7bF354bE1F'
   }
 }
 
 export function getSimpleOracleStrategyAddress(): string {
   const chainId = getChainId()
   if (chainId == ARBITRUM_SEPOLIA) {
-    return '0xA6A062B512Ab3D930f5f267eff2545774f1b4589'
+    return '0x888E1fafb5f2574b901142f877D186DE6C5ef89d'
   } else if (chainId == BASE) {
     return '0x57dDD0d3DF50685444442076AC59F9c7Df75D150'
   } else if (chainId == BERA_TESTNET) {
@@ -74,6 +74,6 @@ export function getSimpleOracleStrategyAddress(): string {
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else {
-    return '0xA6A062B512Ab3D930f5f267eff2545774f1b4589'
+    return '0x888E1fafb5f2574b901142f877D186DE6C5ef89d'
   }
 }

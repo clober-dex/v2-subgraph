@@ -16,17 +16,6 @@
     "type": "constructor"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "target",
-        "type": "address"
-      }
-    ],
-    "name": "AddressEmptyCode",
-    "type": "error"
-  },
-  {
     "inputs": [],
     "name": "AlreadyOpened",
     "type": "error"
@@ -34,27 +23,6 @@
   {
     "inputs": [],
     "name": "ERC20TransferFailed",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "FailedCall",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "balance",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "needed",
-        "type": "uint256"
-      }
-    ],
-    "name": "InsufficientBalance",
     "type": "error"
   },
   {
@@ -137,6 +105,27 @@
       }
     ],
     "name": "OwnableUnauthorizedAccount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "Paused",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "bits",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
+    ],
+    "name": "SafeCastOverflowedUintDowncast",
     "type": "error"
   },
   {
@@ -243,6 +232,19 @@
         "internalType": "uint256",
         "name": "canceledAmountB",
         "type": "uint256"
+      }
+    ],
+    "name": "Cancel",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
       },
       {
         "indexed": false,
@@ -257,7 +259,7 @@
         "type": "uint256"
       }
     ],
-    "name": "Clear",
+    "name": "Claim",
     "type": "event"
   },
   {
@@ -405,6 +407,25 @@
         "internalType": "bytes32",
         "name": "key",
         "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "paused",
+        "type": "bool"
+      }
+    ],
+    "name": "Pause",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
       }
     ],
     "name": "Rebalance",
@@ -448,6 +469,19 @@
     "type": "event"
   },
   {
+    "inputs": [],
+    "name": "RATE_PRECISION",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -455,34 +489,17 @@
         "type": "bytes32"
       },
       {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "user",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "burnAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "minAmountA",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "minAmountB",
-            "type": "uint256"
-          }
-        ],
-        "internalType": "struct Rebalancer.BurnParams",
-        "name": "burnParams",
-        "type": "tuple"
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "burnAmount",
+        "type": "uint256"
       }
     ],
-    "name": "_burnAndRebalance",
+    "name": "_burn",
     "outputs": [
       {
         "internalType": "uint256",
@@ -593,6 +610,19 @@
         "type": "bytes32"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "_rebalance",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -744,12 +774,12 @@
     "outputs": [
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "withdrawalA",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "",
+        "name": "withdrawalB",
         "type": "uint256"
       }
     ],
@@ -885,6 +915,11 @@
             "type": "address"
           },
           {
+            "internalType": "bool",
+            "name": "paused",
+            "type": "bool"
+          },
+          {
             "internalType": "uint256",
             "name": "reserveA",
             "type": "uint256"
@@ -905,7 +940,7 @@
             "type": "uint256[]"
           }
         ],
-        "internalType": "struct IPoolStorage.Pool",
+        "internalType": "struct IRebalancer.Pool",
         "name": "",
         "type": "tuple"
       }
@@ -1107,6 +1142,19 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "pause",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "pendingOwner",
     "outputs": [
@@ -1135,6 +1183,19 @@
   {
     "inputs": [],
     "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "key",
+        "type": "bytes32"
+      }
+    ],
+    "name": "resume",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -1,6 +1,6 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 
-import { Clear, Rebalancer } from '../generated/Rebalancer/Rebalancer'
+import { Claim, Rebalancer } from '../generated/Rebalancer/Rebalancer'
 import {
   SimpleOracleStrategy,
   UpdatePrice,
@@ -19,7 +19,7 @@ import {
   CHART_LOG_INTERVALS,
 } from './helpers'
 
-export function handleClear(event: Clear): void {
+export function handleRebalancerClaim(event: Claim): void {
   const controller = Controller.bind(Address.fromString(getControllerAddress()))
   const strategy = SimpleOracleStrategy.bind(
     Address.fromString(getSimpleOracleStrategyAddress()),
@@ -29,8 +29,8 @@ export function handleClear(event: Clear): void {
   const currencyAClaimedAmount = event.params.claimedAmountA
   const currencyBClaimedAmount = event.params.claimedAmountB
   const strategyPrice = strategy.getPrice(poolKey)
-  const bookAPrice = controller.toPrice(strategyPrice.tickA) // TODO: resetOrders should be added to contract before production launch
-  const bookBPrice = controller.toPrice(strategyPrice.tickB) // TODO: resetOrders should be added to contract before production launch
+  const bookAPrice = controller.toPrice(strategyPrice.tickA)
+  const bookBPrice = controller.toPrice(strategyPrice.tickB)
 
   const bookACurrencyAVolume = baseToQuote(currencyBClaimedAmount, bookAPrice)
   const bookACurrencyBVolume = currencyBClaimedAmount
