@@ -9,7 +9,13 @@ import {
 import { ERC20 } from '../generated/BookManager/ERC20'
 import { ERC20SymbolBytes } from '../generated/BookManager/ERC20SymbolBytes'
 import { ERC20NameBytes } from '../generated/BookManager/ERC20NameBytes'
-import { Book, OpenOrder, Token } from '../generated/schema'
+import {
+  Book,
+  LatestPoolSpread,
+  OpenOrder,
+  PoolSpreadProfit,
+  Token,
+} from '../generated/schema'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
@@ -97,6 +103,13 @@ export function buildPoolVolumeAndSnapshotId(
     .concat(intervalType)
     .concat('-')
     .concat(timestamp.toString())
+}
+
+export function buildPoolSpreadProfitId(
+  intervalType: string,
+  timestamp: i64,
+): string {
+  return intervalType.concat('-').concat(timestamp.toString())
 }
 
 export function buildMarketCode(base: Token, quote: Token): string {
@@ -229,4 +242,40 @@ export function fetchTokenDecimals(tokenAddress: Address): BigInt {
     decimalValue = decimalResult.value
   }
   return BigInt.fromI32(decimalValue as i32)
+}
+
+export function getLatestPoolSpread(): LatestPoolSpread {
+  const id = 'latest'
+  let latestPoolSpread = LatestPoolSpread.load(id)
+  if (latestPoolSpread === null) {
+    latestPoolSpread = new LatestPoolSpread(id)
+    latestPoolSpread.askTick = BigInt.fromI32(0)
+    latestPoolSpread.bidTick = BigInt.fromI32(0)
+    latestPoolSpread.askPrice = BigDecimal.zero()
+    latestPoolSpread.bidPrice = BigDecimal.zero()
+  }
+  return latestPoolSpread as LatestPoolSpread
+}
+
+export function getPoolSpreadProfit(timestamp: BigInt): PoolSpreadProfit {
+  const intervalEntry = CHART_LOG_INTERVALS.getEntry('1h')! // only use 1h interval for now
+  const intervalType = intervalEntry.key
+  const intervalInNumber = intervalEntry.value
+  const timestampForAcc = (Math.floor(
+    (timestamp.toI64() as number) / intervalInNumber,
+  ) * intervalInNumber) as i64
+
+  const poolSpreadProfitId = buildPoolSpreadProfitId(
+    intervalType,
+    timestampForAcc,
+  )
+
+  let poolSpreadProfit = PoolSpreadProfit.load(poolSpreadProfitId)
+  if (poolSpreadProfit === null) {
+    poolSpreadProfit = new PoolSpreadProfit(poolSpreadProfitId)
+    poolSpreadProfit.intervalType = intervalType
+    poolSpreadProfit.timestamp = BigInt.fromI64(timestampForAcc)
+    poolSpreadProfit.accumulatedProfitInUsd = BigDecimal.zero()
+  }
+  return poolSpreadProfit as PoolSpreadProfit
 }
