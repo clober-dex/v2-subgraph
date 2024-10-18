@@ -38,11 +38,13 @@ import {
   formatInvertedPrice,
   formatPrice,
   formatUnits,
+  getLatestPoolSpread,
   getPendingAmount,
+  getPoolSpreadProfit,
   unitToBase,
   unitToQuote,
 } from './helpers'
-import { getControllerAddress } from './addresses'
+import { getControllerAddress, getRebalancerAddress } from './addresses'
 
 export function handleBlock(block: ethereum.Block): void {
   const latestBlockId: string = 'latest'
@@ -137,6 +139,33 @@ export function handleMake(event: Make): void {
   depth.unitAmount = newUnitAmount
   depth.baseAmount = unitToBase(book, newUnitAmount, price)
   depth.quoteAmount = unitToQuote(book, newUnitAmount)
+
+  if (user == Address.fromString(getRebalancerAddress()).toHexString()) {
+    const baseToken = Token.load(book.base) as Token
+    const quoteToken = Token.load(book.quote) as Token
+
+    const latestPoolSpread = getLatestPoolSpread()
+    if (tick.ge(BigInt.zero())) {
+      // bid
+      const formattedPrice = formatPrice(
+        price,
+        baseToken.decimals,
+        quoteToken.decimals,
+      )
+      latestPoolSpread.bidTick = tick
+      latestPoolSpread.bidPrice = formattedPrice
+    } else {
+      // ask
+      const formattedInvertedPrice = formatInvertedPrice(
+        price,
+        baseToken.decimals,
+        quoteToken.decimals,
+      )
+      latestPoolSpread.askTick = tick
+      latestPoolSpread.askPrice = formattedInvertedPrice
+    }
+    latestPoolSpread.save()
+  }
 
   depth.save()
   orderIndexEntity.save()
@@ -462,6 +491,46 @@ export function handleClaim(event: Claim): void {
     log.error('[CLAIM] Negative claimable unit amount: {}', [
       orderId.toString(),
     ])
+  }
+
+  if (
+    openOrder.user == Address.fromString(getRebalancerAddress()).toHexString()
+  ) {
+    const baseToken = Token.load(book.base) as Token
+    const quoteToken = Token.load(book.quote) as Token
+    const claimedAmountInUnit = event.params.unit
+    const claimedAmountInBase = unitToBase(
+      book,
+      claimedAmountInUnit,
+      openOrder.price,
+    )
+    const claimedAmountInQuote = unitToQuote(book, claimedAmountInUnit)
+    const formattedBaseClaimedAmount = formatUnits(
+      claimedAmountInBase,
+      baseToken.decimals.toI32() as u8,
+    )
+    const formattedQuoteClaimedAmount = formatUnits(
+      claimedAmountInQuote,
+      quoteToken.decimals.toI32() as u8,
+    )
+    const latestPoolSpread = getLatestPoolSpread()
+    let spread = latestPoolSpread.askPrice.minus(latestPoolSpread.bidPrice)
+    if (spread.lt(BigDecimal.zero())) {
+      spread = BigDecimal.zero()
+    }
+    const poolSpreadProfit = getPoolSpreadProfit(event.block.timestamp)
+    if (openOrder.tick.ge(BigInt.zero())) {
+      // bid
+      poolSpreadProfit.accumulatedProfitInUsd = spread
+        .div(BigDecimal.fromString('2'))
+        .times(formattedBaseClaimedAmount)
+    } else {
+      // ask
+      poolSpreadProfit.accumulatedProfitInUsd = spread
+        .div(BigDecimal.fromString('2'))
+        .times(formattedQuoteClaimedAmount)
+    }
+    poolSpreadProfit.save()
   }
 
   const unitPendingAmount = getPendingAmount(openOrder)
