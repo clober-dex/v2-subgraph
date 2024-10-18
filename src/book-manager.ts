@@ -516,6 +516,10 @@ export function handleClaim(event: Claim): void {
     const latestPoolSpread = getLatestPoolSpread()
     let spread = latestPoolSpread.askPrice.minus(latestPoolSpread.bidPrice)
     if (spread.lt(BigDecimal.zero())) {
+      log.error('[CLAIM] Negative spread: askPrice: {}, bidPrice: {}', [
+        latestPoolSpread.askPrice.toString(),
+        latestPoolSpread.bidPrice.toString(),
+      ])
       spread = BigDecimal.zero()
     }
     const poolSpreadProfit = getPoolSpreadProfit(event.block.timestamp)
