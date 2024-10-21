@@ -17,8 +17,8 @@
       "startBlock": 88829440
     },
     "SimpleOracleStrategy": {
-      "address": "0x888E1fafb5f2574b901142f877D186DE6C5ef89d",
-      "startBlock": 88829520
+      "address": "0x9aF36062bCF57Ef00477A03c522EB6e9b2Cd00aB",
+      "startBlock": 90413450
     }
   },
   "arbitrum-sepolia": {
@@ -39,8 +39,8 @@
       "startBlock": 88829440
     },
     "SimpleOracleStrategy": {
-      "address": "0x888E1fafb5f2574b901142f877D186DE6C5ef89d",
-      "startBlock": 88829520
+      "address": "0x9aF36062bCF57Ef00477A03c522EB6e9b2Cd00aB",
+      "startBlock": 90413450
     }
   },
   "base": {
