@@ -108,6 +108,6 @@ dataSources:
         - name: Multicall3
           file: ./abis/Multicall3.json
       eventHandlers:
-        - event: UpdatePrice(indexed bytes32,uint256,int24,int24,uint256)
-          handler: handleUpdatePrice
+        - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
+          handler: handleUpdatePosition
       file: ./src/pool.ts

@@ -13,12 +13,12 @@
       "startBlock": 87392720
     },
     "Rebalancer": {
-      "address": "0x6A35651C455898021492d236149Afb7bF354bE1F",
-      "startBlock": 88829440
+      "address": "0x6A7D783907719B0D2F4a8677AB9C4Dbe8F79B2E5",
+      "startBlock": 90644060
     },
     "SimpleOracleStrategy": {
-      "address": "0x9aF36062bCF57Ef00477A03c522EB6e9b2Cd00aB",
-      "startBlock": 90413450
+      "address": "0x390Bdd66011e45197fB5c1f54D6B956C4BFE6AE5",
+      "startBlock": 90644270
     }
   },
   "arbitrum-sepolia": {
@@ -35,12 +35,12 @@
       "startBlock": 87392720
     },
     "Rebalancer": {
-      "address": "0x6A35651C455898021492d236149Afb7bF354bE1F",
-      "startBlock": 88829440
+      "address": "0x6A7D783907719B0D2F4a8677AB9C4Dbe8F79B2E5",
+      "startBlock": 90644060
     },
     "SimpleOracleStrategy": {
-      "address": "0x9aF36062bCF57Ef00477A03c522EB6e9b2Cd00aB",
-      "startBlock": 90413450
+      "address": "0x390Bdd66011e45197fB5c1f54D6B956C4BFE6AE5",
+      "startBlock": 90644270
     }
   },
   "base": {

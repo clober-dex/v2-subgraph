@@ -3,7 +3,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { Claim, Rebalancer } from '../generated/Rebalancer/Rebalancer'
 import {
   SimpleOracleStrategy,
-  UpdatePrice,
+  UpdatePosition,
 } from '../generated/SimpleOracleStrategy/SimpleOracleStrategy'
 import { Controller } from '../generated/BookManager/Controller'
 import { PoolSnapshot, PoolVolume } from '../generated/schema'
@@ -28,7 +28,7 @@ export function handleRebalancerClaim(event: Claim): void {
   const poolKey = event.params.key
   const currencyAClaimedAmount = event.params.claimedAmountA
   const currencyBClaimedAmount = event.params.claimedAmountB
-  const strategyPrice = strategy.getPrice(poolKey)
+  const strategyPrice = strategy.getPosition(poolKey)
   const bookAPrice = controller.toPrice(strategyPrice.tickA)
   const bookBPrice = controller.toPrice(strategyPrice.tickB)
 
@@ -81,7 +81,7 @@ export function handleRebalancerClaim(event: Claim): void {
   poolVolume.save()
 }
 
-export function handleUpdatePrice(event: UpdatePrice): void {
+export function handleUpdatePosition(event: UpdatePosition): void {
   const poolKey = event.params.key
   const rebalancer = Rebalancer.bind(Address.fromString(getRebalancerAddress()))
   const liquidity = rebalancer.getLiquidity(poolKey)
@@ -97,29 +97,31 @@ export function handleUpdatePrice(event: UpdatePrice): void {
     BigInt.fromString(poolKey.toHexString()),
   )
 
-  const intervalEntry = CHART_LOG_INTERVALS.getEntry('1h')! // only use 1h interval for now
-  const intervalType = intervalEntry.key
-  const intervalInNumber = intervalEntry.value
-  const timestampForAcc = (Math.floor(
-    (event.block.timestamp.toI64() as number) / intervalInNumber,
-  ) * intervalInNumber) as i64
+  for (let i = 0; i < CHART_LOG_INTERVALS.entries.length; i++) {
+    const intervalEntry = CHART_LOG_INTERVALS.entries[i]
+    const intervalType = intervalEntry.key
+    const intervalInNumber = intervalEntry.value
+    const timestampForAcc = (Math.floor(
+      (event.block.timestamp.toI64() as number) / intervalInNumber,
+    ) * intervalInNumber) as i64
 
-  const poolSnapshotId = buildPoolVolumeAndSnapshotId(
-    poolKey,
-    intervalType,
-    timestampForAcc,
-  )
+    const poolSnapshotId = buildPoolVolumeAndSnapshotId(
+      poolKey,
+      intervalType,
+      timestampForAcc,
+    )
 
-  let poolSnapshot = PoolSnapshot.load(poolSnapshotId)
-  if (poolSnapshot === null) {
-    poolSnapshot = new PoolSnapshot(poolSnapshotId)
-    poolSnapshot.poolKey = poolKey.toHexString()
-    poolSnapshot.intervalType = intervalType
-    poolSnapshot.timestamp = BigInt.fromI64(timestampForAcc)
-    poolSnapshot.price = event.params.oraclePrice
-    poolSnapshot.liquidityA = totalLiquidityA
-    poolSnapshot.liquidityB = totalLiquidityB
-    poolSnapshot.totalSupply = totalSupply
-    poolSnapshot.save()
+    let poolSnapshot = PoolSnapshot.load(poolSnapshotId)
+    if (poolSnapshot === null) {
+      poolSnapshot = new PoolSnapshot(poolSnapshotId)
+      poolSnapshot.poolKey = poolKey.toHexString()
+      poolSnapshot.intervalType = intervalType
+      poolSnapshot.timestamp = BigInt.fromI64(timestampForAcc)
+      poolSnapshot.price = event.params.oraclePrice
+      poolSnapshot.liquidityA = totalLiquidityA
+      poolSnapshot.liquidityB = totalLiquidityB
+      poolSnapshot.totalSupply = totalSupply
+      poolSnapshot.save()
+    }
   }
 }
