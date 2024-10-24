@@ -140,11 +140,6 @@
     "type": "error"
   },
   {
-    "inputs": [],
-    "name": "Paused",
-    "type": "error"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint8",
@@ -429,25 +424,6 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "paused",
-        "type": "bool"
-      }
-    ],
-    "name": "Pause",
     "type": "event"
   },
   {
@@ -1174,19 +1150,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "pause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "pendingOwner",
     "outputs": [
@@ -1222,19 +1185,6 @@
   {
     "inputs": [
       {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "resume",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "operator",
         "type": "address"
@@ -1253,24 +1203,6 @@
         "type": "bool"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "address",
-        "name": "strategy",
-        "type": "address"
-      }
-    ],
-    "name": "setStrategy",
-    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
