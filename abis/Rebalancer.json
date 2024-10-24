@@ -923,11 +923,6 @@
             "type": "address"
           },
           {
-            "internalType": "bool",
-            "name": "paused",
-            "type": "bool"
-          },
-          {
             "internalType": "uint256",
             "name": "reserveA",
             "type": "uint256"
