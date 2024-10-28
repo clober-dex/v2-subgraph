@@ -5,8 +5,8 @@ import {
   SimpleOracleStrategy,
   UpdatePosition,
 } from '../generated/SimpleOracleStrategy/SimpleOracleStrategy'
-import { Controller } from '../generated/BookManager/Controller'
 import { PoolSnapshot, PoolVolume } from '../generated/schema'
+import { Controller } from '../generated/Rebalancer/Controller'
 
 import {
   getControllerAddress,
