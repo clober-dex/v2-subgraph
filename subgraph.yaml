@@ -77,6 +77,8 @@ dataSources:
           file: ./abis/ERC20NameBytes.json
         - name: Multicall3
           file: ./abis/Multicall3.json
+        - name: Controller
+          file: ./abis/Controller.json
       eventHandlers:
         - event: Claim(indexed bytes32,uint256,uint256)
           handler: handleRebalancerClaim
