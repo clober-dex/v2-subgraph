@@ -4,11 +4,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: BookManager
-    network: zksync-era
+    network: base
     source:
       abi: BookManager
-      address: "0xAc6AdB2727F99C309acd511D942c0b2812e03614"
-      startBlock: 43525520
+      address: "0x382CCccbD3b142D7DA063bF68cd0c89634767F76"
+      startBlock: 14528050
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -53,11 +53,11 @@ dataSources:
       file: ./src/book-manager.ts
   - kind: ethereum
     name: Rebalancer
-    network: zksync-era
+    network: base
     source:
       abi: Rebalancer
-      address: "0xAc6AdB2727F99C309acd511D942c0b2812e03614"
-      startBlock: 43525520
+      address: "0xd5133d8EC4b5656F1922C2b28BB44e1d18883959"
+      startBlock: 21499030
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -85,11 +85,11 @@ dataSources:
       file: ./src/pool.ts
   - kind: ethereum
     name: SimpleOracleStrategy
-    network: zksync-era
+    network: base
     source:
       abi: SimpleOracleStrategy
-      address: "0xAc6AdB2727F99C309acd511D942c0b2812e03614"
-      startBlock: 43525520
+      address: "0x3bEd0daF59a0A6FC8D2aEfff015600641C4eD952"
+      startBlock: 21499050
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
