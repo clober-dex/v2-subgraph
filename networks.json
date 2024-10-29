@@ -57,11 +57,11 @@
       "startBlock": 14560860
     },
     "Rebalancer": {
-      "address": "0xd5133d8EC4b5656F1922C2b28BB44e1d18883959",
+      "address": "0x920F77AebF215E611ABACd0fd51A87F3927D05B8",
       "startBlock": 21499030
     },
     "SimpleOracleStrategy": {
-      "address": "0x3bEd0daF59a0A6FC8D2aEfff015600641C4eD952",
+      "address": "0x643e6F7966aAaD7607513FBAe06937B8201850e1",
       "startBlock": 21499050
     }
   },
