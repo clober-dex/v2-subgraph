@@ -279,3 +279,11 @@ export function getPoolSpreadProfit(timestamp: BigInt): PoolSpreadProfit {
   }
   return poolSpreadProfit as PoolSpreadProfit
 }
+
+export function bytesToBigIntBigEndian(bytes: Bytes): BigInt {
+  let value = BigInt.fromI32(0)
+  for (let i = 0; i < bytes.length; i++) {
+    value = value.times(BigInt.fromI32(256)).plus(BigInt.fromI32(bytes[i]))
+  }
+  return value
+}
