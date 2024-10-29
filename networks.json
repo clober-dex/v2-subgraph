@@ -57,12 +57,12 @@
       "startBlock": 14560860
     },
     "Rebalancer": {
-      "address": "0x920F77AebF215E611ABACd0fd51A87F3927D05B8",
-      "startBlock": 21698430
+      "address": "0x13f2Ff6Cc952f4181D6c316426e9CbdA957c6482",
+      "startBlock": 21715410
     },
     "SimpleOracleStrategy": {
-      "address": "0x643e6F7966aAaD7607513FBAe06937B8201850e1",
-      "startBlock": 21698460
+      "address": "0x284A7A4c8Bc2873EDCa149809C1CAaaf3C4ED6eb",
+      "startBlock": 21715440
     }
   },
   "berachain-bartio": {
