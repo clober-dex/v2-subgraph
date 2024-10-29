@@ -58,11 +58,11 @@
     },
     "Rebalancer": {
       "address": "0x920F77AebF215E611ABACd0fd51A87F3927D05B8",
-      "startBlock": 21499030
+      "startBlock": 21698430
     },
     "SimpleOracleStrategy": {
       "address": "0x643e6F7966aAaD7607513FBAe06937B8201850e1",
-      "startBlock": 21499050
+      "startBlock": 21698460
     }
   },
   "berachain-bartio": {
