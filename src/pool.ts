@@ -16,7 +16,7 @@ import {
 import {
   baseToQuote,
   buildPoolVolumeAndSnapshotId,
-  bytestToBigIntBigEndian,
+  bytesToBigIntBigEndian,
   CHART_LOG_INTERVALS,
 } from './helpers'
 
@@ -94,7 +94,7 @@ export function handleUpdatePosition(event: UpdatePosition): void {
   const totalLiquidityB = liquidityB.reserve
     .plus(liquidityB.cancelable)
     .plus(liquidityB.claimable)
-  const totalSupply = rebalancer.totalSupply(bytestToBigIntBigEndian(poolKey))
+  const totalSupply = rebalancer.totalSupply(bytesToBigIntBigEndian(poolKey))
 
   for (let i = 0; i < CHART_LOG_INTERVALS.entries.length; i++) {
     const intervalEntry = CHART_LOG_INTERVALS.entries[i]
