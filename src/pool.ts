@@ -40,7 +40,7 @@ export function handleRebalancerClaim(event: Claim): void {
   const totalCurrencyAVolume = bookACurrencyAVolume.plus(bookBCurrencyAVolume)
   const totalCurrencyBVolume = bookACurrencyBVolume.plus(bookBCurrencyBVolume)
 
-  const intervalEntry = CHART_LOG_INTERVALS.getEntry('1d')! // only use 1d interval for now
+  const intervalEntry = CHART_LOG_INTERVALS.getEntry('5m')! // only use 5m interval for now
   const intervalType = intervalEntry.key
   const intervalInNumber = intervalEntry.value
   const timestampForAcc = (Math.floor(

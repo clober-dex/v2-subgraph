@@ -101,7 +101,7 @@ type PoolVolume @entity {
     # `{poolKey}-{intervalType}-{timestamp}`
     id: ID!
     poolKey: String!
-    # interval type: 1d
+    # interval type: 5m
     intervalType: String!
     # normalized candle timestamp of the block where event occurred (second)
     timestamp: BigInt!
@@ -140,7 +140,7 @@ type LatestPoolSpread @entity {
 type PoolSpreadProfit @entity {
     # `{intervalType}-{timestamp}`
     id: ID!
-    # interval type: 1h
+    # interval type: 5m
     intervalType: String!
     # normalized candle timestamp of the block where event occurred (second)
     timestamp: BigInt!

@@ -145,7 +145,7 @@ export function handleMake(event: Make): void {
     const quoteToken = Token.load(book.quote) as Token
 
     const latestPoolSpread = getLatestPoolSpread()
-    if (tick.ge(BigInt.zero())) {
+    if (tick.le(BigInt.zero())) {
       // bid
       const formattedPrice = formatPrice(
         price,
@@ -523,16 +523,22 @@ export function handleClaim(event: Claim): void {
       spread = BigDecimal.zero()
     }
     const poolSpreadProfit = getPoolSpreadProfit(event.block.timestamp)
-    if (openOrder.tick.ge(BigInt.zero())) {
+    if (openOrder.tick.le(BigInt.zero())) {
       // bid
-      poolSpreadProfit.accumulatedProfitInUsd = spread
-        .div(BigDecimal.fromString('2'))
-        .times(formattedBaseClaimedAmount)
+      poolSpreadProfit.accumulatedProfitInUsd =
+        poolSpreadProfit.accumulatedProfitInUsd.plus(
+          spread
+            .div(BigDecimal.fromString('2'))
+            .times(formattedBaseClaimedAmount),
+        )
     } else {
       // ask
-      poolSpreadProfit.accumulatedProfitInUsd = spread
-        .div(BigDecimal.fromString('2'))
-        .times(formattedQuoteClaimedAmount)
+      poolSpreadProfit.accumulatedProfitInUsd =
+        poolSpreadProfit.accumulatedProfitInUsd.plus(
+          spread
+            .div(BigDecimal.fromString('2'))
+            .times(formattedQuoteClaimedAmount),
+        )
     }
     poolSpreadProfit.save()
   }

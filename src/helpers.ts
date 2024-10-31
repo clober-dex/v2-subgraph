@@ -258,7 +258,7 @@ export function getLatestPoolSpread(): LatestPoolSpread {
 }
 
 export function getPoolSpreadProfit(timestamp: BigInt): PoolSpreadProfit {
-  const intervalEntry = CHART_LOG_INTERVALS.getEntry('1h')! // only use 1h interval for now
+  const intervalEntry = CHART_LOG_INTERVALS.getEntry('5m')! // only use 5m interval for now
   const intervalType = intervalEntry.key
   const intervalInNumber = intervalEntry.value
   const timestampForAcc = (Math.floor(
