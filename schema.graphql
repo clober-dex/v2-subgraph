@@ -146,3 +146,11 @@ type PoolSpreadProfit @entity {
     timestamp: BigInt!
     accumulatedProfitInUsd: BigDecimal!
 }
+
+type VCLOB @entity {
+    # uint32 id
+    id: ID!
+    owner: String!
+    amount: BigInt!
+    lockedTimepoint: BigInt!
+}

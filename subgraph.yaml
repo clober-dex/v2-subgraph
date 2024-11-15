@@ -113,3 +113,31 @@ dataSources:
         - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
           handler: handleUpdatePosition
       file: ./src/pool.ts
+  - kind: ethereum
+    name: VoteLockedCloberToken
+    network: base
+    source:
+      abi: VoteLockedCloberToken
+      address: "0x3bEd0daF59a0A6FC8D2aEfff015600641C4eD952"
+      startBlock: 21499050
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - VCLOB
+      abis:
+        - name: VoteLockedCloberToken
+          file: ./abis/VoteLockedCloberToken.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: Multicall3
+          file: ./abis/Multicall3.json
+      eventHandlers:
+        - event: Transfer(indexed uint32,indexed address,indexed address,uint256)
+          handler: handleVCLOBTransfer
+      file: ./src/governance.ts

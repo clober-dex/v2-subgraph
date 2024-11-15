@@ -19,6 +19,10 @@
     "SimpleOracleStrategy": {
       "address": "0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C",
       "startBlock": 91355490
+    },
+    "VoteLockedCloberToken": {
+      "address": "0xA8d4E6BC755b3ed8DCE2FaFE4104Bdad645763A5",
+      "startBlock": 97248790
     }
   },
   "arbitrum-sepolia": {
@@ -41,6 +45,10 @@
     "SimpleOracleStrategy": {
       "address": "0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C",
       "startBlock": 91355490
+    },
+    "VoteLockedCloberToken": {
+      "address": "0xA8d4E6BC755b3ed8DCE2FaFE4104Bdad645763A5",
+      "startBlock": 97248790
     }
   },
   "base": {
@@ -61,6 +69,10 @@
       "startBlock": 22049210
     },
     "SimpleOracleStrategy": {
+      "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
+      "startBlock": 22049250
+    },
+    "VoteLockedCloberToken": {
       "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
       "startBlock": 22049250
     }
