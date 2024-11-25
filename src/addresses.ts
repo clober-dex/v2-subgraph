@@ -9,6 +9,7 @@ const BASE = BigInt.fromI32(8453)
 const BERA_TESTNET = BigInt.fromI32(80084)
 const ZKSYNC_ERA = BigInt.fromI32(324)
 const ZKSYNC_ERA_SEPOLIA = BigInt.fromI32(300)
+const MITOSIS_TESTNET = BigInt.fromI32(124832)
 
 export function getChainId(): BigInt {
   const multiCall = Multicall3.bind(Address.fromString(MULTICALL3_ADDRESS))
@@ -35,6 +36,8 @@ export function getControllerAddress(): string {
     return '0xA694fDd88E7FEE1f5EBF878153B68ADb2ce6EbbF'
   } else if (chainId == BERA_TESTNET) {
     return '0x1A0E22870dE507c140B7C765a04fCCd429B8343F'
+  } else if (chainId == MITOSIS_TESTNET) {
+    return '0xB09bA57835f6ce356DBE122B93A43a5126B69798'
   } else if (chainId == ZKSYNC_ERA) {
     return '0x9aF80CC61AAd734604f139A53E22c56Cdbf9a158'
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
@@ -52,6 +55,8 @@ export function getRebalancerAddress(): string {
     return '0x4C32e01aF452ED75f3e46B8BC2953798D092D905'
   } else if (chainId == BERA_TESTNET) {
     return '0x7d06c636bA86BD1fc2C38B11F1e5701145CABc30'
+  } else if (chainId == MITOSIS_TESTNET) {
+    return '0xB09bA57835f6ce356DBE122B93A43a5126B69798'
   } else if (chainId == ZKSYNC_ERA) {
     return '0x9aF80CC61AAd734604f139A53E22c56Cdbf9a158'
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
@@ -69,6 +74,8 @@ export function getSimpleOracleStrategyAddress(): string {
     return '0xB203475338cfFF99357E7301617Ba5fC0f47329A'
   } else if (chainId == BERA_TESTNET) {
     return '0x7d06c636bA86BD1fc2C38B11F1e5701145CABc30'
+  } else if (chainId == MITOSIS_TESTNET) {
+    return '0xB09bA57835f6ce356DBE122B93A43a5126B69798'
   } else if (chainId == ZKSYNC_ERA) {
     return '0x9aF80CC61AAd734604f139A53E22c56Cdbf9a158'
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {

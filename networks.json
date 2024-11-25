@@ -91,6 +91,32 @@
       "startBlock": 3310440
     }
   },
+  "mitosis-testnet": {
+    "BookManager": {
+      "address": "0x9C6C405cbB2c1DC7aAAa65156744fC00efc7EC82",
+      "startBlock": 201000
+    },
+    "BookViewer": {
+      "address": "0xBc6eaFe723723DED3a411b6a1089a63bc5d73568",
+      "startBlock": 201000
+    },
+    "Controller": {
+      "address": "0xB09bA57835f6ce356DBE122B93A43a5126B69798",
+      "startBlock": 201000
+    },
+    "Rebalancer": {
+      "address": "0x4C32e01aF452ED75f3e46B8BC2953798D092D905",
+      "startBlock": 201000
+    },
+    "SimpleOracleStrategy": {
+      "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
+      "startBlock": 201000
+    },
+    "VoteLockedCloberToken": {
+      "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
+      "startBlock": 201000
+    }
+  },
   "zksync-era": {
     "BookManager": {
       "address": "0xAc6AdB2727F99C309acd511D942c0b2812e03614",
