@@ -93,28 +93,28 @@
   },
   "mitosis-testnet": {
     "BookManager": {
-      "address": "0x9C6C405cbB2c1DC7aAAa65156744fC00efc7EC82",
-      "startBlock": 201000
+      "address": "0x874b1B795993653fbFC3f1c1fc0469214cC9F4A5",
+      "startBlock": 254760
     },
     "BookViewer": {
-      "address": "0xBc6eaFe723723DED3a411b6a1089a63bc5d73568",
-      "startBlock": 201000
+      "address": "0x5C91A02B8B5D10597fc6cA23faF56F9718D1feD0",
+      "startBlock": 254760
     },
     "Controller": {
-      "address": "0xB09bA57835f6ce356DBE122B93A43a5126B69798",
-      "startBlock": 201000
+      "address": "0x6ef1c5D4cB1ebcC24d4BD7eB1b4467F26B6F2C1e",
+      "startBlock": 254760
     },
     "Rebalancer": {
       "address": "0x4C32e01aF452ED75f3e46B8BC2953798D092D905",
-      "startBlock": 201000
+      "startBlock": 254760
     },
     "SimpleOracleStrategy": {
       "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
-      "startBlock": 201000
+      "startBlock": 254760
     },
     "VoteLockedCloberToken": {
       "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
-      "startBlock": 201000
+      "startBlock": 254760
     }
   },
   "zksync-era": {
