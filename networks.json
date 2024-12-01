@@ -65,16 +65,16 @@
       "startBlock": 14560860
     },
     "Rebalancer": {
-      "address": "0x4C32e01aF452ED75f3e46B8BC2953798D092D905",
-      "startBlock": 22049210
+      "address": "0x6A0b87D6b74F7D5C92722F6a11714DBeDa9F3895",
+      "startBlock": 23040630
     },
     "SimpleOracleStrategy": {
-      "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
-      "startBlock": 22049250
+      "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
+      "startBlock": 23040650
     },
     "VoteLockedCloberToken": {
-      "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
-      "startBlock": 22049250
+      "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
+      "startBlock": 23040650
     }
   },
   "berachain-bartio": {
@@ -105,15 +105,15 @@
       "startBlock": 254760
     },
     "Rebalancer": {
-      "address": "0x4C32e01aF452ED75f3e46B8BC2953798D092D905",
+      "address": "0x6A0b87D6b74F7D5C92722F6a11714DBeDa9F3895",
       "startBlock": 254760
     },
     "SimpleOracleStrategy": {
-      "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
+      "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
       "startBlock": 254760
     },
     "VoteLockedCloberToken": {
-      "address": "0xB203475338cfFF99357E7301617Ba5fC0f47329A",
+      "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
       "startBlock": 254760
     }
   },
