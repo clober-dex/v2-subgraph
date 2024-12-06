@@ -89,6 +89,18 @@
     "Controller": {
       "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
       "startBlock": 3310440
+    },
+    "Rebalancer": {
+      "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
+      "startBlock": 3310440
+    },
+    "SimpleOracleStrategy": {
+      "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
+      "startBlock": 3310440
+    },
+    "VoteLockedCloberToken": {
+      "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
+      "startBlock": 3310440
     }
   },
   "mitosis-testnet": {
