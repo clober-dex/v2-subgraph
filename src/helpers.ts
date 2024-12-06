@@ -17,6 +17,8 @@ import {
   Token,
 } from '../generated/schema'
 
+import { BERA_TESTNET, getChainId, MITOSIS_TESTNET } from './addresses'
+
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
 export const CHART_LOG_INTERVALS = new TypedMap<string, number>()
@@ -116,12 +118,33 @@ export function buildMarketCode(base: Token, quote: Token): string {
   return base.id.concat('/').concat(quote.id)
 }
 
+function getNativeTokenSymbol(chainId: BigInt): string {
+  if (chainId == BERA_TESTNET) {
+    return 'BERA'
+  } else if (chainId == MITOSIS_TESTNET) {
+    return 'MITO'
+  } else {
+    return 'ETH'
+  }
+}
+
+function getNativeTokenName(chainId: BigInt): string {
+  if (chainId == BERA_TESTNET) {
+    return 'BERA Token'
+  } else if (chainId == MITOSIS_TESTNET) {
+    return 'MITO Token'
+  } else {
+    return 'Ether'
+  }
+}
+
 export function createToken(tokenAddress: Address): Token {
+  const chainId = getChainId()
   let token = Token.load(tokenAddress.toHexString())
   if (token === null) {
     token = new Token(tokenAddress.toHexString())
-    token.symbol = fetchTokenSymbol(tokenAddress)
-    token.name = fetchTokenName(tokenAddress)
+    token.symbol = fetchTokenSymbol(tokenAddress, chainId)
+    token.name = fetchTokenName(tokenAddress, chainId)
     token.decimals = fetchTokenDecimals(tokenAddress)
   }
   token.save()
@@ -180,9 +203,12 @@ export function isNullEthValue(value: string): boolean {
   )
 }
 
-export function fetchTokenSymbol(tokenAddress: Address): string {
+export function fetchTokenSymbol(
+  tokenAddress: Address,
+  chainId: BigInt,
+): string {
   if (tokenAddress.toHexString() == ADDRESS_ZERO) {
-    return 'ETH'
+    return getNativeTokenSymbol(chainId)
   }
   const contract = ERC20.bind(tokenAddress)
   const contractSymbolBytes = ERC20SymbolBytes.bind(tokenAddress)
@@ -205,9 +231,9 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
   return symbolValue
 }
 
-export function fetchTokenName(tokenAddress: Address): string {
+export function fetchTokenName(tokenAddress: Address, chainId: BigInt): string {
   if (tokenAddress.toHexString() == ADDRESS_ZERO) {
-    return 'Ether'
+    return getNativeTokenName(chainId)
   }
   const contract = ERC20.bind(tokenAddress)
   const contractNameBytes = ERC20NameBytes.bind(tokenAddress)

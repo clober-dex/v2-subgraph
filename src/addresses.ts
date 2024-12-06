@@ -4,12 +4,12 @@ import { Multicall3 } from '../generated/BookManager/Multicall3'
 
 const MULTICALL3_ADDRESS = '0xcA11bde05977b3631167028862bE2a173976CA11'
 const MULTICALL3_FALLBACK_ADDRESS = '0xF9cda624FBC7e059355ce98a31693d299FACd963'
-const ARBITRUM_SEPOLIA = BigInt.fromI32(421614)
-const BASE = BigInt.fromI32(8453)
-const BERA_TESTNET = BigInt.fromI32(80084)
-const ZKSYNC_ERA = BigInt.fromI32(324)
-const ZKSYNC_ERA_SEPOLIA = BigInt.fromI32(300)
-const MITOSIS_TESTNET = BigInt.fromI32(124832)
+export const ARBITRUM_SEPOLIA = BigInt.fromI32(421614)
+export const BASE = BigInt.fromI32(8453)
+export const BERA_TESTNET = BigInt.fromI32(80084)
+export const ZKSYNC_ERA = BigInt.fromI32(324)
+export const ZKSYNC_ERA_SEPOLIA = BigInt.fromI32(300)
+export const MITOSIS_TESTNET = BigInt.fromI32(124832)
 
 export function getChainId(): BigInt {
   const multiCall = Multicall3.bind(Address.fromString(MULTICALL3_ADDRESS))
