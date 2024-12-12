@@ -54,3 +54,6 @@ jobs:
 
       - name: Deploy Base
         run: graph deploy v2-core-subgraph-base --version-label $ENVIRONMENT --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key ${{ secrets.ALCHEMY_API_KEY }} --ipfs https://ipfs.satsuma.xyz --network base
+
+      - name: Deploy Sonic Mainnet
+        run: graph deploy v2-core-subgraph-sonic-mainnet --version-label $ENVIRONMENT --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key ${{ secrets.ALCHEMY_API_KEY }} --ipfs https://ipfs.satsuma.xyz --network sonic-mainnet
