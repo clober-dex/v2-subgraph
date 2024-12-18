@@ -17,7 +17,7 @@ import {
   Token,
 } from '../generated/schema'
 
-import { BERA_TESTNET, getChainId, MITOSIS_TESTNET } from './addresses'
+import { BERA_TESTNET, getChainId, MITOSIS_TESTNET, SONIC_MAINNET } from './addresses'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
@@ -123,6 +123,8 @@ function getNativeTokenSymbol(chainId: BigInt): string {
     return 'BERA'
   } else if (chainId == MITOSIS_TESTNET) {
     return 'MITO'
+  } else if (chainId == SONIC_MAINNET) {
+    return 'S'
   } else {
     return 'ETH'
   }
@@ -133,6 +135,8 @@ function getNativeTokenName(chainId: BigInt): string {
     return 'BERA Token'
   } else if (chainId == MITOSIS_TESTNET) {
     return 'MITO Token'
+  } else if (chainId == SONIC_MAINNET) {
+    return 'S Token'
   } else {
     return 'Ether'
   }
