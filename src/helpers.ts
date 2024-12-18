@@ -17,7 +17,7 @@ import {
   Token,
 } from '../generated/schema'
 
-import { BERA_TESTNET, getChainId, MITOSIS_TESTNET } from './addresses'
+import { getChainId, SONIC_MAINNET } from './addresses'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
@@ -119,20 +119,16 @@ export function buildMarketCode(base: Token, quote: Token): string {
 }
 
 function getNativeTokenSymbol(chainId: BigInt): string {
-  if (chainId == BERA_TESTNET) {
-    return 'BERA'
-  } else if (chainId == MITOSIS_TESTNET) {
-    return 'MITO'
+  if (chainId == SONIC_MAINNET) {
+    return 'S'
   } else {
     return 'ETH'
   }
 }
 
 function getNativeTokenName(chainId: BigInt): string {
-  if (chainId == BERA_TESTNET) {
-    return 'BERA Token'
-  } else if (chainId == MITOSIS_TESTNET) {
-    return 'MITO Token'
+  if (chainId == SONIC_MAINNET) {
+    return 'S Token'
   } else {
     return 'Ether'
   }
