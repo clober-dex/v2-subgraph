@@ -143,3 +143,36 @@ dataSources:
         - event: Transfer(indexed uint32,indexed address,indexed address,uint256)
           handler: handleVCLOBTransfer
       file: ./src/governance.ts
+  - kind: ethereum
+    name: Hatchhog
+    network: base
+    source:
+      abi: Hatchhog
+      address: "0x382CCccbD3b142D7DA063bF68cd0c89634767F76"
+      startBlock: 14528050
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Token
+        - LatestBlock
+      abis:
+        - name: Hatchhog
+          file: ./abis/Hatchhog.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+        - name: Multicall3
+          file: ./abis/Multicall3.json
+      eventHandlers:
+        - event: Hatch(indexed address,indexed address,indexed address,uint256)
+          handler: handleHatch
+        - event: Migrate(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleMigrate
+        - event: Claim(indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleClaim
+      file: ./src/hatchhog.ts
