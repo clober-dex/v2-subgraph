@@ -175,4 +175,12 @@ dataSources:
           handler: handleMigrate
         - event: Claim(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleClaim
+        - event: SetFeeReceiver(address)
+          handler: handleSetFeeReceiver
+        - event: SetMigrationFeeRate(uint24)
+          handler: handleSetMigrationFeeRate
+        - event: SetAchievementFeeRate(uint24)
+          handler: handleSetAchievementFeeRate
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
       file: ./src/hatchhog.ts
