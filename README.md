@@ -4,4 +4,4 @@
 Todo
 
 ### Supported Networks
-- [x] Arbitrum
+- [x] Sonic Mainnet
