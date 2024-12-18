@@ -173,8 +173,6 @@ dataSources:
           handler: handleHatch
         - event: Migrate(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleMigrate
-        - event: Claim(indexed address,indexed address,uint256,uint256,uint256)
-          handler: handleClaim
         - event: SetFeeReceiver(address)
           handler: handleSetFeeReceiver
         - event: SetMigrationFeeRate(uint24)
