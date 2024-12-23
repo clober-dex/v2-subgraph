@@ -10,7 +10,7 @@ import {
 } from '../generated/Hatchhog/Hatchhog'
 import { Hatchhog, HogToken } from '../generated/schema'
 
-import { ADDRESS_ZERO } from './helpers'
+import { ADDRESS_ZERO, createToken } from './helpers'
 import {
   fetchPoolAddress,
   fetchPriorMilestones,
@@ -49,16 +49,17 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {
 }
 
 export function handleHatch(event: Hatch): void {
-  const token = fetchTokenInfo(event.address, event.params.token)
+  const tokenInfo = fetchTokenInfo(event.address, event.params.token)
+  const token = createToken(event.params.token)
   const hog = new HogToken(event.params.token.toString())
-  hog.token = event.params.token.toHexString()
+  hog.token = token.id
   hog.creator = event.params.creator.toHexString()
   hog.createdAt = event.block.timestamp
-  hog.deadline = token.deadline
-  hog.migrationFeeRate = BigInt.fromI32(token.migrationFeeRate)
-  hog.achievementFeeRate = BigInt.fromI32(token.achievementFeeRate)
-  hog.bidBook = token.bidBookId.toString()
-  hog.askBook = token.askBookId.toString()
+  hog.deadline = tokenInfo.deadline
+  hog.migrationFeeRate = BigInt.fromI32(tokenInfo.migrationFeeRate)
+  hog.achievementFeeRate = BigInt.fromI32(tokenInfo.achievementFeeRate)
+  hog.bidBook = tokenInfo.bidBookId.toString()
+  hog.askBook = tokenInfo.askBookId.toString()
   hog.migrated = false
   hog.burntAmount = BigInt.zero()
   hog.pool = fetchPoolAddress(event.address, event.params.token).toString()
