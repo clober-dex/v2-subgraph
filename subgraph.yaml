@@ -156,6 +156,10 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Token
+        - Hatchhog
+        - HogToken
+        - OpenOrder
+        - Book
         - LatestBlock
       abis:
         - name: Hatchhog
