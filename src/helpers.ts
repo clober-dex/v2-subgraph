@@ -16,7 +16,10 @@ import {
   PoolSpreadProfit,
   Token,
 } from '../generated/schema'
-import { Hatchhog } from '../generated/Hatchhog/Hatchhog'
+import {
+  Hatchhog,
+  Hatchhog__tokenInfoResultValue0Struct,
+} from '../generated/Hatchhog/Hatchhog'
 
 import {
   BERA_TESTNET,
@@ -324,7 +327,10 @@ export function bytesToBigIntBigEndian(bytes: Bytes): BigInt {
   return value
 }
 
-export function fetchTokenInfo(hatchhog: Address, token: Address) {
+export function fetchTokenInfo(
+  hatchhog: Address,
+  token: Address,
+): Hatchhog__tokenInfoResultValue0Struct {
   const contract = Hatchhog.bind(hatchhog)
   const tokenInfo = contract.try_tokenInfo(token)
   if (!tokenInfo.reverted) {
@@ -333,7 +339,7 @@ export function fetchTokenInfo(hatchhog: Address, token: Address) {
   return tokenInfo.value
 }
 
-export function fetchPoolAddress(hatchhog: Address, token: Address) {
+export function fetchPoolAddress(hatchhog: Address, token: Address): Address {
   const contract = Hatchhog.bind(hatchhog)
   const poolAddress = contract.try_computePoolAddress(token)
   if (!poolAddress.reverted) {
@@ -342,7 +348,10 @@ export function fetchPoolAddress(hatchhog: Address, token: Address) {
   return poolAddress.value
 }
 
-export function fetchPriorMilestones(hatchhog: Address, token: Address) {
+export function fetchPriorMilestones(
+  hatchhog: Address,
+  token: Address,
+): BigInt[] {
   const contract = Hatchhog.bind(hatchhog)
   const milestones = contract.try_getSubsequentMilestones(token)
   if (!milestones.reverted) {
@@ -351,7 +360,10 @@ export function fetchPriorMilestones(hatchhog: Address, token: Address) {
   return milestones.value
 }
 
-export function fetchSubsequentMilestones(hatchhog: Address, token: Address) {
+export function fetchSubsequentMilestones(
+  hatchhog: Address,
+  token: Address,
+): BigInt[] {
   const contract = Hatchhog.bind(hatchhog)
   const milestones = contract.try_getSubsequentMilestones(token)
   if (!milestones.reverted) {

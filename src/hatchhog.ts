@@ -10,13 +10,14 @@ import {
 } from '../generated/Hatchhog/Hatchhog'
 import { Hatchhog, HogToken } from '../generated/schema'
 
-import { ADDRESS_ZERO, createToken } from './helpers'
 import {
+  ADDRESS_ZERO,
+  createToken,
   fetchPoolAddress,
   fetchPriorMilestones,
   fetchSubsequentMilestones,
   fetchTokenInfo,
-} from './utils/hatchhog'
+} from './helpers'
 
 const MIGRATION_AMOUNT = BigInt.fromI32(241_000_000).times(
   BigInt.fromI32(10).pow(18),
