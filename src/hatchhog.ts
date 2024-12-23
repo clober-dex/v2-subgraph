@@ -25,7 +25,7 @@ const MIGRATION_AMOUNT = BigInt.fromI32(241_000_000).times(
 
 export function handleSetFeeReceiver(event: SetFeeReceiver): void {
   const hatchhog = loadHatchhog(event.address)
-  hatchhog.feeReceiver = event.params.feeReceiver.toString()
+  hatchhog.feeReceiver = event.params.feeReceiver.toHexString()
   hatchhog.save()
 }
 
@@ -45,14 +45,14 @@ export function handleSetAchievementFeeRate(
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {
   const hatchhog = loadHatchhog(event.address)
-  hatchhog.owner = event.params.newOwner.toString()
+  hatchhog.owner = event.params.newOwner.toHexString()
   hatchhog.save()
 }
 
 export function handleHatch(event: Hatch): void {
   const tokenInfo = fetchTokenInfo(event.address, event.params.token)
   const token = createToken(event.params.token)
-  const hog = new HogToken(event.params.token.toString())
+  const hog = new HogToken(event.params.token.toHexString())
   hog.token = token.id
   hog.creator = event.params.creator.toHexString()
   hog.createdAt = event.block.timestamp
@@ -63,7 +63,7 @@ export function handleHatch(event: Hatch): void {
   hog.askBook = tokenInfo.askBookId.toString()
   hog.migrated = false
   hog.burntAmount = BigInt.zero()
-  hog.pool = fetchPoolAddress(event.address, event.params.token).toString()
+  hog.pool = fetchPoolAddress(event.address, event.params.token).toHexString()
   const priorMilestones = hog.priorMilestones
   const fetchedPriorMilestones = fetchPriorMilestones(
     event.address,
@@ -96,9 +96,9 @@ export function handleMigrate(event: Migrate): void {
 }
 
 function loadHatchhog(address: Address): Hatchhog {
-  let hatchhog = Hatchhog.load(address.toString())
+  let hatchhog = Hatchhog.load(address.toHexString())
   if (hatchhog == null) {
-    hatchhog = new Hatchhog(address.toString())
+    hatchhog = new Hatchhog(address.toHexString())
     hatchhog.migrationFeeRate = BigInt.zero()
     hatchhog.achievementFeeRate = BigInt.zero()
     hatchhog.feeReceiver = ADDRESS_ZERO
