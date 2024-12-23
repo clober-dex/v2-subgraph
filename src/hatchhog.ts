@@ -64,6 +64,8 @@ export function handleHatch(event: Hatch): void {
   hog.migrated = false
   hog.burntAmount = BigInt.zero()
   hog.pool = fetchPoolAddress(event.address, event.params.token).toHexString()
+  hog.priorMilestones = []
+  hog.subsequentMilestones = []
   const priorMilestones = hog.priorMilestones
   const fetchedPriorMilestones = fetchPriorMilestones(
     event.address,
