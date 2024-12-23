@@ -333,7 +333,7 @@ export function fetchTokenInfo(
 ): Hatchhog__tokenInfoResultValue0Struct {
   const contract = Hatchhog.bind(hatchhog)
   const tokenInfo = contract.try_tokenInfo(token)
-  if (!tokenInfo.reverted) {
+  if (tokenInfo.reverted) {
     throw new Error('Token reverted')
   }
   return tokenInfo.value
@@ -342,7 +342,7 @@ export function fetchTokenInfo(
 export function fetchPoolAddress(hatchhog: Address, token: Address): Address {
   const contract = Hatchhog.bind(hatchhog)
   const poolAddress = contract.try_computePoolAddress(token)
-  if (!poolAddress.reverted) {
+  if (poolAddress.reverted) {
     throw new Error('Pool reverted')
   }
   return poolAddress.value
@@ -354,7 +354,7 @@ export function fetchPriorMilestones(
 ): BigInt[] {
   const contract = Hatchhog.bind(hatchhog)
   const milestones = contract.try_getSubsequentMilestones(token)
-  if (!milestones.reverted) {
+  if (milestones.reverted) {
     throw new Error('Millstones reverted')
   }
   return milestones.value
@@ -366,7 +366,7 @@ export function fetchSubsequentMilestones(
 ): BigInt[] {
   const contract = Hatchhog.bind(hatchhog)
   const milestones = contract.try_getSubsequentMilestones(token)
-  if (!milestones.reverted) {
+  if (milestones.reverted) {
     throw new Error('Millstones reverted')
   }
   return milestones.value
