@@ -154,3 +154,29 @@ type VCLOB @entity {
     amount: BigInt!
     lockedTimepoint: BigInt!
 }
+
+type Hatchhog @entity {
+    id: ID!
+    migrationFeeRate: BigInt!
+    achievementFeeRate: BigInt!
+    feeReceiver: String!
+    owner: String!
+}
+
+type HogToken @entity {
+    # token address
+    id: ID!
+    token: Token!
+    creator: String!
+    createdAt: BigInt!
+    deadline: BigInt!
+    migrationFeeRate: BigInt!
+    achievementFeeRate: BigInt!
+    bidBook: Book!
+    askBook: Book!
+    migrated: Boolean!
+    burntAmount: BigInt!
+    pool: String!
+    priorMilestones: [OpenOrder!]!
+    subsequentMilestones: [OpenOrder!]!
+}
