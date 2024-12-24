@@ -167,6 +167,7 @@ type HogToken @entity {
     # token address
     id: ID!
     token: Token!
+    uri: String!
     creator: String!
     createdAt: BigInt!
     deadline: BigInt!
