@@ -16,8 +16,17 @@ import {
   PoolSpreadProfit,
   Token,
 } from '../generated/schema'
+import {
+  Hatchhog,
+  Hatchhog__tokenInfoResultValue0Struct,
+} from '../generated/Hatchhog/Hatchhog'
 
-import { BERA_TESTNET, getChainId, MITOSIS_TESTNET, SONIC_MAINNET } from './addresses'
+import {
+  BERA_TESTNET,
+  getChainId,
+  MITOSIS_TESTNET,
+  SONIC_MAINNET,
+} from './addresses'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
@@ -316,4 +325,49 @@ export function bytesToBigIntBigEndian(bytes: Bytes): BigInt {
     value = value.times(BigInt.fromI32(256)).plus(BigInt.fromI32(bytes[i]))
   }
   return value
+}
+
+export function fetchTokenInfo(
+  hatchhog: Address,
+  token: Address,
+): Hatchhog__tokenInfoResultValue0Struct {
+  const contract = Hatchhog.bind(hatchhog)
+  const tokenInfo = contract.try_tokenInfo(token)
+  if (tokenInfo.reverted) {
+    throw new Error('Token reverted')
+  }
+  return tokenInfo.value
+}
+
+export function fetchPoolAddress(hatchhog: Address, token: Address): Address {
+  const contract = Hatchhog.bind(hatchhog)
+  const poolAddress = contract.try_computePoolAddress(token)
+  if (poolAddress.reverted) {
+    throw new Error('Pool reverted')
+  }
+  return poolAddress.value
+}
+
+export function fetchPriorMilestones(
+  hatchhog: Address,
+  token: Address,
+): BigInt[] {
+  const contract = Hatchhog.bind(hatchhog)
+  const milestones = contract.try_getSubsequentMilestones(token)
+  if (milestones.reverted) {
+    throw new Error('Millstones reverted')
+  }
+  return milestones.value
+}
+
+export function fetchSubsequentMilestones(
+  hatchhog: Address,
+  token: Address,
+): BigInt[] {
+  const contract = Hatchhog.bind(hatchhog)
+  const milestones = contract.try_getSubsequentMilestones(token)
+  if (milestones.reverted) {
+    throw new Error('Millstones reverted')
+  }
+  return milestones.value
 }

@@ -23,6 +23,10 @@
     "VoteLockedCloberToken": {
       "address": "0xA8d4E6BC755b3ed8DCE2FaFE4104Bdad645763A5",
       "startBlock": 97248790
+    },
+    "Hatchhog": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 97248790
     }
   },
   "arbitrum-sepolia": {
@@ -48,6 +52,10 @@
     },
     "VoteLockedCloberToken": {
       "address": "0xA8d4E6BC755b3ed8DCE2FaFE4104Bdad645763A5",
+      "startBlock": 97248790
+    },
+    "Hatchhog": {
+      "address": "0x0000000000000000000000000000000000000000",
       "startBlock": 97248790
     }
   },
@@ -75,6 +83,10 @@
     "VoteLockedCloberToken": {
       "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
       "startBlock": 23040650
+    },
+    "Hatchhog": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 23040650
     }
   },
   "berachain-bartio": {
@@ -101,6 +113,10 @@
     "VoteLockedCloberToken": {
       "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
       "startBlock": 3310440
+    },
+    "Hatchhog": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 3310440
     }
   },
   "mitosis-testnet": {
@@ -126,6 +142,10 @@
     },
     "VoteLockedCloberToken": {
       "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
+      "startBlock": 254760
+    },
+    "Hatchhog": {
+      "address": "0x0000000000000000000000000000000000000000",
       "startBlock": 254760
     }
   },
@@ -181,6 +201,10 @@
     "VoteLockedCloberToken": {
       "address": "0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337",
       "startBlock": 297190
+    },
+    "Hatchhog": {
+      "address": "0x1286ffab44ced25e96465f6a094684756f9c36fb",
+      "startBlock": 1367523
     }
   }
 }
