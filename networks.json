@@ -181,6 +181,10 @@
     "VoteLockedCloberToken": {
       "address": "0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337",
       "startBlock": 297190
+    },
+    "Hatchhog": {
+      "address": "0x1286ffab44ced25e96465f6a094684756f9c36fb",
+      "startBlock": 1367523
     }
   }
 }
