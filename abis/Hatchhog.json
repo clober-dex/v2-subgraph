@@ -153,7 +153,8 @@
       { "name": "name", "type": "string", "internalType": "string" },
       { "name": "symbol", "type": "string", "internalType": "string" },
       { "name": "creator", "type": "address", "internalType": "address" },
-      { "name": "salt", "type": "bytes32", "internalType": "bytes32" }
+      { "name": "salt", "type": "bytes32", "internalType": "bytes32" },
+      { "name": "tokenURI", "type": "string", "internalType": "string" }
     ],
     "outputs": [
       { "name": "token", "type": "address", "internalType": "address" }
@@ -476,6 +477,12 @@
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
+      },
+      {
+        "name": "tokenURI",
+        "type": "string",
+        "indexed": false,
+        "internalType": "string"
       }
     ],
     "anonymous": false
