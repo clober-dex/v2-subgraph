@@ -353,7 +353,7 @@ export function fetchPriorMilestones(
   token: Address,
 ): BigInt[] {
   const contract = Hatchhog.bind(hatchhog)
-  const milestones = contract.try_getSubsequentMilestones(token)
+  const milestones = contract.try_getPriorMilestones(token)
   if (milestones.reverted) {
     throw new Error('Millstones reverted')
   }
