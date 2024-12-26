@@ -148,8 +148,8 @@ dataSources:
     network: sonic-mainnet
     source:
       abi: Hatchhog
-      address: "0x2277e5CAFA9fa3Dc56C3C9BD0b2C91af7E8eC101"
-      startBlock: 1548980
+      address: "0xc6e3f46f441a1f32892279aeca19827431512aee"
+      startBlock: 1640659
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -187,7 +187,6 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/hatchhog.ts
-
 templates:
   - name: ERC20
     kind: ethereum
@@ -206,6 +205,8 @@ templates:
       abis:
         - name: ERC20
           file: ./abis/ERC20.json
+        - name: Multicall3
+          file: ./abis/Multicall3.json
       eventHandlers:
         - event: Transfer(indexed address,indexed address,uint256)
           handler: handleTransfer

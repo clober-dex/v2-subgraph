@@ -182,7 +182,7 @@ export function createTokenBalance(token: Token, user: Address): TokenBalance {
     balance = new TokenBalance(id)
     balance.token = token.id
     balance.user = holder.id
-    balance.amount = BigDecimal.zero()
+    balance.amount = BigInt.fromI32(0)
     balance.updatedAt = BigInt.fromI32(0)
   }
   balance.save()

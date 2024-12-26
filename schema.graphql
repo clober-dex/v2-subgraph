@@ -8,7 +8,7 @@ type TokenBalance @entity {
     id: ID!
     token: Token!
     user: TokenHolder!
-    amount: BigDecimal!
+    amount: BigInt!
     updatedAt: BigInt!
 }
 

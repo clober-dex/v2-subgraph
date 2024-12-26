@@ -19,7 +19,6 @@ import {
   fetchSubsequentMilestones,
   fetchTokenInfo,
 } from './helpers'
-import { handleTransferInner } from './token'
 
 const MIGRATION_AMOUNT = BigInt.fromI32(241_000_000).times(
   BigInt.fromI32(10).pow(18),
@@ -55,27 +54,6 @@ export function handleHatch(event: Hatch): void {
   const tokenInfo = fetchTokenInfo(event.address, event.params.token)
   const token = createToken(event.params.token)
   ERC20.create(event.params.token)
-  const receipt = event.receipt
-  if (receipt == null) {
-    throw new Error('Receipt not found')
-  }
-  for (let i = 0; i < receipt.logs.length; i++) {
-    const log = receipt.logs[i]
-    if (
-      log.address == event.params.token &&
-      log.logIndex < event.logIndex &&
-      log.topics[0].toHexString() ==
-        '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' // Transfer(address,address,uint256)
-    ) {
-      handleTransferInner(
-        token,
-        Address.fromString('0x' + log.topics[1].toHexString().slice(26)),
-        Address.fromString('0x' + log.topics[2].toHexString().slice(26)),
-        BigInt.fromSignedBytes(log.data),
-        event.block.timestamp,
-      )
-    }
-  }
   const hog = new HogToken(event.params.token.toHexString())
   hog.token = token.id
   hog.name = token.name
