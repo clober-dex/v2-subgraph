@@ -79,6 +79,8 @@ export function handleHatch(event: Hatch): void {
     })
   const hog = new HogToken(event.params.token.toHexString())
   hog.token = token.id
+  hog.name = token.name
+  hog.symbol = token.symbol
   hog.uri = event.params.tokenURI
   hog.creator = event.params.creator.toHexString()
   hog.createdAt = event.block.timestamp

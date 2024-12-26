@@ -180,6 +180,8 @@ type Hatchhog @entity {
 type HogToken @entity {
     # token address
     id: ID!
+    name: String!
+    symbol: String!
     token: Token!
     uri: String!
     creator: String!
