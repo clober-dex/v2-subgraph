@@ -15,6 +15,8 @@ import {
   OpenOrder,
   PoolSpreadProfit,
   Token,
+  TokenBalance,
+  TokenHolder,
 } from '../generated/schema'
 import {
   Hatchhog,
@@ -123,6 +125,10 @@ export function buildPoolSpreadProfitId(
   return intervalType.concat('-').concat(timestamp.toString())
 }
 
+export function buildTokenBalanceId(holder: Address, token: Token): string {
+  return holder.toHexString().concat('-').concat(token.id)
+}
+
 export function buildMarketCode(base: Token, quote: Token): string {
   return base.id.concat('/').concat(quote.id)
 }
@@ -162,6 +168,25 @@ export function createToken(tokenAddress: Address): Token {
   }
   token.save()
   return token
+}
+
+export function createTokenBalance(token: Token, user: Address): TokenBalance {
+  const id = buildTokenBalanceId(user, token)
+  let holder = TokenHolder.load(user.toHexString())
+  if (holder == null) {
+    holder = new TokenHolder(user.toHexString())
+    holder.save()
+  }
+  let balance = TokenBalance.load(id)
+  if (balance === null) {
+    balance = new TokenBalance(id)
+    balance.token = token.id
+    balance.user = holder.id
+    balance.amount = BigDecimal.zero()
+    balance.updatedAt = BigInt.fromI32(0)
+  }
+  balance.save()
+  return balance
 }
 
 export function formatPrice(

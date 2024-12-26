@@ -1,3 +1,17 @@
+type TokenHolder @entity {
+    id: ID!
+    balances: [TokenBalance]! @derivedFrom(field: "user")
+}
+
+type TokenBalance @entity {
+    # `${userAddress}-${tokenAddress}`
+    id: ID!
+    token: Token!
+    user: TokenHolder!
+    amount: BigDecimal!
+    updatedAt: BigInt!
+}
+
 type Token @entity {
     id: ID!
     symbol: String!
