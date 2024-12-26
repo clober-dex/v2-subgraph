@@ -24,7 +24,7 @@ export function handleTransferInner(
   to: Address,
   value: BigInt,
   timestamp: BigInt,
-) {
+): void {
   // todo: check
   if (from.toHexString() !== ZERO_ADDRESS) {
     const fromBalance = createTokenBalance(token, from)

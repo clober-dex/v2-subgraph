@@ -59,16 +59,14 @@ export function handleHatch(event: Hatch): void {
   if (receipt == null) {
     throw new Error('Receipt not found')
   }
-  receipt.logs
-    .filter((log) => {
-      return (
-        log.address == event.params.token &&
-        log.logIndex < event.logIndex &&
-        log.topics[0].toHexString() ==
-          '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' // Transfer(address,address,uint256)
-      )
-    })
-    .map((log) => {
+  for (let i = 0; i < receipt.logs.length; i++) {
+    const log = receipt.logs[i]
+    if (
+      log.address == event.params.token &&
+      log.logIndex < event.logIndex &&
+      log.topics[0].toHexString() ==
+        '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef' // Transfer(address,address,uint256)
+    ) {
       handleTransferInner(
         token,
         Address.fromString('0x' + log.topics[1].toHexString().slice(26)),
@@ -76,7 +74,8 @@ export function handleHatch(event: Hatch): void {
         BigInt.fromSignedBytes(log.data),
         event.block.timestamp,
       )
-    })
+    }
+  }
   const hog = new HogToken(event.params.token.toHexString())
   hog.token = token.id
   hog.name = token.name
