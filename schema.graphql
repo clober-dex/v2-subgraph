@@ -1,3 +1,17 @@
+type TokenHolder @entity {
+    id: ID!
+    balances: [TokenBalance]! @derivedFrom(field: "user")
+}
+
+type TokenBalance @entity {
+    # `${userAddress}-${tokenAddress}`
+    id: ID!
+    token: Token!
+    user: TokenHolder!
+    amount: BigInt!
+    updatedAt: BigInt!
+}
+
 type Token @entity {
     id: ID!
     symbol: String!
@@ -166,6 +180,8 @@ type Hatchhog @entity {
 type HogToken @entity {
     # token address
     id: ID!
+    name: String!
+    symbol: String!
     token: Token!
     uri: String!
     creator: String!
