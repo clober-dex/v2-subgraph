@@ -148,8 +148,8 @@ dataSources:
     network: sonic-mainnet
     source:
       abi: Hatchhog
-      address: "0xf98fD34483B0E7b0211301309222bB212658D82d"
-      startBlock: 1663481
+      address: "0x7b5156e67697fFF104DE1bB07f6c4d342d815069"
+      startBlock: 1730827
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
