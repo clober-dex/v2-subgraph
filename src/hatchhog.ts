@@ -9,6 +9,7 @@ import {
   SetMigrationFeeRate,
 } from '../generated/Hatchhog/Hatchhog'
 import { Hatchhog, HogToken } from '../generated/schema'
+import { ERC20 } from '../generated/templates'
 
 import {
   ADDRESS_ZERO,
@@ -52,8 +53,11 @@ export function handleOwnershipTransferred(event: OwnershipTransferred): void {
 export function handleHatch(event: Hatch): void {
   const tokenInfo = fetchTokenInfo(event.address, event.params.token)
   const token = createToken(event.params.token)
+  ERC20.create(event.params.token)
   const hog = new HogToken(event.params.token.toHexString())
   hog.token = token.id
+  hog.name = token.name
+  hog.symbol = token.symbol
   hog.uri = event.params.tokenURI
   hog.creator = event.params.creator.toHexString()
   hog.createdAt = event.block.timestamp

@@ -6,11 +6,11 @@ indexerHints:
 dataSources:
   - kind: ethereum
     name: BookManager
-    network: base
+    network: sonic-mainnet
     source:
       abi: BookManager
-      address: "0x382CCccbD3b142D7DA063bF68cd0c89634767F76"
-      startBlock: 14528050
+      address: "0xD4aD5Ed9E1436904624b6dB8B1BE31f36317C636"
+      startBlock: 297190
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -55,11 +55,11 @@ dataSources:
       file: ./src/book-manager.ts
   - kind: ethereum
     name: Rebalancer
-    network: base
+    network: sonic-mainnet
     source:
       abi: Rebalancer
-      address: "0xd5133d8EC4b5656F1922C2b28BB44e1d18883959"
-      startBlock: 21499030
+      address: "0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337"
+      startBlock: 297190
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -87,11 +87,11 @@ dataSources:
       file: ./src/pool.ts
   - kind: ethereum
     name: SimpleOracleStrategy
-    network: base
+    network: sonic-mainnet
     source:
       abi: SimpleOracleStrategy
-      address: "0x3bEd0daF59a0A6FC8D2aEfff015600641C4eD952"
-      startBlock: 21499050
+      address: "0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337"
+      startBlock: 297190
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -117,11 +117,11 @@ dataSources:
       file: ./src/pool.ts
   - kind: ethereum
     name: VoteLockedCloberToken
-    network: base
+    network: sonic-mainnet
     source:
       abi: VoteLockedCloberToken
-      address: "0x3bEd0daF59a0A6FC8D2aEfff015600641C4eD952"
-      startBlock: 21499050
+      address: "0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337"
+      startBlock: 297190
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -145,11 +145,11 @@ dataSources:
       file: ./src/governance.ts
   - kind: ethereum
     name: Hatchhog
-    network: base
+    network: sonic-mainnet
     source:
       abi: Hatchhog
-      address: "0x382CCccbD3b142D7DA063bF68cd0c89634767F76"
-      startBlock: 14528050
+      address: "0xf98fD34483B0E7b0211301309222bB212658D82d"
+      startBlock: 1663481
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -175,6 +175,7 @@ dataSources:
       eventHandlers:
         - event: Hatch(indexed address,indexed address,indexed address,uint256,string)
           handler: handleHatch
+          receipt: true
         - event: Migrate(indexed address,indexed address,uint256,uint256,uint256)
           handler: handleMigrate
         - event: SetFeeReceiver(address)
@@ -186,3 +187,26 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/hatchhog.ts
+templates:
+  - name: ERC20
+    kind: ethereum
+    network: sonic-mainnet
+    source:
+      abi: ERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      file: ./src/token.ts
+      entities:
+        - Token
+        - TokenHolder
+        - TokenBalance
+      abis:
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: Multicall3
+          file: ./abis/Multicall3.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
