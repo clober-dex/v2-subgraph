@@ -65,7 +65,7 @@ export function getRebalancerAddress(): string {
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else if (chainId == SONIC_MAINNET) {
-    return '0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337'
+    return '0x46107Ec44112675689053b96aea2127fD952bd47'
   } else {
     return '0x30b4e9215322B5d0c290249126bCf96C2Ca8e948'
   }
@@ -86,7 +86,7 @@ export function getSimpleOracleStrategyAddress(): string {
   } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
     return '0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48'
   } else if (chainId == SONIC_MAINNET) {
-    return '0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337'
+    return '0xdd30f831bEB51fBF33E3D579e5529d3B1495554f'
   } else {
     return '0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C'
   }
