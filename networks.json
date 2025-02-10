@@ -73,12 +73,12 @@
       "startBlock": 14560860
     },
     "Rebalancer": {
-      "address": "0x6A0b87D6b74F7D5C92722F6a11714DBeDa9F3895",
-      "startBlock": 23040630
+      "address": "0xeA0E19fbca0D9D707f3dA10Ef846cC255B0aAdf3",
+      "startBlock": 26199180
     },
     "SimpleOracleStrategy": {
-      "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
-      "startBlock": 23040650
+      "address": "0x44E550089da3A49488794B3CB761288821B7e5E0",
+      "startBlock": 26199246
     },
     "VoteLockedCloberToken": {
       "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
