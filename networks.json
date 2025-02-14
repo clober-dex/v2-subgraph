@@ -149,6 +149,36 @@
       "startBlock": 254760
     }
   },
+  "monad-testnet": {
+    "BookManager": {
+      "address": "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A",
+      "startBlock": 3196033
+    },
+    "BookViewer": {
+      "address": "0x3e22d091F90ae759733B7CB06a6f7b440d84a425",
+      "startBlock": 3196528
+    },
+    "Controller": {
+      "address": "0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0",
+      "startBlock": 3196445
+    },
+    "Rebalancer": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 0
+    },
+    "SimpleOracleStrategy": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 0
+    },
+    "VoteLockedCloberToken": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 0
+    },
+    "Hatchhog": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 0
+    }
+  },
   "zksync-era": {
     "BookManager": {
       "address": "0xAc6AdB2727F99C309acd511D942c0b2812e03614",
