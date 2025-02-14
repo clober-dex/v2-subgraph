@@ -164,19 +164,19 @@
     },
     "Rebalancer": {
       "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "startBlock": 3196033
     },
     "SimpleOracleStrategy": {
       "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "startBlock": 3196033
     },
     "VoteLockedCloberToken": {
       "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "startBlock": 3196033
     },
     "Hatchhog": {
       "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 0
+      "startBlock": 3196033
     }
   },
   "zksync-era": {
