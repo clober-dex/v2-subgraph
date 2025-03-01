@@ -6,11 +6,11 @@ indexerHints:
 dataSources:
   - kind: ethereum
     name: BookManager
-    network: sonic-mainnet
+    network: monad-testnet
     source:
       abi: BookManager
-      address: "0xD4aD5Ed9E1436904624b6dB8B1BE31f36317C636"
-      startBlock: 297190
+      address: "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A"
+      startBlock: 3196033
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -55,11 +55,11 @@ dataSources:
       file: ./src/book-manager.ts
   - kind: ethereum
     name: Rebalancer
-    network: sonic-mainnet
+    network: monad-testnet
     source:
       abi: Rebalancer
-      address: "0x46107Ec44112675689053b96aea2127fD952bd47"
-      startBlock: 6334629
+      address: "0x0000000000000000000000000000000000000000"
+      startBlock: 0
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -87,11 +87,11 @@ dataSources:
       file: ./src/pool.ts
   - kind: ethereum
     name: SimpleOracleStrategy
-    network: sonic-mainnet
+    network: monad-testnet
     source:
       abi: SimpleOracleStrategy
-      address: "0xdd30f831bEB51fBF33E3D579e5529d3B1495554f"
-      startBlock: 6335712
+      address: "0x0000000000000000000000000000000000000000"
+      startBlock: 0
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -117,11 +117,11 @@ dataSources:
       file: ./src/pool.ts
   - kind: ethereum
     name: VoteLockedCloberToken
-    network: sonic-mainnet
+    network: monad-testnet
     source:
       abi: VoteLockedCloberToken
-      address: "0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337"
-      startBlock: 297190
+      address: "0x0000000000000000000000000000000000000000"
+      startBlock: 0
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -145,11 +145,11 @@ dataSources:
       file: ./src/governance.ts
   - kind: ethereum
     name: Hatchhog
-    network: sonic-mainnet
+    network: monad-testnet
     source:
       abi: Hatchhog
-      address: "0x7b5156e67697fFF104DE1bB07f6c4d342d815069"
-      startBlock: 1730827
+      address: "0x0000000000000000000000000000000000000000"
+      startBlock: 0
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -190,7 +190,7 @@ dataSources:
 templates:
   - name: ERC20
     kind: ethereum
-    network: sonic-mainnet
+    network: monad-testnet
     source:
       abi: ERC20
     mapping:
