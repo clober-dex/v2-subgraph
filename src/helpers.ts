@@ -14,9 +14,11 @@ import {
   LatestPoolSpread,
   OpenOrder,
   PoolSpreadProfit,
+  Snapshot,
   Token,
   TokenBalance,
   TokenHolder,
+  VolumeSnapshot,
 } from '../generated/schema'
 import {
   Hatchhog,
@@ -47,6 +49,10 @@ CHART_LOG_INTERVALS.set('1d', 24 * 60 * 60)
 CHART_LOG_INTERVALS.set('1w', 7 * 24 * 60 * 60)
 
 export const pricePrecision = BigInt.fromI32(2).pow(96)
+
+export function normalizeDailyTimestamp(timestamp: BigInt): BigInt {
+  return timestamp.minus(timestamp.mod(BigInt.fromI32(86400)))
+}
 
 export function encodeOrderId(
   bookId: string,
@@ -155,6 +161,63 @@ function getNativeTokenName(chainId: BigInt): string {
   } else {
     return 'Ether'
   }
+}
+
+export function createSnapshot(timestamp: BigInt): Snapshot {
+  const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)
+  let snapshot = Snapshot.load(dailyNormalizedTimestamp.toString())
+  if (snapshot === null) {
+    snapshot = new Snapshot(dailyNormalizedTimestamp.toString())
+    snapshot.transactions = []
+    snapshot.transactionCount = BigInt.fromI32(0)
+    snapshot.volumeSnapshots = []
+  }
+  snapshot.save()
+  return snapshot
+}
+
+export function createVolumeSnapshot(
+  timestamp: BigInt,
+  tokenAddress: Address,
+): VolumeSnapshot {
+  const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)
+  const key = dailyNormalizedTimestamp
+    .toString()
+    .concat('-')
+    .concat(tokenAddress.toHexString())
+  let volumeSnapshot = VolumeSnapshot.load(key)
+  const token = Token.load(tokenAddress.toHexString())
+  if (token === null) {
+    throw new Error('Token not found')
+  }
+  if (volumeSnapshot === null) {
+    volumeSnapshot = new VolumeSnapshot(key)
+    volumeSnapshot.timestamp = dailyNormalizedTimestamp
+    volumeSnapshot.token = token.id
+    volumeSnapshot.amount = BigInt.fromI32(0)
+  }
+  volumeSnapshot.save()
+  return volumeSnapshot
+}
+
+export function updateTransactionsInSnapshot(
+  snapshot: Snapshot,
+  transactionHash: Bytes,
+): void {
+  let find = false
+  for (let i = 0; i < snapshot.transactions.length; i++) {
+    if (snapshot.transactions[i] == transactionHash.toHexString()) {
+      find = true
+      break
+    }
+  }
+  if (!find) {
+    snapshot.transactions.push(transactionHash.toHexString())
+    snapshot.transactionCount = snapshot.transactionCount.plus(
+      BigInt.fromI32(1),
+    )
+  }
+  snapshot.save()
 }
 
 export function createToken(tokenAddress: Address): Token {
