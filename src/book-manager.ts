@@ -78,7 +78,7 @@ export function handleOpen(event: Open): void {
 
   updateWalletsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
-    event.transaction.hash,
+    event.transaction.from,
   )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
@@ -185,7 +185,7 @@ export function handleMake(event: Make): void {
 
   updateWalletsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
-    event.transaction.hash,
+    event.transaction.from,
   )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
@@ -426,7 +426,7 @@ export function handleTake(event: Take): void {
 
   updateWalletsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
-    event.transaction.hash,
+    event.transaction.from,
   )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
@@ -503,7 +503,7 @@ export function handleCancel(event: Cancel): void {
 
   updateWalletsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
-    event.transaction.hash,
+    event.transaction.from,
   )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
@@ -614,7 +614,7 @@ export function handleClaim(event: Claim): void {
 
   updateWalletsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
-    event.transaction.hash,
+    event.transaction.from,
   )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
