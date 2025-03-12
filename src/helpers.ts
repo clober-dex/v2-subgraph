@@ -170,6 +170,8 @@ export function getOrCreateSnapshot(timestamp: BigInt): Snapshot {
     snapshot = new Snapshot(dailyNormalizedTimestamp.toString())
     snapshot.transactions = []
     snapshot.transactionCount = BigInt.fromI32(0)
+    snapshot.wallets = []
+    snapshot.walletCount = BigInt.fromI32(0)
     snapshot.volumeSnapshots = []
   }
   snapshot.save()
@@ -198,6 +200,24 @@ export function getOrCreateVolumeSnapshot(
   }
   volumeSnapshot.save()
   return volumeSnapshot
+}
+
+export function updateWalletsInSnapshot(
+  snapshot: Snapshot,
+  wallet: Address,
+): void {
+  let find = false
+  for (let i = 0; i < snapshot.wallets.length; i++) {
+    if (snapshot.wallets[i] == wallet.toHexString()) {
+      find = true
+      break
+    }
+  }
+  if (!find) {
+    snapshot.wallets.push(wallet.toHexString())
+    snapshot.walletCount = snapshot.walletCount.plus(BigInt.fromI32(1))
+  }
+  snapshot.save()
 }
 
 export function updateTransactionsInSnapshot(

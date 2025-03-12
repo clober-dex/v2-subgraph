@@ -46,6 +46,7 @@ import {
   unitToBase,
   unitToQuote,
   updateTransactionsInSnapshot,
+  updateWalletsInSnapshot,
 } from './helpers'
 import { getControllerAddress, getRebalancerAddress } from './addresses'
 
@@ -75,6 +76,10 @@ export function handleOpen(event: Open): void {
   book.latestTimestamp = BigInt.zero()
   book.save()
 
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
@@ -178,6 +183,10 @@ export function handleMake(event: Make): void {
   depth.save()
   orderIndexEntity.save()
 
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
@@ -415,6 +424,10 @@ export function handleTake(event: Take): void {
   }
   snapshot.save()
 
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
@@ -488,6 +501,10 @@ export function handleCancel(event: Cancel): void {
     depth.save()
   }
 
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
@@ -595,6 +612,10 @@ export function handleClaim(event: Claim): void {
     openOrder.save()
   }
 
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
