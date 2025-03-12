@@ -32,9 +32,9 @@ import {
   buildDepthId,
   buildMarketCode,
   CHART_LOG_INTERVALS,
-  createSnapshot,
+  getOrCreateSnapshot,
   createToken,
-  createVolumeSnapshot,
+  getOrCreateVolumeSnapshot,
   decodeBookIdFromOrderId,
   encodeOrderId,
   formatInvertedPrice,
@@ -76,7 +76,7 @@ export function handleOpen(event: Open): void {
   book.save()
 
   updateTransactionsInSnapshot(
-    createSnapshot(event.block.timestamp),
+    getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
   )
 }
@@ -179,7 +179,7 @@ export function handleMake(event: Make): void {
   orderIndexEntity.save()
 
   updateTransactionsInSnapshot(
-    createSnapshot(event.block.timestamp),
+    getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
   )
 }
@@ -393,8 +393,8 @@ export function handleTake(event: Take): void {
     depth.save()
   }
 
-  const snapshot = createSnapshot(event.block.timestamp)
-  const volumeSnapshot = createVolumeSnapshot(
+  const snapshot = getOrCreateSnapshot(event.block.timestamp)
+  const volumeSnapshot = getOrCreateVolumeSnapshot(
     event.block.timestamp,
     Address.fromString(book.quote),
   )
@@ -416,7 +416,7 @@ export function handleTake(event: Take): void {
   snapshot.save()
 
   updateTransactionsInSnapshot(
-    createSnapshot(event.block.timestamp),
+    getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
   )
 }
@@ -489,7 +489,7 @@ export function handleCancel(event: Cancel): void {
   }
 
   updateTransactionsInSnapshot(
-    createSnapshot(event.block.timestamp),
+    getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
   )
 }
@@ -596,7 +596,7 @@ export function handleClaim(event: Claim): void {
   }
 
   updateTransactionsInSnapshot(
-    createSnapshot(event.block.timestamp),
+    getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
   )
 }

@@ -163,7 +163,7 @@ function getNativeTokenName(chainId: BigInt): string {
   }
 }
 
-export function createSnapshot(timestamp: BigInt): Snapshot {
+export function getOrCreateSnapshot(timestamp: BigInt): Snapshot {
   const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)
   let snapshot = Snapshot.load(dailyNormalizedTimestamp.toString())
   if (snapshot === null) {
@@ -176,7 +176,7 @@ export function createSnapshot(timestamp: BigInt): Snapshot {
   return snapshot
 }
 
-export function createVolumeSnapshot(
+export function getOrCreateVolumeSnapshot(
   timestamp: BigInt,
   tokenAddress: Address,
 ): VolumeSnapshot {
