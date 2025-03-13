@@ -163,12 +163,12 @@
       "startBlock": 3196445
     },
     "Rebalancer": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 3196033
+      "address": "0x6d8fa3025b6d6604309Ca257563CcA358c0CF1AA",
+      "startBlock": 7546157
     },
     "SimpleOracleStrategy": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 3196033
+      "address": "0x9eE708876804F9416B3C1a1aad0c016dee9DD804",
+      "startBlock": 7546513
     },
     "VoteLockedCloberToken": {
       "address": "0x0000000000000000000000000000000000000000",
