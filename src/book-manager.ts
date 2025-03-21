@@ -32,7 +32,9 @@ import {
   buildDepthId,
   buildMarketCode,
   CHART_LOG_INTERVALS,
+  getOrCreateSnapshot,
   createToken,
+  getOrCreateVolumeSnapshot,
   decodeBookIdFromOrderId,
   encodeOrderId,
   formatInvertedPrice,
@@ -43,6 +45,8 @@ import {
   getPoolSpreadProfit,
   unitToBase,
   unitToQuote,
+  updateTransactionsInSnapshot,
+  updateWalletsInSnapshot,
 } from './helpers'
 import { getControllerAddress, getRebalancerAddress } from './addresses'
 
@@ -71,6 +75,15 @@ export function handleOpen(event: Open): void {
   book.latestPrice = BigInt.zero()
   book.latestTimestamp = BigInt.zero()
   book.save()
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
 }
 
 export function handleMake(event: Make): void {
@@ -169,6 +182,15 @@ export function handleMake(event: Make): void {
 
   depth.save()
   orderIndexEntity.save()
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
 }
 
 export function handleTake(event: Take): void {
@@ -379,6 +401,37 @@ export function handleTake(event: Take): void {
   } else {
     depth.save()
   }
+
+  const snapshot = getOrCreateSnapshot(event.block.timestamp)
+  const volumeSnapshot = getOrCreateVolumeSnapshot(
+    event.block.timestamp,
+    Address.fromString(book.quote),
+  )
+  volumeSnapshot.amount = volumeSnapshot.amount.plus(
+    unitToQuote(book, takenUnitAmount),
+  )
+  volumeSnapshot.save()
+
+  let find = false
+  for (let i = 0; i < snapshot.volumeSnapshots.length; i++) {
+    if (snapshot.volumeSnapshots[i] == volumeSnapshot.id) {
+      find = true
+      break
+    }
+  }
+  if (!find) {
+    snapshot.volumeSnapshots.push(volumeSnapshot.id)
+  }
+  snapshot.save()
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
 }
 
 export function handleCancel(event: Cancel): void {
@@ -447,6 +500,15 @@ export function handleCancel(event: Cancel): void {
   } else {
     depth.save()
   }
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
 }
 
 export function handleClaim(event: Claim): void {
@@ -549,6 +611,15 @@ export function handleClaim(event: Claim): void {
   } else {
     openOrder.save()
   }
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
 }
 
 export function handleTransfer(event: Transfer): void {

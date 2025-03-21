@@ -1,3 +1,19 @@
+type Snapshot @entity {
+    id: ID! # timestamp
+    transactions: [String!]!
+    transactionCount: BigInt!
+    wallets: [String!]!
+    walletCount: BigInt!
+    volumeSnapshots: [VolumeSnapshot!]!
+}
+
+type VolumeSnapshot @entity {
+    id: ID! # {timestamp}-${tokenAddress}
+    timestamp: BigInt!
+    token: Token!
+    amount: BigInt!
+}
+
 type TokenHolder @entity {
     id: ID!
     balances: [TokenBalance]! @derivedFrom(field: "user")
