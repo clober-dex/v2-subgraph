@@ -64,5 +64,27 @@
       "address": "0xdd30f831bEB51fBF33E3D579e5529d3B1495554f",
       "startBlock": 6335712
     }
+  },
+  "berachain-mainnet": {
+    "BookManager": {
+      "address": "0xDED58e263087f5B45d878BD9CF599B7A1a75D1E4",
+      "startBlock": 2599489
+    },
+    "BookViewer": {
+      "address": "0x4abb86f499f53e2b1F52302b2Ba7BbB0a90a49A8",
+      "startBlock": 2600021
+    },
+    "Controller": {
+      "address": "0xA9F92548491997eE0De26A03311535A4961EE8eb",
+      "startBlock": 2600021
+    },
+    "Rebalancer": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 2599489
+    },
+    "SimpleOracleStrategy": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 2599489
+    }
   }
 }

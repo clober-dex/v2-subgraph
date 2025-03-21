@@ -8,6 +8,7 @@ const MULTICALL3_FALLBACK_ADDRESS = '0xF9cda624FBC7e059355ce98a31693d299FACd963'
 export const SONIC_MAINNET = BigInt.fromI32(146)
 export const BASE = BigInt.fromI32(8453)
 export const MONAD_TESTNET = BigInt.fromI32(10143)
+export const BERA_MAIN = BigInt.fromI32(80094)
 
 export function getChainId(): BigInt {
   const multiCall = Multicall3.bind(Address.fromString(MULTICALL3_ADDRESS))
@@ -34,6 +35,8 @@ export function getControllerAddress(): string {
     return '0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337'
   } else if (chainId == MONAD_TESTNET) {
     return '0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0'
+  } else if (chainId == BERA_MAIN) {
+    return '0xA9F92548491997eE0De26A03311535A4961EE8eb'
   } else {
     throw new Error('Chain ID not supported')
   }
@@ -47,6 +50,8 @@ export function getRebalancerAddress(): string {
     return '0x46107Ec44112675689053b96aea2127fD952bd47'
   } else if (chainId == MONAD_TESTNET) {
     return '0x6d8fa3025b6d6604309Ca257563CcA358c0CF1AA'
+  } else if (chainId == BERA_MAIN) {
+    return '0x0000000000000000000000000000000000000000'
   } else {
     throw new Error('Chain ID not supported')
   }
@@ -60,6 +65,8 @@ export function getSimpleOracleStrategyAddress(): string {
     return '0xdd30f831bEB51fBF33E3D579e5529d3B1495554f'
   } else if (chainId == MONAD_TESTNET) {
     return '0x9eE708876804F9416B3C1a1aad0c016dee9DD804'
+  } else if (chainId == BERA_MAIN) {
+    return '0x0000000000000000000000000000000000000000'
   } else {
     throw new Error('Chain ID not supported')
   }

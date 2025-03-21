@@ -17,7 +17,12 @@ import {
   Token,
 } from '../generated/schema'
 
-import { getChainId, MONAD_TESTNET, SONIC_MAINNET } from './addresses'
+import {
+  BERA_MAIN,
+  getChainId,
+  MONAD_TESTNET,
+  SONIC_MAINNET,
+} from './addresses'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
@@ -123,6 +128,8 @@ function getNativeTokenSymbol(chainId: BigInt): string {
     return 'S'
   } else if (chainId == MONAD_TESTNET) {
     return 'MON'
+  } else if (chainId == BERA_MAIN) {
+    return 'BERA'
   } else {
     return 'ETH'
   }
@@ -133,6 +140,8 @@ function getNativeTokenName(chainId: BigInt): string {
     return 'S Token'
   } else if (chainId == MONAD_TESTNET) {
     return 'MONAD'
+  } else if (chainId == BERA_MAIN) {
+    return 'BERA'
   } else {
     return 'Ether'
   }
