@@ -7,13 +7,9 @@
     "create-local": "graph create --node http://localhost:8020/ v2-core-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ v2-core-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 v2-core-subgraph --network localhost",
-    "deploy-arbitrum": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network arbitrum-sepolia",
     "deploy-base": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph-base --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network base",
     "deploy-sonic-mainnet": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph-sonic-mainnet --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network sonic-mainnet",
-    "deploy-berachain-bartio": "graph build --network=berachain-bartio && dotenv -e .env -- cross-var goldsky subgraph deploy v2-core-subgraph-berachain-bartio/%DEPLOY_VERSION% --path .",
-    "deploy-mitosis-testnet": "graph build --network=mitosis-testnet && dotenv -e .env -- cross-var goldsky subgraph deploy v2-core-subgraph-mitosis-testnet/%DEPLOY_VERSION% --path .",
-    "deploy-zksync-era": "graph build --network=zksync-era && dotenv -e .env -- cross-var goldsky subgraph deploy v2-core-subgraph-zksync-era/%DEPLOY_VERSION% --path .",
-    "deploy-zksync-era-sepolia": "graph build --network=zksync-era-sepolia && dotenv -e .env -- cross-var goldsky subgraph deploy v2-core-subgraph-zksync-era-sepolia/%DEPLOY_VERSION% --path .",
+    "deploy-berachain-mainnet": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph-berachain-mainnet --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network berachain-mainnet",
     "test": "graph test"
   },
   "dependencies": {

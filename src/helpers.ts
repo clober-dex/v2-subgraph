@@ -14,21 +14,13 @@ import {
   LatestPoolSpread,
   OpenOrder,
   PoolSpreadProfit,
-  Snapshot,
   Token,
-  TokenBalance,
-  TokenHolder,
-  VolumeSnapshot,
 } from '../generated/schema'
-import {
-  Hatchhog,
-  Hatchhog__tokenInfoResultValue0Struct,
-} from '../generated/Hatchhog/Hatchhog'
 
 import {
-  BERA_TESTNET,
+  BERA_MAIN,
   getChainId,
-  MITOSIS_TESTNET,
+  MONAD_TESTNET,
   SONIC_MAINNET,
 } from './addresses'
 
@@ -49,10 +41,6 @@ CHART_LOG_INTERVALS.set('1d', 24 * 60 * 60)
 CHART_LOG_INTERVALS.set('1w', 7 * 24 * 60 * 60)
 
 export const pricePrecision = BigInt.fromI32(2).pow(96)
-
-export function normalizeDailyTimestamp(timestamp: BigInt): BigInt {
-  return timestamp.minus(timestamp.mod(BigInt.fromI32(86400)))
-}
 
 export function encodeOrderId(
   bookId: string,
@@ -131,113 +119,32 @@ export function buildPoolSpreadProfitId(
   return intervalType.concat('-').concat(timestamp.toString())
 }
 
-export function buildTokenBalanceId(holder: Address, token: Token): string {
-  return holder.toHexString().concat('-').concat(token.id)
-}
-
 export function buildMarketCode(base: Token, quote: Token): string {
   return base.id.concat('/').concat(quote.id)
 }
 
 function getNativeTokenSymbol(chainId: BigInt): string {
-  if (chainId == BERA_TESTNET) {
-    return 'BERA'
-  } else if (chainId == MITOSIS_TESTNET) {
-    return 'MITO'
-  } else if (chainId == SONIC_MAINNET) {
+  if (chainId == SONIC_MAINNET) {
     return 'S'
+  } else if (chainId == MONAD_TESTNET) {
+    return 'MON'
+  } else if (chainId == BERA_MAIN) {
+    return 'BERA'
   } else {
     return 'ETH'
   }
 }
 
 function getNativeTokenName(chainId: BigInt): string {
-  if (chainId == BERA_TESTNET) {
-    return 'BERA Token'
-  } else if (chainId == MITOSIS_TESTNET) {
-    return 'MITO Token'
-  } else if (chainId == SONIC_MAINNET) {
+  if (chainId == SONIC_MAINNET) {
     return 'S Token'
+  } else if (chainId == MONAD_TESTNET) {
+    return 'MONAD'
+  } else if (chainId == BERA_MAIN) {
+    return 'BERA'
   } else {
     return 'Ether'
   }
-}
-
-export function getOrCreateSnapshot(timestamp: BigInt): Snapshot {
-  const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)
-  let snapshot = Snapshot.load(dailyNormalizedTimestamp.toString())
-  if (snapshot === null) {
-    snapshot = new Snapshot(dailyNormalizedTimestamp.toString())
-    snapshot.transactions = []
-    snapshot.transactionCount = BigInt.fromI32(0)
-    snapshot.wallets = []
-    snapshot.walletCount = BigInt.fromI32(0)
-    snapshot.volumeSnapshots = []
-  }
-  snapshot.save()
-  return snapshot
-}
-
-export function getOrCreateVolumeSnapshot(
-  timestamp: BigInt,
-  tokenAddress: Address,
-): VolumeSnapshot {
-  const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)
-  const key = dailyNormalizedTimestamp
-    .toString()
-    .concat('-')
-    .concat(tokenAddress.toHexString())
-  let volumeSnapshot = VolumeSnapshot.load(key)
-  const token = Token.load(tokenAddress.toHexString())
-  if (token === null) {
-    throw new Error('Token not found')
-  }
-  if (volumeSnapshot === null) {
-    volumeSnapshot = new VolumeSnapshot(key)
-    volumeSnapshot.timestamp = dailyNormalizedTimestamp
-    volumeSnapshot.token = token.id
-    volumeSnapshot.amount = BigInt.fromI32(0)
-  }
-  volumeSnapshot.save()
-  return volumeSnapshot
-}
-
-export function updateWalletsInSnapshot(
-  snapshot: Snapshot,
-  wallet: Address,
-): void {
-  let find = false
-  for (let i = 0; i < snapshot.wallets.length; i++) {
-    if (snapshot.wallets[i] == wallet.toHexString()) {
-      find = true
-      break
-    }
-  }
-  if (!find) {
-    snapshot.wallets.push(wallet.toHexString())
-    snapshot.walletCount = snapshot.walletCount.plus(BigInt.fromI32(1))
-  }
-  snapshot.save()
-}
-
-export function updateTransactionsInSnapshot(
-  snapshot: Snapshot,
-  transactionHash: Bytes,
-): void {
-  let find = false
-  for (let i = 0; i < snapshot.transactions.length; i++) {
-    if (snapshot.transactions[i] == transactionHash.toHexString()) {
-      find = true
-      break
-    }
-  }
-  if (!find) {
-    snapshot.transactions.push(transactionHash.toHexString())
-    snapshot.transactionCount = snapshot.transactionCount.plus(
-      BigInt.fromI32(1),
-    )
-  }
-  snapshot.save()
 }
 
 export function createToken(tokenAddress: Address): Token {
@@ -251,25 +158,6 @@ export function createToken(tokenAddress: Address): Token {
   }
   token.save()
   return token
-}
-
-export function createTokenBalance(token: Token, user: Address): TokenBalance {
-  const id = buildTokenBalanceId(user, token)
-  let holder = TokenHolder.load(user.toHexString())
-  if (holder == null) {
-    holder = new TokenHolder(user.toHexString())
-    holder.save()
-  }
-  let balance = TokenBalance.load(id)
-  if (balance === null) {
-    balance = new TokenBalance(id)
-    balance.token = token.id
-    balance.user = holder.id
-    balance.amount = BigInt.fromI32(0)
-    balance.updatedAt = BigInt.fromI32(0)
-  }
-  balance.save()
-  return balance
 }
 
 export function formatPrice(
@@ -433,49 +321,4 @@ export function bytesToBigIntBigEndian(bytes: Bytes): BigInt {
     value = value.times(BigInt.fromI32(256)).plus(BigInt.fromI32(bytes[i]))
   }
   return value
-}
-
-export function fetchTokenInfo(
-  hatchhog: Address,
-  token: Address,
-): Hatchhog__tokenInfoResultValue0Struct {
-  const contract = Hatchhog.bind(hatchhog)
-  const tokenInfo = contract.try_tokenInfo(token)
-  if (tokenInfo.reverted) {
-    throw new Error('Token reverted')
-  }
-  return tokenInfo.value
-}
-
-export function fetchPoolAddress(hatchhog: Address, token: Address): Address {
-  const contract = Hatchhog.bind(hatchhog)
-  const poolAddress = contract.try_computePoolAddress(token)
-  if (poolAddress.reverted) {
-    throw new Error('Pool reverted')
-  }
-  return poolAddress.value
-}
-
-export function fetchPriorMilestones(
-  hatchhog: Address,
-  token: Address,
-): BigInt[] {
-  const contract = Hatchhog.bind(hatchhog)
-  const milestones = contract.try_getPriorMilestones(token)
-  if (milestones.reverted) {
-    throw new Error('Millstones reverted')
-  }
-  return milestones.value
-}
-
-export function fetchSubsequentMilestones(
-  hatchhog: Address,
-  token: Address,
-): BigInt[] {
-  const contract = Hatchhog.bind(hatchhog)
-  const milestones = contract.try_getSubsequentMilestones(token)
-  if (milestones.reverted) {
-    throw new Error('Millstones reverted')
-  }
-  return milestones.value
 }
