@@ -18,7 +18,9 @@ import {
   Token,
   TokenBalance,
   TokenHolder,
+  TransactionSnapshot,
   VolumeSnapshot,
+  WalletSnapshot,
 } from '../generated/schema'
 import {
   Hatchhog,
@@ -168,9 +170,7 @@ export function getOrCreateSnapshot(timestamp: BigInt): Snapshot {
   let snapshot = Snapshot.load(dailyNormalizedTimestamp.toString())
   if (snapshot === null) {
     snapshot = new Snapshot(dailyNormalizedTimestamp.toString())
-    snapshot.transactions = []
     snapshot.transactionCount = BigInt.fromI32(0)
-    snapshot.wallets = []
     snapshot.walletCount = BigInt.fromI32(0)
     snapshot.volumeSnapshots = []
   }
@@ -206,17 +206,13 @@ export function updateWalletsInSnapshot(
   snapshot: Snapshot,
   wallet: Address,
 ): void {
-  let find = false
-  for (let i = 0; i < snapshot.wallets.length; i++) {
-    if (snapshot.wallets[i] == wallet.toHexString()) {
-      find = true
-      break
-    }
-  }
-  if (!find) {
-    const wallets = snapshot.wallets
-    wallets.push(wallet.toHexString())
-    snapshot.wallets = wallets
+  const key = snapshot.id.concat('-').concat(wallet.toHexString())
+  let walletSnapshot = WalletSnapshot.load(key)
+  if (walletSnapshot === null) {
+    walletSnapshot = new WalletSnapshot(key)
+    walletSnapshot.wallet = wallet.toHexString()
+    walletSnapshot.timestamp = BigInt.fromString(snapshot.id)
+    walletSnapshot.save()
     snapshot.walletCount = snapshot.walletCount.plus(BigInt.fromI32(1))
   }
   snapshot.save()
@@ -226,17 +222,13 @@ export function updateTransactionsInSnapshot(
   snapshot: Snapshot,
   transactionHash: Bytes,
 ): void {
-  let find = false
-  for (let i = 0; i < snapshot.transactions.length; i++) {
-    if (snapshot.transactions[i] == transactionHash.toHexString()) {
-      find = true
-      break
-    }
-  }
-  if (!find) {
-    const transactions = snapshot.transactions
-    transactions.push(transactionHash.toHexString())
-    snapshot.transactions = transactions
+  const key = snapshot.id.concat('-').concat(transactionHash.toHexString())
+  let transactionSnapshot = TransactionSnapshot.load(key)
+  if (transactionSnapshot === null) {
+    transactionSnapshot = new TransactionSnapshot(key)
+    transactionSnapshot.txHash = transactionHash.toHexString()
+    transactionSnapshot.timestamp = BigInt.fromString(snapshot.id)
+    transactionSnapshot.save()
     snapshot.transactionCount = snapshot.transactionCount.plus(
       BigInt.fromI32(1),
     )

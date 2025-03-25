@@ -1,8 +1,6 @@
 type Snapshot @entity {
     id: ID! # timestamp
-    transactions: [String!]!
     transactionCount: BigInt!
-    wallets: [String!]!
     walletCount: BigInt!
     volumeSnapshots: [VolumeSnapshot!]!
 }
@@ -12,6 +10,18 @@ type VolumeSnapshot @entity {
     timestamp: BigInt!
     token: Token!
     amount: BigInt!
+}
+
+type TransactionSnapshot @entity {
+    id: ID! # {timestamp}-{txHash}
+    timestamp: BigInt!
+    txHash: String!
+}
+
+type WalletSnapshot @entity {
+    id: ID! # {timestamp}-{walletAddress}
+    timestamp: BigInt!
+    wallet: String!
 }
 
 type TokenHolder @entity {
