@@ -420,7 +420,9 @@ export function handleTake(event: Take): void {
     }
   }
   if (!find) {
-    snapshot.volumeSnapshots.push(volumeSnapshot.id)
+    const volumeSnapshots = snapshot.volumeSnapshots
+    volumeSnapshots.push(volumeSnapshot.id)
+    snapshot.volumeSnapshots = volumeSnapshots
   }
   snapshot.save()
 

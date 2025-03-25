@@ -214,7 +214,9 @@ export function updateWalletsInSnapshot(
     }
   }
   if (!find) {
-    snapshot.wallets.push(wallet.toHexString())
+    const wallets = snapshot.wallets
+    wallets.push(wallet.toHexString())
+    snapshot.wallets = wallets
     snapshot.walletCount = snapshot.walletCount.plus(BigInt.fromI32(1))
   }
   snapshot.save()
@@ -232,7 +234,9 @@ export function updateTransactionsInSnapshot(
     }
   }
   if (!find) {
-    snapshot.transactions.push(transactionHash.toHexString())
+    const transactions = snapshot.transactions
+    transactions.push(transactionHash.toHexString())
+    snapshot.transactions = transactions
     snapshot.transactionCount = snapshot.transactionCount.plus(
       BigInt.fromI32(1),
     )
