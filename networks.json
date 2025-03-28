@@ -86,5 +86,27 @@
       "address": "0x0000000000000000000000000000000000000000",
       "startBlock": 2599489
     }
+  },
+  "rise-sepolia": {
+    "BookManager": {
+      "address": "0xBc6eaFe723723DED3a411b6a1089a63bc5d73568",
+      "startBlock": 7969941
+    },
+    "BookViewer": {
+      "address": "0x3e22d091F90ae759733B7CB06a6f7b440d84a425",
+      "startBlock": 7970291
+    },
+    "Controller": {
+      "address": "0x7792669BEb769c4035bdFcA4F3d794d55922B954",
+      "startBlock": 7970243
+    },
+    "Rebalancer": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 7969941
+    },
+    "SimpleOracleStrategy": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 7969941
+    }
   }
 }
