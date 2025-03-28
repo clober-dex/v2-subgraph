@@ -1,4 +1,26 @@
 {
+  "arbitrum-sepolia": {
+    "BookManager": {
+      "address": "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A",
+      "startBlock": 87385460
+    },
+    "BookViewer": {
+      "address": "0x3e22d091F90ae759733B7CB06a6f7b440d84a425",
+      "startBlock": 87392620
+    },
+    "Controller": {
+      "address": "0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0",
+      "startBlock": 87392720
+    },
+    "Rebalancer": {
+      "address": "0x30b4e9215322B5d0c290249126bCf96C2Ca8e948",
+      "startBlock": 91355350
+    },
+    "SimpleOracleStrategy": {
+      "address": "0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C",
+      "startBlock": 91355490
+    }
+  },
   "base": {
     "BookManager": {
       "address": "0x382CCccbD3b142D7DA063bF68cd0c89634767F76",
