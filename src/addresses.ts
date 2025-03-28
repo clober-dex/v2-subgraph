@@ -37,7 +37,7 @@ export function getControllerAddress(): string {
   } else if (chainId == MONAD_TESTNET) {
     return '0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0'
   } else if (chainId == ARBITRUM_SEPOLIA) {
-    return '0x7792669BEb769c4035bdFcA4F3d794d55922B954'
+    return '0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0'
   } else if (chainId == BERA_MAIN) {
     return '0xA9F92548491997eE0De26A03311535A4961EE8eb'
   } else {
