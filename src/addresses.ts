@@ -10,6 +10,7 @@ export const BASE = BigInt.fromI32(8453)
 export const MONAD_TESTNET = BigInt.fromI32(10143)
 export const ARBITRUM_SEPOLIA = BigInt.fromI32(421614)
 export const BERA_MAIN = BigInt.fromI32(80094)
+export const RISE_SEPOLIA = BigInt.fromI32(11155931)
 
 export function getChainId(): BigInt {
   const multiCall = Multicall3.bind(Address.fromString(MULTICALL3_ADDRESS))
@@ -38,6 +39,8 @@ export function getControllerAddress(): string {
     return '0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0'
   } else if (chainId == ARBITRUM_SEPOLIA) {
     return '0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0'
+  } else if (chainId == RISE_SEPOLIA) {
+    return '0x7792669BEb769c4035bdFcA4F3d794d55922B954'
   } else if (chainId == BERA_MAIN) {
     return '0xA9F92548491997eE0De26A03311535A4961EE8eb'
   } else {
@@ -55,6 +58,8 @@ export function getRebalancerAddress(): string {
     return '0x6d8fa3025b6d6604309Ca257563CcA358c0CF1AA'
   } else if (chainId == ARBITRUM_SEPOLIA) {
     return '0x30b4e9215322B5d0c290249126bCf96C2Ca8e948'
+  } else if (chainId == RISE_SEPOLIA) {
+    return '0x0000000000000000000000000000000000000000'
   } else if (chainId == BERA_MAIN) {
     return '0x0000000000000000000000000000000000000000'
   } else {
@@ -72,6 +77,8 @@ export function getSimpleOracleStrategyAddress(): string {
     return '0x9eE708876804F9416B3C1a1aad0c016dee9DD804'
   } else if (chainId == ARBITRUM_SEPOLIA) {
     return '0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C'
+  } else if (chainId == RISE_SEPOLIA) {
+    return '0x0000000000000000000000000000000000000000'
   } else if (chainId == BERA_MAIN) {
     return '0x0000000000000000000000000000000000000000'
   } else {
