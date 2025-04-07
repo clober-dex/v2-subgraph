@@ -47,6 +47,7 @@ import {
   unitToQuote,
   updateTransactionsInSnapshot,
   updateWalletsInSnapshot,
+  updateWalletVolumeSnapshot,
 } from './helpers'
 import { getControllerAddress, getRebalancerAddress } from './addresses'
 
@@ -283,6 +284,13 @@ export function handleTake(event: Take): void {
     }
     openOrder.save()
 
+    updateWalletVolumeSnapshot(
+      event.block.timestamp,
+      Address.fromString(openOrder.user),
+      Address.fromString(book.quote),
+      unitToQuote(book, newUnitFilledAmount),
+    )
+
     if (openOrder.unitAmount == openOrder.unitFilledAmount) {
       currentOrderIndex = currentOrderIndex.plus(BigInt.fromI32(1))
     }
@@ -433,6 +441,13 @@ export function handleTake(event: Take): void {
   updateTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
+  )
+
+  updateWalletVolumeSnapshot(
+    event.block.timestamp,
+    event.transaction.from,
+    Address.fromString(book.base),
+    baseTakenAmount,
   )
 }
 

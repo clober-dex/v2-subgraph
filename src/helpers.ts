@@ -21,6 +21,7 @@ import {
   TransactionSnapshot,
   VolumeSnapshot,
   WalletSnapshot,
+  WalletVolumeSnapshot,
 } from '../generated/schema'
 import {
   Hatchhog,
@@ -30,6 +31,8 @@ import {
 import {
   BERA_TESTNET,
   getChainId,
+  getUSDCAddress,
+  getWETHAddress,
   MITOSIS_TESTNET,
   SONIC_MAINNET,
 } from './addresses'
@@ -200,6 +203,44 @@ export function getOrCreateVolumeSnapshot(
   }
   volumeSnapshot.save()
   return volumeSnapshot
+}
+
+export function updateWalletVolumeSnapshot(
+  timestamp: BigInt,
+  wallet: Address,
+  token: Address,
+  amount: BigInt,
+): void {
+  const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)
+  const key = dailyNormalizedTimestamp
+    .toString()
+    .concat('-')
+    .concat(wallet.toHexString())
+  let swalletVolumeSnapshot = WalletVolumeSnapshot.load(key)
+  let ethVolume = BigInt.fromI32(0)
+  if (
+    token.toHexString() == ADDRESS_ZERO ||
+    token.toHexString() == getWETHAddress()
+  ) {
+    ethVolume = amount
+  }
+  let usdcVolume = BigInt.fromI32(0)
+  if (token.toHexString() == getUSDCAddress()) {
+    usdcVolume = amount
+  }
+
+  if (swalletVolumeSnapshot === null) {
+    swalletVolumeSnapshot = new WalletVolumeSnapshot(key)
+    swalletVolumeSnapshot.wallet = wallet.toHexString()
+    swalletVolumeSnapshot.timestamp = dailyNormalizedTimestamp
+    swalletVolumeSnapshot.ethVolume = BigInt.fromI32(0)
+    swalletVolumeSnapshot.usdcVolume = BigInt.fromI32(0)
+  }
+  swalletVolumeSnapshot.ethVolume =
+    swalletVolumeSnapshot.ethVolume.plus(ethVolume)
+  swalletVolumeSnapshot.usdcVolume =
+    swalletVolumeSnapshot.usdcVolume.plus(usdcVolume)
+  swalletVolumeSnapshot.save()
 }
 
 export function updateWalletsInSnapshot(

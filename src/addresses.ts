@@ -98,3 +98,49 @@ export function getSimpleOracleStrategyAddress(): string {
     throw new Error('Chain ID not supported')
   }
 }
+
+export function getWETHAddress(): string {
+  const chainId = getChainId()
+  if (chainId == ARBITRUM_SEPOLIA) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == BASE) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == BERA_TESTNET) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == MITOSIS_TESTNET) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == ZKSYNC_ERA) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == SONIC_MAINNET) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == MONAD_TESTNET) {
+    return '0x760AfE86e5de5fa0Ee542fc7B7B713e1c5425701'
+  } else {
+    throw new Error('Chain ID not supported')
+  }
+}
+
+export function getUSDCAddress(): string {
+  const chainId = getChainId()
+  if (chainId == ARBITRUM_SEPOLIA) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == BASE) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == BERA_TESTNET) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == MITOSIS_TESTNET) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == ZKSYNC_ERA) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == ZKSYNC_ERA_SEPOLIA) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == SONIC_MAINNET) {
+    return '0x0000000000000000000000000000000000000000'
+  } else if (chainId == MONAD_TESTNET) {
+    return '0xf817257fed379853cDe0fa4F97AB987181B1E5Ea'
+  } else {
+    throw new Error('Chain ID not supported')
+  }
+}

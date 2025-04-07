@@ -24,6 +24,15 @@ type WalletSnapshot @entity {
     wallet: String!
 }
 
+type WalletVolumeSnapshot @entity {
+    id: ID! # {timestamp}-{walletAddress}
+    timestamp: BigInt!
+    wallet: String!
+
+    ethVolume: BigInt!
+    usdcVolume: BigInt!
+}
+
 type TokenHolder @entity {
     id: ID!
     balances: [TokenBalance]! @derivedFrom(field: "user")
