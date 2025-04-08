@@ -229,6 +229,10 @@ export function updateWalletVolumeSnapshot(
     usdcVolume = amount
   }
 
+  if (ethVolume.isZero() && usdcVolume.isZero()) {
+    return
+  }
+
   if (swalletVolumeSnapshot === null) {
     swalletVolumeSnapshot = new WalletVolumeSnapshot(key)
     swalletVolumeSnapshot.wallet = wallet.toHexString()
