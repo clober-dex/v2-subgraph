@@ -48,6 +48,7 @@ import {
   updateTransactionsInSnapshot,
   updateWalletsInSnapshot,
   updateWalletVolumeSnapshot,
+  updateBookTransactionsAndTransactionsInSnapshot,
 } from './helpers'
 import { getControllerAddress, getRebalancerAddress } from './addresses'
 
@@ -188,9 +189,11 @@ export function handleMake(event: Make): void {
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.from,
   )
-  updateTransactionsInSnapshot(
+  updateBookTransactionsAndTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
+    book,
+    true,
   )
 }
 
@@ -438,9 +441,11 @@ export function handleTake(event: Take): void {
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.from,
   )
-  updateTransactionsInSnapshot(
+  updateBookTransactionsAndTransactionsInSnapshot(
     getOrCreateSnapshot(event.block.timestamp),
     event.transaction.hash,
+    book,
+    false,
   )
 
   updateWalletVolumeSnapshot(

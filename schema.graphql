@@ -12,6 +12,14 @@ type VolumeSnapshot @entity {
     amount: BigInt!
 }
 
+type BookTransactionSnapshot @entity {
+    id: ID! # {timestamp}-{bookId}
+    timestamp: BigInt!
+    book: Book!
+    makeTransactionCount: BigInt!
+    takeTransactionCount: BigInt!
+}
+
 type TransactionSnapshot @entity {
     id: ID! # {timestamp}-{txHash}
     timestamp: BigInt!

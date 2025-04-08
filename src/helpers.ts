@@ -11,6 +11,7 @@ import { ERC20SymbolBytes } from '../generated/BookManager/ERC20SymbolBytes'
 import { ERC20NameBytes } from '../generated/BookManager/ERC20NameBytes'
 import {
   Book,
+  BookTransactionSnapshot,
   LatestPoolSpread,
   OpenOrder,
   PoolSpreadProfit,
@@ -259,6 +260,52 @@ export function updateWalletsInSnapshot(
     walletSnapshot.timestamp = BigInt.fromString(snapshot.id)
     walletSnapshot.save()
     snapshot.walletCount = snapshot.walletCount.plus(BigInt.fromI32(1))
+  }
+  snapshot.save()
+}
+
+export function updateBookTransactionsAndTransactionsInSnapshot(
+  snapshot: Snapshot,
+  transactionHash: Bytes,
+  book: Book,
+  isMaker: boolean,
+): void {
+  const bookTransactionSnapshotKey = snapshot.id.concat('-').concat(book.id)
+  const bookTransactionSnapshot = BookTransactionSnapshot.load(
+    bookTransactionSnapshotKey,
+  )
+  if (bookTransactionSnapshot === null) {
+    const bookTransactionSnapshot = new BookTransactionSnapshot(
+      bookTransactionSnapshotKey,
+    )
+    bookTransactionSnapshot.book = book.id
+    bookTransactionSnapshot.timestamp = BigInt.fromString(snapshot.id)
+    bookTransactionSnapshot.makeTransactionCount = BigInt.fromI32(0)
+    bookTransactionSnapshot.takeTransactionCount = BigInt.fromI32(0)
+    bookTransactionSnapshot.save()
+  }
+
+  const transactionSnapshotKey = snapshot.id
+    .concat('-')
+    .concat(transactionHash.toHexString())
+  let transactionSnapshot = TransactionSnapshot.load(transactionSnapshotKey)
+  if (transactionSnapshot === null) {
+    transactionSnapshot = new TransactionSnapshot(transactionSnapshotKey)
+    transactionSnapshot.txHash = transactionHash.toHexString()
+    transactionSnapshot.timestamp = BigInt.fromString(snapshot.id)
+    transactionSnapshot.save()
+    snapshot.transactionCount = snapshot.transactionCount.plus(
+      BigInt.fromI32(1),
+    )
+
+    if (isMaker) {
+      bookTransactionSnapshot!.makeTransactionCount =
+        bookTransactionSnapshot!.makeTransactionCount.plus(BigInt.fromI32(1))
+    } else {
+      bookTransactionSnapshot!.takeTransactionCount =
+        bookTransactionSnapshot!.takeTransactionCount.plus(BigInt.fromI32(1))
+    }
+    bookTransactionSnapshot!.save()
   }
   snapshot.save()
 }
