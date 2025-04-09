@@ -76,6 +76,7 @@ type Book @entity {
     latestTick: BigInt!
     latestPrice: BigInt!
     latestTimestamp: BigInt!
+    createAt: BigInt!
 }
 
 type Depth @entity {

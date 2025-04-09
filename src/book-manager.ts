@@ -76,6 +76,7 @@ export function handleOpen(event: Open): void {
   book.latestTick = BigInt.zero()
   book.latestPrice = BigInt.zero()
   book.latestTimestamp = BigInt.zero()
+  book.createAt = event.block.timestamp
   book.save()
 
   updateWalletsInSnapshot(
