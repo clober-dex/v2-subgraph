@@ -284,6 +284,9 @@ export function updateBookTransactionsAndTransactionsInSnapshot(
     bookTransactionSnapshot.takeTransactionCount = BigInt.fromI32(0)
     bookTransactionSnapshot.save()
   }
+  if (bookTransactionSnapshot === null) {
+    throw new Error('BookTransactionSnapshot not found')
+  }
 
   const transactionSnapshotKey = snapshot.id
     .concat('-')
@@ -299,13 +302,13 @@ export function updateBookTransactionsAndTransactionsInSnapshot(
     )
 
     if (isMaker) {
-      bookTransactionSnapshot!.makeTransactionCount =
-        bookTransactionSnapshot!.makeTransactionCount.plus(BigInt.fromI32(1))
+      bookTransactionSnapshot.makeTransactionCount =
+        bookTransactionSnapshot.makeTransactionCount.plus(BigInt.fromI32(1))
     } else {
-      bookTransactionSnapshot!.takeTransactionCount =
-        bookTransactionSnapshot!.takeTransactionCount.plus(BigInt.fromI32(1))
+      bookTransactionSnapshot.takeTransactionCount =
+        bookTransactionSnapshot.takeTransactionCount.plus(BigInt.fromI32(1))
     }
-    bookTransactionSnapshot!.save()
+    bookTransactionSnapshot.save()
   }
   snapshot.save()
 }
