@@ -271,11 +271,11 @@ export function updateBookTransactionsAndTransactionsInSnapshot(
   isMaker: boolean,
 ): void {
   const bookTransactionSnapshotKey = snapshot.id.concat('-').concat(book.id)
-  const bookTransactionSnapshot = BookTransactionSnapshot.load(
+  let bookTransactionSnapshot = BookTransactionSnapshot.load(
     bookTransactionSnapshotKey,
   )
   if (bookTransactionSnapshot === null) {
-    const bookTransactionSnapshot = new BookTransactionSnapshot(
+    bookTransactionSnapshot = new BookTransactionSnapshot(
       bookTransactionSnapshotKey,
     )
     bookTransactionSnapshot.book = book.id
@@ -283,9 +283,6 @@ export function updateBookTransactionsAndTransactionsInSnapshot(
     bookTransactionSnapshot.makeTransactionCount = BigInt.fromI32(0)
     bookTransactionSnapshot.takeTransactionCount = BigInt.fromI32(0)
     bookTransactionSnapshot.save()
-  }
-  if (bookTransactionSnapshot === null) {
-    throw new Error('BookTransactionSnapshot not found')
   }
 
   const transactionSnapshotKey = snapshot.id
