@@ -58,8 +58,8 @@ dataSources:
     network: monad-testnet
     source:
       abi: Rebalancer
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
+      address: "0x6d8fa3025b6d6604309Ca257563CcA358c0CF1AA"
+      startBlock: 7546157
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -90,8 +90,8 @@ dataSources:
     network: monad-testnet
     source:
       abi: SimpleOracleStrategy
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
+      address: "0x9eE708876804F9416B3C1a1aad0c016dee9DD804"
+      startBlock: 7546513
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -121,7 +121,7 @@ dataSources:
     source:
       abi: VoteLockedCloberToken
       address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
+      startBlock: 3196033
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -149,7 +149,7 @@ dataSources:
     source:
       abi: Hatchhog
       address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
+      startBlock: 3196033
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
