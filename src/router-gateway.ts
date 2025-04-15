@@ -1,13 +1,9 @@
 import { BigInt } from '@graphprotocol/graph-ts'
 
 import { Swap } from '../generated/RouterGateway/RouterGateway'
-import {
-  TransactionSnapshot,
-  VolumeSnapshot,
-  WalletSnapshot,
-} from '../generated/schema'
+import { TransactionSnapshot, WalletSnapshot } from '../generated/schema'
 
-import { getOrCreateSnapshot } from './helpers'
+import { getOrCreateSnapshot, getOrCreateVolumeSnapshot } from './helpers'
 
 export function handleSwap(event: Swap): void {
   const snapshot = getOrCreateSnapshot(event.block.timestamp)
@@ -41,16 +37,12 @@ export function handleSwap(event: Swap): void {
   }
 
   // Create VolumeSnapshot
-  const volumeSnapshotId = snapshot.id
-    .concat('-')
-    .concat(event.params.inToken.toHexString())
-  let volumeSnapshot = VolumeSnapshot.load(volumeSnapshotId)
-  if (volumeSnapshot === null) {
-    volumeSnapshot = new VolumeSnapshot(volumeSnapshotId)
-    volumeSnapshot.token = event.params.inToken.toHexString()
-    volumeSnapshot.amount = event.params.amountIn
-    volumeSnapshot.save()
-  }
+  const volumeSnapshot = getOrCreateVolumeSnapshot(
+    event.block.timestamp,
+    event.params.inToken,
+  )
+  volumeSnapshot.amount = volumeSnapshot.amount.plus(event.params.amountIn)
+  volumeSnapshot.save()
 
   let find = false
   for (let i = 0; i < snapshot.volumeSnapshots.length; i++) {
