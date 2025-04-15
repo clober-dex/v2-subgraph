@@ -17,12 +17,23 @@
   },
   {
     "type": "function",
-    "name": "addRouter",
+    "name": "addRouterMethod",
     "inputs": [
-      { "name": "router", "type": "address", "internalType": "address" }
+      { "name": "router", "type": "address", "internalType": "address" },
+      { "name": "method", "type": "bytes4", "internalType": "bytes4" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "allowedRouterMethods",
+    "inputs": [
+      { "name": "", "type": "address", "internalType": "address" },
+      { "name": "", "type": "bytes4", "internalType": "bytes4" }
+    ],
+    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
+    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -32,13 +43,6 @@
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "isRouter",
-    "inputs": [{ "name": "", "type": "address", "internalType": "address" }],
-    "outputs": [{ "name": "", "type": "bool", "internalType": "bool" }],
-    "stateMutability": "view"
   },
   {
     "type": "function",
@@ -63,9 +67,10 @@
   },
   {
     "type": "function",
-    "name": "removeRouter",
+    "name": "removeRouterMethod",
     "inputs": [
-      { "name": "router", "type": "address", "internalType": "address" }
+      { "name": "router", "type": "address", "internalType": "address" },
+      { "name": "method", "type": "bytes4", "internalType": "bytes4" }
     ],
     "outputs": [],
     "stateMutability": "nonpayable"
@@ -179,26 +184,38 @@
   },
   {
     "type": "event",
-    "name": "RouterAdded",
+    "name": "RouterMethodAdded",
     "inputs": [
       {
         "name": "router",
         "type": "address",
         "indexed": true,
         "internalType": "address"
+      },
+      {
+        "name": "method",
+        "type": "bytes4",
+        "indexed": false,
+        "internalType": "bytes4"
       }
     ],
     "anonymous": false
   },
   {
     "type": "event",
-    "name": "RouterRemoved",
+    "name": "RouterMethodRemoved",
     "inputs": [
       {
         "name": "router",
         "type": "address",
         "indexed": true,
         "internalType": "address"
+      },
+      {
+        "name": "method",
+        "type": "bytes4",
+        "indexed": false,
+        "internalType": "bytes4"
       }
     ],
     "anonymous": false
@@ -242,6 +259,12 @@
         "type": "address",
         "indexed": false,
         "internalType": "address"
+      },
+      {
+        "name": "method",
+        "type": "bytes4",
+        "indexed": false,
+        "internalType": "bytes4"
       }
     ],
     "anonymous": false
@@ -277,7 +300,7 @@
   { "type": "error", "name": "FailedCall", "inputs": [] },
   { "type": "error", "name": "InvalidAmount", "inputs": [] },
   { "type": "error", "name": "InvalidInitialization", "inputs": [] },
-  { "type": "error", "name": "InvalidRouter", "inputs": [] },
+  { "type": "error", "name": "MethodNotAllowed", "inputs": [] },
   { "type": "error", "name": "NotInitializing", "inputs": [] },
   {
     "type": "error",
