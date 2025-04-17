@@ -123,12 +123,12 @@
       "startBlock": 7970243
     },
     "Rebalancer": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 7969941
+      "address": "0x552E53700042e0446C896b1803d9399ba846cF83",
+      "startBlock": 9782965
     },
     "SimpleOracleStrategy": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 7969941
+      "address": "0xa3CC662732e4ae2a2e0156859B7Fbcd57936723c",
+      "startBlock": 9782965
     }
   }
 }
