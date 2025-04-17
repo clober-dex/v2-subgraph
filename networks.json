@@ -177,6 +177,10 @@
     "Hatchhog": {
       "address": "0x0000000000000000000000000000000000000000",
       "startBlock": 3196033
+    },
+    "RouterGateway": {
+      "address": "0xfD845859628946B317A78A9250DA251114FbD846",
+      "startBlock": 12271596
     }
   },
   "zksync-era": {

@@ -187,6 +187,29 @@ dataSources:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/hatchhog.ts
+  - kind: ethereum
+    name: RouterGateway
+    network: monad-testnet
+    source:
+      abi: RouterGateway
+      address: "0x0000000000000000000000000000000000000000"
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Snapshot
+        - VolumeSnapshot
+        - TransactionSnapshot
+        - WalletSnapshot
+      abis:
+        - name: RouterGateway
+          file: ./abis/RouterGateway.json
+      eventHandlers:
+        - event: Swap(indexed address,indexed address,indexed address,uint256,uint256,address,bytes4)
+          handler: handleSwap
+      file: ./src/router-gateway.ts
 templates:
   - name: ERC20
     kind: ethereum
