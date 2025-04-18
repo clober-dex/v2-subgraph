@@ -11,10 +11,10 @@ import {
   getControllerAddress,
   getRebalancerAddress,
   getSimpleOracleStrategyAddress,
+  encodePoolVolumeAndSnapshotId,
 } from '../utils'
 import {
   baseToQuote,
-  buildPoolVolumeAndSnapshotId,
   bytesToBigIntBigEndian,
   CHART_LOG_INTERVALS,
 } from '../helpers'
@@ -44,7 +44,7 @@ export function handleRebalancerClaim(event: Claim): void {
     (event.block.timestamp.toI64() as number) / intervalInNumber,
   ) * intervalInNumber) as i64
 
-  const poolVolumeId = buildPoolVolumeAndSnapshotId(
+  const poolVolumeId = encodePoolVolumeAndSnapshotId(
     poolKey,
     intervalType,
     timestampForAcc,
@@ -101,7 +101,7 @@ export function handleUpdatePosition(event: UpdatePosition): void {
       (event.block.timestamp.toI64() as number) / intervalInNumber,
     ) * intervalInNumber) as i64
 
-    const poolSnapshotId = buildPoolVolumeAndSnapshotId(
+    const poolSnapshotId = encodePoolVolumeAndSnapshotId(
       poolKey,
       intervalType,
       timestampForAcc,

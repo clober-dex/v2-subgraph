@@ -24,17 +24,15 @@ import {
 } from '../generated/schema'
 
 import {
+  ADDRESS_ZERO,
   BERA_MAIN,
+  encodePoolSpreadProfitId,
   getChainId,
   getUSDCAddress,
   getWETHAddress,
   MONAD_TESTNET,
   SONIC_MAINNET,
 } from './utils'
-
-export const ADDRESS_ZERO = Address.fromString(
-  '0x0000000000000000000000000000000000000000',
-)
 
 export const CHART_LOG_INTERVALS = new TypedMap<string, number>()
 CHART_LOG_INTERVALS.set('1m', 60)
@@ -54,22 +52,6 @@ export const pricePrecision = BigInt.fromI32(2).pow(96)
 
 export function normalizeDailyTimestamp(timestamp: BigInt): BigInt {
   return timestamp.minus(timestamp.mod(BigInt.fromI32(86400)))
-}
-
-export function encodeOrderId(
-  bookId: string,
-  tick: BigInt,
-  orderIndex: BigInt,
-): BigInt {
-  const bookIdBigInt = BigInt.fromString(bookId)
-  const tickU24 = BigInt.fromU32((tick.toU32() << 8) >> 8)
-  return orderIndex
-    .plus(tickU24.times(BigInt.fromI32(2).pow(40)))
-    .plus(bookIdBigInt.times(BigInt.fromI32(2).pow(64)))
-}
-
-export function decodeBookIdFromOrderId(orderId: BigInt): string {
-  return orderId.div(BigInt.fromI32(2).pow(64)).toString()
 }
 
 export function getPendingAmount(openOrder: OpenOrder): BigInt {
@@ -93,52 +75,6 @@ export function unitToQuote(book: Book, unitAmount: BigInt): BigInt {
 
 export function baseToQuote(baseAmount: BigInt, price: BigInt): BigInt {
   return baseAmount.times(price).div(pricePrecision)
-}
-
-export function buildDepthId(bookId: string, tick: BigInt): string {
-  return bookId.concat('-').concat(tick.toString())
-}
-
-export function buildChartLogId(
-  base: Token,
-  quote: Token,
-  intervalType: string,
-  timestamp: i64,
-): string {
-  const marketCode = buildMarketCode(base, quote)
-  return marketCode
-    .concat('-')
-    .concat(intervalType)
-    .concat('-')
-    .concat(timestamp.toString())
-}
-
-export function buildPoolVolumeAndSnapshotId(
-  poolKey: Bytes,
-  intervalType: string,
-  timestamp: i64,
-): string {
-  return poolKey
-    .toHexString()
-    .concat('-')
-    .concat(intervalType)
-    .concat('-')
-    .concat(timestamp.toString())
-}
-
-export function buildPoolSpreadProfitId(
-  intervalType: string,
-  timestamp: i64,
-): string {
-  return intervalType.concat('-').concat(timestamp.toString())
-}
-
-export function buildTokenBalanceId(holder: Address, token: Token): string {
-  return holder.toHexString().concat('-').concat(token.id)
-}
-
-export function buildMarketCode(base: Token, quote: Token): string {
-  return base.id.concat('/').concat(quote.id)
 }
 
 function getNativeTokenSymbol(chainId: BigInt): string {
@@ -474,7 +410,7 @@ export function getPoolSpreadProfit(timestamp: BigInt): PoolSpreadProfit {
     (timestamp.toI64() as number) / intervalInNumber,
   ) * intervalInNumber) as i64
 
-  const poolSpreadProfitId = buildPoolSpreadProfitId(
+  const poolSpreadProfitId = encodePoolSpreadProfitId(
     intervalType,
     timestampForAcc,
   )

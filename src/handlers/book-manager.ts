@@ -26,16 +26,10 @@ import {
 } from '../../generated/schema'
 import { Controller } from '../../generated/BookManager/Controller'
 import {
-  ADDRESS_ZERO,
-  buildChartLogId,
-  buildDepthId,
-  buildMarketCode,
   CHART_LOG_INTERVALS,
   getOrCreateSnapshot,
   createToken,
   getOrCreateVolumeSnapshot,
-  decodeBookIdFromOrderId,
-  encodeOrderId,
   formatInvertedPrice,
   formatPrice,
   formatUnits,
@@ -49,7 +43,16 @@ import {
   updateWalletVolumeSnapshot,
   updateBookTransactionsAndTransactionsInSnapshot,
 } from '../helpers'
-import { getControllerAddress, getRebalancerAddress } from '../utils'
+import {
+  ADDRESS_ZERO,
+  getControllerAddress,
+  getRebalancerAddress,
+  encodeOrderId,
+  decodeBookIdFromOrderId,
+  encodeDepthId,
+  encodeChartLogId,
+  encodeMarketCode,
+} from '../utils'
 
 export function handleBlock(block: ethereum.Block): void {
   const latestBlockId: string = 'latest'
@@ -131,7 +134,7 @@ export function handleMake(event: Make): void {
   openOrder.save()
 
   // update depth
-  const depthId = buildDepthId(book.id, tick)
+  const depthId = encodeDepthId(book.id, tick)
   let depth = Depth.load(depthId)
   let orderIndexEntity = OrderIndex.load(depthId)
   if (depth === null) {
@@ -217,7 +220,7 @@ export function handleTake(event: Take): void {
   book.save()
 
   // update depth & open order
-  const depthId = buildDepthId(book.id, tick)
+  const depthId = encodeDepthId(book.id, tick)
   const depth = Depth.load(depthId)
   const orderIndexEntity = OrderIndex.load(depthId)
   if (depth === null || orderIndexEntity === null) {
@@ -325,13 +328,13 @@ export function handleTake(event: Take): void {
     ) * intervalInNumber) as i64
 
     // natural chart log
-    const chartLogId = buildChartLogId(
+    const chartLogId = encodeChartLogId(
       baseToken,
       quoteToken,
       intervalType,
       timestampForAcc,
     )
-    const marketCode = buildMarketCode(baseToken, quoteToken)
+    const marketCode = encodeMarketCode(baseToken, quoteToken)
     let chartLog = ChartLog.load(chartLogId)
     if (chartLog === null) {
       chartLog = new ChartLog(chartLogId)
@@ -370,13 +373,13 @@ export function handleTake(event: Take): void {
       quoteTakenAmount,
       quoteToken.decimals.toI32() as u8,
     )
-    const invertedChartLogId = buildChartLogId(
+    const invertedChartLogId = encodeChartLogId(
       quoteToken,
       baseToken,
       intervalType,
       timestampForAcc,
     )
-    const invertedMarketCode = buildMarketCode(quoteToken, baseToken)
+    const invertedMarketCode = encodeMarketCode(quoteToken, baseToken)
     let invertedChartLog = ChartLog.load(invertedChartLogId)
     if (invertedChartLog === null) {
       invertedChartLog = new ChartLog(invertedChartLogId)
@@ -496,7 +499,7 @@ export function handleCancel(event: Cancel): void {
   const unitPendingAmount = getPendingAmount(openOrder)
 
   // update depth
-  const depthId = buildDepthId(book.id, openOrder.tick)
+  const depthId = encodeDepthId(book.id, openOrder.tick)
   const depth = Depth.load(depthId)
   if (depth === null) {
     log.error('[CANCEL] Depth not found: {}', [depthId])

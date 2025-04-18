@@ -2,6 +2,10 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 
 import { Multicall3 } from '../../generated/BookManager/Multicall3'
 
+export const ADDRESS_ZERO = Address.fromString(
+  '0x0000000000000000000000000000000000000000',
+)
+
 export const MULTICALL3_ADDRESS = Address.fromString(
   '0xcA11bde05977b3631167028862bE2a173976CA11',
 )
