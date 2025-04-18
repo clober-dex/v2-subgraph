@@ -1,4 +1,4 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt, TypedMap } from '@graphprotocol/graph-ts'
 
 import { Multicall3 } from '../../generated/BookManager/Multicall3'
 
@@ -127,5 +127,43 @@ export function getUSDCAddress(): Address {
     return Address.fromString('0x0000000000000000000000000000000000000000')
   } else {
     throw new Error('Chain ID not supported')
+  }
+}
+
+export const CHART_LOG_INTERVALS = new TypedMap<string, number>()
+CHART_LOG_INTERVALS.set('1m', 60)
+CHART_LOG_INTERVALS.set('3m', 3 * 60)
+CHART_LOG_INTERVALS.set('5m', 5 * 60)
+CHART_LOG_INTERVALS.set('10m', 10 * 60)
+CHART_LOG_INTERVALS.set('15m', 15 * 60)
+CHART_LOG_INTERVALS.set('30m', 30 * 60)
+CHART_LOG_INTERVALS.set('1h', 60 * 60)
+CHART_LOG_INTERVALS.set('2h', 2 * 60 * 60)
+CHART_LOG_INTERVALS.set('4h', 4 * 60 * 60)
+CHART_LOG_INTERVALS.set('6h', 6 * 60 * 60)
+CHART_LOG_INTERVALS.set('1d', 24 * 60 * 60)
+CHART_LOG_INTERVALS.set('1w', 7 * 24 * 60 * 60)
+
+export function getNativeTokenSymbol(chainId: BigInt): string {
+  if (chainId == SONIC_MAINNET) {
+    return 'S'
+  } else if (chainId == MONAD_TESTNET) {
+    return 'MON'
+  } else if (chainId == BERA_MAIN) {
+    return 'BERA'
+  } else {
+    return 'ETH'
+  }
+}
+
+export function getNativeTokenName(chainId: BigInt): string {
+  if (chainId == SONIC_MAINNET) {
+    return 'S Token'
+  } else if (chainId == MONAD_TESTNET) {
+    return 'MONAD'
+  } else if (chainId == BERA_MAIN) {
+    return 'BERA'
+  } else {
+    return 'Ether'
   }
 }

@@ -12,12 +12,10 @@ import {
   getRebalancerAddress,
   getSimpleOracleStrategyAddress,
   encodePoolVolumeAndSnapshotId,
-} from '../utils'
-import {
   baseToQuote,
-  bytesToBigIntBigEndian,
   CHART_LOG_INTERVALS,
-} from '../helpers'
+  bytesToBigIntBigEndian,
+} from '../utils'
 
 export function handleRebalancerClaim(event: Claim): void {
   const controller = Controller.bind(getControllerAddress())

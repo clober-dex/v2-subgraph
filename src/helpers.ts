@@ -1,10 +1,4 @@
-import {
-  Address,
-  BigDecimal,
-  BigInt,
-  Bytes,
-  TypedMap,
-} from '@graphprotocol/graph-ts'
+import { Address, BigDecimal, BigInt, Bytes } from '@graphprotocol/graph-ts'
 
 import { ERC20 } from '../generated/BookManager/ERC20'
 import { ERC20SymbolBytes } from '../generated/BookManager/ERC20SymbolBytes'
@@ -13,7 +7,6 @@ import {
   Book,
   BookTransactionSnapshot,
   LatestPoolSpread,
-  OpenOrder,
   PoolSpreadProfit,
   Snapshot,
   Token,
@@ -25,81 +18,15 @@ import {
 
 import {
   ADDRESS_ZERO,
-  BERA_MAIN,
+  CHART_LOG_INTERVALS,
   encodePoolSpreadProfitId,
   getChainId,
+  getNativeTokenName,
+  getNativeTokenSymbol,
   getUSDCAddress,
   getWETHAddress,
-  MONAD_TESTNET,
-  SONIC_MAINNET,
 } from './utils'
-
-export const CHART_LOG_INTERVALS = new TypedMap<string, number>()
-CHART_LOG_INTERVALS.set('1m', 60)
-CHART_LOG_INTERVALS.set('3m', 3 * 60)
-CHART_LOG_INTERVALS.set('5m', 5 * 60)
-CHART_LOG_INTERVALS.set('10m', 10 * 60)
-CHART_LOG_INTERVALS.set('15m', 15 * 60)
-CHART_LOG_INTERVALS.set('30m', 30 * 60)
-CHART_LOG_INTERVALS.set('1h', 60 * 60)
-CHART_LOG_INTERVALS.set('2h', 2 * 60 * 60)
-CHART_LOG_INTERVALS.set('4h', 4 * 60 * 60)
-CHART_LOG_INTERVALS.set('6h', 6 * 60 * 60)
-CHART_LOG_INTERVALS.set('1d', 24 * 60 * 60)
-CHART_LOG_INTERVALS.set('1w', 7 * 24 * 60 * 60)
-
-export const pricePrecision = BigInt.fromI32(2).pow(96)
-
-export function normalizeDailyTimestamp(timestamp: BigInt): BigInt {
-  return timestamp.minus(timestamp.mod(BigInt.fromI32(86400)))
-}
-
-export function getPendingAmount(openOrder: OpenOrder): BigInt {
-  return openOrder.unitOpenAmount.plus(openOrder.unitClaimableAmount)
-}
-
-export function unitToBase(
-  book: Book,
-  unitAmount: BigInt,
-  price: BigInt,
-): BigInt {
-  if (price.isZero()) {
-    return BigInt.fromI32(0)
-  }
-  return unitAmount.times(book.unitSize).times(pricePrecision).div(price)
-}
-
-export function unitToQuote(book: Book, unitAmount: BigInt): BigInt {
-  return unitAmount.times(book.unitSize)
-}
-
-export function baseToQuote(baseAmount: BigInt, price: BigInt): BigInt {
-  return baseAmount.times(price).div(pricePrecision)
-}
-
-function getNativeTokenSymbol(chainId: BigInt): string {
-  if (chainId == SONIC_MAINNET) {
-    return 'S'
-  } else if (chainId == MONAD_TESTNET) {
-    return 'MON'
-  } else if (chainId == BERA_MAIN) {
-    return 'BERA'
-  } else {
-    return 'ETH'
-  }
-}
-
-function getNativeTokenName(chainId: BigInt): string {
-  if (chainId == SONIC_MAINNET) {
-    return 'S Token'
-  } else if (chainId == MONAD_TESTNET) {
-    return 'MONAD'
-  } else if (chainId == BERA_MAIN) {
-    return 'BERA'
-  } else {
-    return 'Ether'
-  }
-}
+import { normalizeDailyTimestamp } from './utils/math'
 
 export function getOrCreateSnapshot(timestamp: BigInt): Snapshot {
   const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)
@@ -270,58 +197,6 @@ export function createToken(tokenAddress: Address): Token {
   return token
 }
 
-export function formatPrice(
-  price: BigInt,
-  baseDecimals: BigInt,
-  quoteDecimals: BigInt,
-): BigDecimal {
-  return BigDecimal.fromString(price.toString())
-    .div(pricePrecision.toBigDecimal())
-    .times(
-      BigDecimal.fromString(
-        BigInt.fromI32(10)
-          .pow(baseDecimals.toI32() as u8)
-          .toString(),
-      ),
-    )
-    .div(
-      BigDecimal.fromString(
-        BigInt.fromI32(10)
-          .pow(quoteDecimals.toI32() as u8)
-          .toString(),
-      ),
-    )
-}
-
-export function formatInvertedPrice(
-  price: BigInt,
-  baseDecimals: BigInt,
-  quoteDecimals: BigInt,
-): BigDecimal {
-  if (price.isZero()) {
-    return BigDecimal.fromString('0')
-  }
-  return BigDecimal.fromString('1').div(
-    formatPrice(price, baseDecimals, quoteDecimals),
-  )
-}
-
-export function formatUnits(
-  amount: BigInt,
-  decimals: u8 = 18 as u8,
-): BigDecimal {
-  return BigDecimal.fromString(amount.toString()).div(
-    BigDecimal.fromString(BigInt.fromI32(10).pow(decimals).toString()),
-  )
-}
-
-export function isNullEthValue(value: string): boolean {
-  return (
-    value ==
-    '0x0000000000000000000000000000000000000000000000000000000000000001'
-  )
-}
-
 export function fetchTokenSymbol(
   tokenAddress: Address,
   chainId: BigInt,
@@ -339,7 +214,7 @@ export function fetchTokenSymbol(
     const symbolResultBytes = contractSymbolBytes.try_symbol()
     if (!symbolResultBytes.reverted) {
       // for broken pairs that have no symbol function exposed
-      if (!isNullEthValue(symbolResultBytes.value.toHexString())) {
+      if (!isNullValue(symbolResultBytes.value.toHexString())) {
         symbolValue = symbolResultBytes.value.toString()
       }
     }
@@ -364,7 +239,7 @@ export function fetchTokenName(tokenAddress: Address, chainId: BigInt): string {
     const nameResultBytes = contractNameBytes.try_name()
     if (!nameResultBytes.reverted) {
       // for broken exchanges that have no name function exposed
-      if (!isNullEthValue(nameResultBytes.value.toHexString())) {
+      if (!isNullValue(nameResultBytes.value.toHexString())) {
         nameValue = nameResultBytes.value.toString()
       }
     }
@@ -425,10 +300,9 @@ export function getPoolSpreadProfit(timestamp: BigInt): PoolSpreadProfit {
   return poolSpreadProfit as PoolSpreadProfit
 }
 
-export function bytesToBigIntBigEndian(bytes: Bytes): BigInt {
-  let value = BigInt.fromI32(0)
-  for (let i = 0; i < bytes.length; i++) {
-    value = value.times(BigInt.fromI32(256)).plus(BigInt.fromI32(bytes[i]))
-  }
-  return value
+function isNullValue(value: string): boolean {
+  return (
+    value ==
+    '0x0000000000000000000000000000000000000000000000000000000000000001'
+  )
 }
