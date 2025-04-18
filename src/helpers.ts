@@ -17,16 +17,10 @@ import {
   ADDRESS_ZERO,
   CHART_LOG_INTERVALS,
   encodePoolSpreadProfitId,
-  getChainId,
   getUSDCAddress,
   getWETHAddress,
   normalizeDailyTimestamp,
 } from './utils'
-import {
-  fetchTokenSymbol,
-  fetchTokenName,
-  fetchTokenDecimals,
-} from './blockchain'
 
 export function getOrCreateSnapshot(timestamp: BigInt): Snapshot {
   const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)
@@ -182,19 +176,6 @@ export function updateTransactionsInSnapshot(
     )
   }
   snapshot.save()
-}
-
-export function createToken(tokenAddress: Address): Token {
-  const chainId = getChainId()
-  let token = Token.load(tokenAddress.toHexString())
-  if (token === null) {
-    token = new Token(tokenAddress.toHexString())
-    token.symbol = fetchTokenSymbol(tokenAddress, chainId)
-    token.name = fetchTokenName(tokenAddress, chainId)
-    token.decimals = fetchTokenDecimals(tokenAddress)
-  }
-  token.save()
-  return token
 }
 
 export function getLatestPoolSpread(): LatestPoolSpread {

@@ -26,7 +26,6 @@ import {
 } from '../../generated/schema'
 import {
   getOrCreateSnapshot,
-  createToken,
   getOrCreateVolumeSnapshot,
   getLatestPoolSpread,
   getPoolSpreadProfit,
@@ -52,6 +51,7 @@ import {
   encodeMarketCode,
   tickToPrice,
 } from '../utils'
+import { loadOrCreateToken } from '../repositories'
 
 export function handleBlock(block: ethereum.Block): void {
   const latestBlockId: string = 'latest'
@@ -65,8 +65,8 @@ export function handleBlock(block: ethereum.Block): void {
 }
 
 export function handleOpen(event: Open): void {
-  const base = createToken(event.params.base)
-  const quote = createToken(event.params.quote)
+  const base = loadOrCreateToken(event.params.base)
+  const quote = loadOrCreateToken(event.params.quote)
   const book = new Book(event.params.id.toString())
   book.base = base.id
   book.quote = quote.id
