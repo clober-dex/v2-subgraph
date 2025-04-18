@@ -50,8 +50,6 @@ dataSources:
           handler: handleClaim
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      blockHandlers:
-        - handler: handleBlock
       file: ./src/book-manager.ts
   - kind: ethereum
     name: Rebalancer
@@ -116,78 +114,6 @@ dataSources:
           handler: handleUpdatePosition
       file: ./src/pool.ts
   - kind: ethereum
-    name: VoteLockedCloberToken
-    network: monad-testnet
-    source:
-      abi: VoteLockedCloberToken
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 3196033
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - VCLOB
-      abis:
-        - name: VoteLockedCloberToken
-          file: ./abis/VoteLockedCloberToken.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
-        - name: Multicall3
-          file: ./abis/Multicall3.json
-      eventHandlers:
-        - event: Transfer(indexed uint32,indexed address,indexed address,uint256)
-          handler: handleVCLOBTransfer
-      file: ./src/governance.ts
-  - kind: ethereum
-    name: Hatchhog
-    network: monad-testnet
-    source:
-      abi: Hatchhog
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 3196033
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - Token
-        - Hatchhog
-        - HogToken
-        - OpenOrder
-        - Book
-        - LatestBlock
-      abis:
-        - name: Hatchhog
-          file: ./abis/Hatchhog.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
-        - name: Multicall3
-          file: ./abis/Multicall3.json
-      eventHandlers:
-        - event: Hatch(indexed address,indexed address,indexed address,uint256,string)
-          handler: handleHatch
-          receipt: true
-        - event: Migrate(indexed address,indexed address,uint256,uint256,uint256)
-          handler: handleMigrate
-        - event: SetFeeReceiver(address)
-          handler: handleSetFeeReceiver
-        - event: SetMigrationFeeRate(uint24)
-          handler: handleSetMigrationFeeRate
-        - event: SetAchievementFeeRate(uint24)
-          handler: handleSetAchievementFeeRate
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
-      file: ./src/hatchhog.ts
-  - kind: ethereum
     name: RouterGateway
     network: monad-testnet
     source:
@@ -210,26 +136,3 @@ dataSources:
         - event: Swap(indexed address,indexed address,indexed address,uint256,uint256,address,bytes4)
           handler: handleSwap
       file: ./src/router-gateway.ts
-templates:
-  - name: ERC20
-    kind: ethereum
-    network: monad-testnet
-    source:
-      abi: ERC20
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      file: ./src/token.ts
-      entities:
-        - Token
-        - TokenHolder
-        - TokenBalance
-      abis:
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: Multicall3
-          file: ./abis/Multicall3.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,uint256)
-          handler: handleTransfer

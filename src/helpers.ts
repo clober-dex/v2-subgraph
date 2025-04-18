@@ -17,24 +17,18 @@ import {
   PoolSpreadProfit,
   Snapshot,
   Token,
-  TokenBalance,
-  TokenHolder,
   TransactionSnapshot,
   VolumeSnapshot,
   WalletSnapshot,
   WalletVolumeSnapshot,
 } from '../generated/schema'
-import {
-  Hatchhog,
-  Hatchhog__tokenInfoResultValue0Struct,
-} from '../generated/Hatchhog/Hatchhog'
 
 import {
-  BERA_TESTNET,
+  BERA_MAIN,
   getChainId,
   getUSDCAddress,
   getWETHAddress,
-  MITOSIS_TESTNET,
+  MONAD_TESTNET,
   SONIC_MAINNET,
 } from './addresses'
 
@@ -146,24 +140,24 @@ export function buildMarketCode(base: Token, quote: Token): string {
 }
 
 function getNativeTokenSymbol(chainId: BigInt): string {
-  if (chainId == BERA_TESTNET) {
-    return 'BERA'
-  } else if (chainId == MITOSIS_TESTNET) {
-    return 'MITO'
-  } else if (chainId == SONIC_MAINNET) {
+  if (chainId == SONIC_MAINNET) {
     return 'S'
+  } else if (chainId == MONAD_TESTNET) {
+    return 'MON'
+  } else if (chainId == BERA_MAIN) {
+    return 'BERA'
   } else {
     return 'ETH'
   }
 }
 
 function getNativeTokenName(chainId: BigInt): string {
-  if (chainId == BERA_TESTNET) {
-    return 'BERA Token'
-  } else if (chainId == MITOSIS_TESTNET) {
-    return 'MITO Token'
-  } else if (chainId == SONIC_MAINNET) {
+  if (chainId == SONIC_MAINNET) {
     return 'S Token'
+  } else if (chainId == MONAD_TESTNET) {
+    return 'MONAD'
+  } else if (chainId == BERA_MAIN) {
+    return 'BERA'
   } else {
     return 'Ether'
   }
@@ -341,25 +335,6 @@ export function createToken(tokenAddress: Address): Token {
   return token
 }
 
-export function createTokenBalance(token: Token, user: Address): TokenBalance {
-  const id = buildTokenBalanceId(user, token)
-  let holder = TokenHolder.load(user.toHexString())
-  if (holder == null) {
-    holder = new TokenHolder(user.toHexString())
-    holder.save()
-  }
-  let balance = TokenBalance.load(id)
-  if (balance === null) {
-    balance = new TokenBalance(id)
-    balance.token = token.id
-    balance.user = holder.id
-    balance.amount = BigInt.fromI32(0)
-    balance.updatedAt = BigInt.fromI32(0)
-  }
-  balance.save()
-  return balance
-}
-
 export function formatPrice(
   price: BigInt,
   baseDecimals: BigInt,
@@ -521,49 +496,4 @@ export function bytesToBigIntBigEndian(bytes: Bytes): BigInt {
     value = value.times(BigInt.fromI32(256)).plus(BigInt.fromI32(bytes[i]))
   }
   return value
-}
-
-export function fetchTokenInfo(
-  hatchhog: Address,
-  token: Address,
-): Hatchhog__tokenInfoResultValue0Struct {
-  const contract = Hatchhog.bind(hatchhog)
-  const tokenInfo = contract.try_tokenInfo(token)
-  if (tokenInfo.reverted) {
-    throw new Error('Token reverted')
-  }
-  return tokenInfo.value
-}
-
-export function fetchPoolAddress(hatchhog: Address, token: Address): Address {
-  const contract = Hatchhog.bind(hatchhog)
-  const poolAddress = contract.try_computePoolAddress(token)
-  if (poolAddress.reverted) {
-    throw new Error('Pool reverted')
-  }
-  return poolAddress.value
-}
-
-export function fetchPriorMilestones(
-  hatchhog: Address,
-  token: Address,
-): BigInt[] {
-  const contract = Hatchhog.bind(hatchhog)
-  const milestones = contract.try_getPriorMilestones(token)
-  if (milestones.reverted) {
-    throw new Error('Millstones reverted')
-  }
-  return milestones.value
-}
-
-export function fetchSubsequentMilestones(
-  hatchhog: Address,
-  token: Address,
-): BigInt[] {
-  const contract = Hatchhog.bind(hatchhog)
-  const milestones = contract.try_getSubsequentMilestones(token)
-  if (milestones.reverted) {
-    throw new Error('Millstones reverted')
-  }
-  return milestones.value
 }

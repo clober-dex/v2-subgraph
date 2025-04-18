@@ -1,34 +1,4 @@
 {
-  "localhost": {
-    "BookManager": {
-      "address": "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A",
-      "startBlock": 87385460
-    },
-    "BookViewer": {
-      "address": "0x3e22d091F90ae759733B7CB06a6f7b440d84a425",
-      "startBlock": 87392620
-    },
-    "Controller": {
-      "address": "0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0",
-      "startBlock": 87392720
-    },
-    "Rebalancer": {
-      "address": "0x30b4e9215322B5d0c290249126bCf96C2Ca8e948",
-      "startBlock": 91355350
-    },
-    "SimpleOracleStrategy": {
-      "address": "0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C",
-      "startBlock": 91355490
-    },
-    "VoteLockedCloberToken": {
-      "address": "0xA8d4E6BC755b3ed8DCE2FaFE4104Bdad645763A5",
-      "startBlock": 97248790
-    },
-    "Hatchhog": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 97248790
-    }
-  },
   "arbitrum-sepolia": {
     "BookManager": {
       "address": "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A",
@@ -49,14 +19,6 @@
     "SimpleOracleStrategy": {
       "address": "0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C",
       "startBlock": 91355490
-    },
-    "VoteLockedCloberToken": {
-      "address": "0xA8d4E6BC755b3ed8DCE2FaFE4104Bdad645763A5",
-      "startBlock": 97248790
-    },
-    "Hatchhog": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 97248790
     }
   },
   "base": {
@@ -79,74 +41,6 @@
     "SimpleOracleStrategy": {
       "address": "0x44E550089da3A49488794B3CB761288821B7e5E0",
       "startBlock": 26199246
-    },
-    "VoteLockedCloberToken": {
-      "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
-      "startBlock": 23040650
-    },
-    "Hatchhog": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 23040650
-    }
-  },
-  "berachain-bartio": {
-    "BookManager": {
-      "address": "0x874b1B795993653fbFC3f1c1fc0469214cC9F4A5",
-      "startBlock": 3310440
-    },
-    "BookViewer": {
-      "address": "0x5C91A02B8B5D10597fc6cA23faF56F9718D1feD0",
-      "startBlock": 3310440
-    },
-    "Controller": {
-      "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
-      "startBlock": 3310440
-    },
-    "Rebalancer": {
-      "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
-      "startBlock": 3310440
-    },
-    "SimpleOracleStrategy": {
-      "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
-      "startBlock": 3310440
-    },
-    "VoteLockedCloberToken": {
-      "address": "0x1A0E22870dE507c140B7C765a04fCCd429B8343F",
-      "startBlock": 3310440
-    },
-    "Hatchhog": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 3310440
-    }
-  },
-  "mitosis-testnet": {
-    "BookManager": {
-      "address": "0x874b1B795993653fbFC3f1c1fc0469214cC9F4A5",
-      "startBlock": 254760
-    },
-    "BookViewer": {
-      "address": "0x5C91A02B8B5D10597fc6cA23faF56F9718D1feD0",
-      "startBlock": 254760
-    },
-    "Controller": {
-      "address": "0x6ef1c5D4cB1ebcC24d4BD7eB1b4467F26B6F2C1e",
-      "startBlock": 254760
-    },
-    "Rebalancer": {
-      "address": "0x6A0b87D6b74F7D5C92722F6a11714DBeDa9F3895",
-      "startBlock": 254760
-    },
-    "SimpleOracleStrategy": {
-      "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
-      "startBlock": 254760
-    },
-    "VoteLockedCloberToken": {
-      "address": "0x9092e5f62b27c3eD78feB24A0F2ad6474D26DdA5",
-      "startBlock": 254760
-    },
-    "Hatchhog": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 254760
     }
   },
   "monad-testnet": {
@@ -170,45 +64,9 @@
       "address": "0x9eE708876804F9416B3C1a1aad0c016dee9DD804",
       "startBlock": 7546513
     },
-    "VoteLockedCloberToken": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 3196033
-    },
-    "Hatchhog": {
-      "address": "0x0000000000000000000000000000000000000000",
-      "startBlock": 3196033
-    },
     "RouterGateway": {
       "address": "0xfD845859628946B317A78A9250DA251114FbD846",
       "startBlock": 12271596
-    }
-  },
-  "zksync-era": {
-    "BookManager": {
-      "address": "0xAc6AdB2727F99C309acd511D942c0b2812e03614",
-      "startBlock": 43525520
-    },
-    "BookViewer": {
-      "address": "0x13E8F7b988013729EcF00b0A3F8e0E47915aA893",
-      "startBlock": 43525520
-    },
-    "Controller": {
-      "address": "0x9aF80CC61AAd734604f139A53E22c56Cdbf9a158",
-      "startBlock": 43525520
-    }
-  },
-  "zksync-era-sepolia": {
-    "BookManager": {
-      "address": "0xe59109Be1c74331E34BF938783a8a92Fd8499383",
-      "startBlock": 2435370
-    },
-    "BookViewer": {
-      "address": "0x6ec59B711B5E813731410A66397Bb3B67c7b1b1A",
-      "startBlock": 2435440
-    },
-    "Controller": {
-      "address": "0xA253A7c6C26E0a6E7eAbaAbCD8b1cD43A2468c48",
-      "startBlock": 2435440
     }
   },
   "sonic-mainnet": {
@@ -231,14 +89,50 @@
     "SimpleOracleStrategy": {
       "address": "0xdd30f831bEB51fBF33E3D579e5529d3B1495554f",
       "startBlock": 6335712
+    }
+  },
+  "berachain-mainnet": {
+    "BookManager": {
+      "address": "0xDED58e263087f5B45d878BD9CF599B7A1a75D1E4",
+      "startBlock": 2599489
     },
-    "VoteLockedCloberToken": {
-      "address": "0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337",
-      "startBlock": 297190
+    "BookViewer": {
+      "address": "0x4abb86f499f53e2b1F52302b2Ba7BbB0a90a49A8",
+      "startBlock": 2600021
     },
-    "Hatchhog": {
-      "address": "0x7b5156e67697fFF104DE1bB07f6c4d342d815069",
-      "startBlock": 1730827
+    "Controller": {
+      "address": "0xA9F92548491997eE0De26A03311535A4961EE8eb",
+      "startBlock": 2600021
+    },
+    "Rebalancer": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 2599489
+    },
+    "SimpleOracleStrategy": {
+      "address": "0x0000000000000000000000000000000000000000",
+      "startBlock": 2599489
+    }
+  },
+  "rise-sepolia": {
+    "BookManager": {
+      "address": "0xBc6eaFe723723DED3a411b6a1089a63bc5d73568",
+      "startBlock": 7969941
+    },
+    "BookViewer": {
+      "address": "0x3e22d091F90ae759733B7CB06a6f7b440d84a425",
+      "startBlock": 7970291
+    },
+    "Controller": {
+      "address": "0x7792669BEb769c4035bdFcA4F3d794d55922B954",
+      "startBlock": 7970243
+    },
+    "Rebalancer": {
+      "address": "0x552E53700042e0446C896b1803d9399ba846cF83",
+      "startBlock": 9782965
+    },
+    "SimpleOracleStrategy": {
+      "address": "0xa3CC662732e4ae2a2e0156859B7Fbcd57936723c",
+      "startBlock": 9782965
     }
   }
 }
