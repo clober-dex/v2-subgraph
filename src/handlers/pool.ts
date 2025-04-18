@@ -1,24 +1,23 @@
 import { BigInt } from '@graphprotocol/graph-ts'
 
-import { Claim, Rebalancer } from '../generated/Rebalancer/Rebalancer'
+import { Claim, Rebalancer } from '../../generated/Rebalancer/Rebalancer'
 import {
   SimpleOracleStrategy,
   UpdatePosition,
-} from '../generated/SimpleOracleStrategy/SimpleOracleStrategy'
-import { PoolSnapshot, PoolVolume } from '../generated/schema'
-import { Controller } from '../generated/Rebalancer/Controller'
-
+} from '../../generated/SimpleOracleStrategy/SimpleOracleStrategy'
+import { PoolSnapshot, PoolVolume } from '../../generated/schema'
+import { Controller } from '../../generated/Rebalancer/Controller'
 import {
   getControllerAddress,
   getRebalancerAddress,
   getSimpleOracleStrategyAddress,
-} from './utils'
+} from '../utils'
 import {
   baseToQuote,
   buildPoolVolumeAndSnapshotId,
   bytesToBigIntBigEndian,
   CHART_LOG_INTERVALS,
-} from './helpers'
+} from '../helpers'
 
 export function handleRebalancerClaim(event: Claim): void {
   const controller = Controller.bind(getControllerAddress())

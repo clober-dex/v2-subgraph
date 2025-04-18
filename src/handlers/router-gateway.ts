@@ -1,11 +1,10 @@
-import { Swap } from '../generated/RouterGateway/RouterGateway'
-
+import { Swap } from '../../generated/RouterGateway/RouterGateway'
 import {
   getOrCreateSnapshot,
   getOrCreateVolumeSnapshot,
   updateTransactionsInSnapshot,
   updateWalletsInSnapshot,
-} from './helpers'
+} from '../helpers'
 
 export function handleSwap(event: Swap): void {
   const snapshot = getOrCreateSnapshot(event.block.timestamp)

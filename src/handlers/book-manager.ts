@@ -14,7 +14,7 @@ import {
   Open,
   Take,
   Transfer,
-} from '../generated/BookManager/BookManager'
+} from '../../generated/BookManager/BookManager'
 import {
   Book,
   ChartLog,
@@ -23,9 +23,8 @@ import {
   OpenOrder,
   OrderIndex,
   Token,
-} from '../generated/schema'
-import { Controller } from '../generated/BookManager/Controller'
-
+} from '../../generated/schema'
+import { Controller } from '../../generated/BookManager/Controller'
 import {
   ADDRESS_ZERO,
   buildChartLogId,
@@ -49,8 +48,8 @@ import {
   updateWalletsInSnapshot,
   updateWalletVolumeSnapshot,
   updateBookTransactionsAndTransactionsInSnapshot,
-} from './helpers'
-import { getControllerAddress, getRebalancerAddress } from './utils'
+} from '../helpers'
+import { getControllerAddress, getRebalancerAddress } from '../utils'
 
 export function handleBlock(block: ethereum.Block): void {
   const latestBlockId: string = 'latest'
