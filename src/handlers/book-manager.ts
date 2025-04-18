@@ -24,7 +24,6 @@ import {
   OrderIndex,
   Token,
 } from '../../generated/schema'
-import { Controller } from '../../generated/BookManager/Controller'
 import {
   getOrCreateSnapshot,
   createToken,
@@ -45,13 +44,13 @@ import {
   getPendingAmount,
   unitToBase,
   unitToQuote,
-  getControllerAddress,
   getRebalancerAddress,
   encodeOrderId,
   decodeBookIdFromOrderId,
   encodeDepthId,
   encodeChartLogId,
   encodeMarketCode,
+  tickToPrice,
 } from '../utils'
 
 export function handleBlock(block: ethereum.Block): void {
@@ -97,12 +96,11 @@ export function handleMake(event: Make): void {
     log.error('[MAKE] Book not found: {}', [event.params.bookId.toString()])
     return
   }
-  const controller = Controller.bind(getControllerAddress())
   const user = event.params.user
   const tick = BigInt.fromI32(event.params.tick)
   const orderIndex = event.params.orderIndex
   const unitAmount = event.params.unit
-  const price = controller.toPrice(tick.toI32())
+  const price = tickToPrice(tick.toI32())
   const baseAmount = unitToBase(book, unitAmount, price)
   const quoteAmount = unitToQuote(book, unitAmount)
   const orderId = encodeOrderId(book.id, tick, orderIndex)
@@ -204,7 +202,6 @@ export function handleTake(event: Take): void {
   if (event.params.unit.isZero()) {
     return
   }
-  const controller = Controller.bind(getControllerAddress())
 
   // update book
   const book = Book.load(event.params.bookId.toString())
@@ -213,7 +210,7 @@ export function handleTake(event: Take): void {
     return
   }
   const tick = BigInt.fromI32(event.params.tick)
-  const price = controller.toPrice(tick.toI32())
+  const price = tickToPrice(tick.toI32())
   book.latestTick = tick
   book.latestPrice = price
   book.latestTimestamp = event.block.timestamp

@@ -6,27 +6,25 @@ import {
   UpdatePosition,
 } from '../../generated/SimpleOracleStrategy/SimpleOracleStrategy'
 import { PoolSnapshot, PoolVolume } from '../../generated/schema'
-import { Controller } from '../../generated/Rebalancer/Controller'
 import {
-  getControllerAddress,
   getRebalancerAddress,
   getSimpleOracleStrategyAddress,
   encodePoolVolumeAndSnapshotId,
   baseToQuote,
   CHART_LOG_INTERVALS,
   bytesToBigIntBigEndian,
+  tickToPrice,
 } from '../utils'
 
 export function handleRebalancerClaim(event: Claim): void {
-  const controller = Controller.bind(getControllerAddress())
   const strategy = SimpleOracleStrategy.bind(getSimpleOracleStrategyAddress())
 
   const poolKey = event.params.key
   const currencyAClaimedAmount = event.params.claimedAmountA
   const currencyBClaimedAmount = event.params.claimedAmountB
   const strategyPrice = strategy.getPosition(poolKey)
-  const bookAPrice = controller.toPrice(strategyPrice.tickA)
-  const bookBPrice = controller.toPrice(strategyPrice.tickB)
+  const bookAPrice = tickToPrice(strategyPrice.tickA)
+  const bookBPrice = tickToPrice(strategyPrice.tickB)
 
   const bookACurrencyAVolume = baseToQuote(currencyBClaimedAmount, bookAPrice)
   const bookACurrencyBVolume = currencyBClaimedAmount
