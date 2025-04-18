@@ -50,7 +50,7 @@ import {
   updateWalletVolumeSnapshot,
   updateBookTransactionsAndTransactionsInSnapshot,
 } from './helpers'
-import { getControllerAddress, getRebalancerAddress } from './addresses'
+import { getControllerAddress, getRebalancerAddress } from './utils'
 
 export function handleBlock(block: ethereum.Block): void {
   const latestBlockId: string = 'latest'
@@ -95,8 +95,8 @@ export function handleMake(event: Make): void {
     log.error('[MAKE] Book not found: {}', [event.params.bookId.toString()])
     return
   }
-  const controller = Controller.bind(Address.fromString(getControllerAddress()))
-  const user = event.params.user.toHexString()
+  const controller = Controller.bind(getControllerAddress())
+  const user = event.params.user
   const tick = BigInt.fromI32(event.params.tick)
   const orderIndex = event.params.orderIndex
   const unitAmount = event.params.unit
@@ -111,7 +111,7 @@ export function handleMake(event: Make): void {
   openOrder.tick = tick
   openOrder.orderIndex = orderIndex
   openOrder.price = price
-  openOrder.user = user
+  openOrder.user = user.toHexString()
   openOrder.txHash = event.transaction.hash.toHexString()
   openOrder.createdAt = event.block.timestamp
   openOrder.unitAmount = unitAmount
@@ -156,7 +156,7 @@ export function handleMake(event: Make): void {
   depth.baseAmount = unitToBase(book, newUnitAmount, price)
   depth.quoteAmount = unitToQuote(book, newUnitAmount)
 
-  if (user == Address.fromString(getRebalancerAddress()).toHexString()) {
+  if (user.equals(getRebalancerAddress())) {
     const baseToken = Token.load(book.base) as Token
     const quoteToken = Token.load(book.quote) as Token
 
@@ -202,7 +202,7 @@ export function handleTake(event: Take): void {
   if (event.params.unit.isZero()) {
     return
   }
-  const controller = Controller.bind(Address.fromString(getControllerAddress()))
+  const controller = Controller.bind(getControllerAddress())
 
   // update book
   const book = Book.load(event.params.bookId.toString())
@@ -578,9 +578,7 @@ export function handleClaim(event: Claim): void {
     ])
   }
 
-  if (
-    openOrder.user == Address.fromString(getRebalancerAddress()).toHexString()
-  ) {
+  if (Address.fromString(openOrder.user).equals(getRebalancerAddress())) {
     const baseToken = Token.load(book.base) as Token
     const quoteToken = Token.load(book.quote) as Token
     const claimedAmountInUnit = event.params.unit
@@ -646,11 +644,11 @@ export function handleClaim(event: Claim): void {
 }
 
 export function handleTransfer(event: Transfer): void {
-  const from = event.params.from.toHexString()
-  const to = event.params.to.toHexString()
+  const from = event.params.from
+  const to = event.params.to
   const orderId = event.params.tokenId
 
-  if (from == ADDRESS_ZERO || to == ADDRESS_ZERO) {
+  if (from.equals(ADDRESS_ZERO) || to.equals(ADDRESS_ZERO)) {
     // mint or burn events are handled in the make, cancel, and claim events
     return
   }
@@ -662,6 +660,6 @@ export function handleTransfer(event: Transfer): void {
     return
   }
 
-  openOrder.user = to
+  openOrder.user = to.toHexString()
   openOrder.save()
 }

@@ -30,9 +30,11 @@ import {
   getWETHAddress,
   MONAD_TESTNET,
   SONIC_MAINNET,
-} from './addresses'
+} from './utils'
 
-export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
+export const ADDRESS_ZERO = Address.fromString(
+  '0x0000000000000000000000000000000000000000',
+)
 
 export const CHART_LOG_INTERVALS = new TypedMap<string, number>()
 CHART_LOG_INTERVALS.set('1m', 60)
@@ -213,14 +215,11 @@ export function updateWalletVolumeSnapshot(
     .concat(wallet.toHexString())
   let swalletVolumeSnapshot = WalletVolumeSnapshot.load(key)
   let ethVolume = BigInt.fromI32(0)
-  if (
-    token.toHexString() == ADDRESS_ZERO ||
-    token.toHexString() == getWETHAddress()
-  ) {
+  if (token.equals(ADDRESS_ZERO) || token.equals(getWETHAddress())) {
     ethVolume = amount
   }
   let usdcVolume = BigInt.fromI32(0)
-  if (token.toHexString() == getUSDCAddress()) {
+  if (token.equals(getUSDCAddress())) {
     usdcVolume = amount
   }
 
@@ -391,7 +390,7 @@ export function fetchTokenSymbol(
   tokenAddress: Address,
   chainId: BigInt,
 ): string {
-  if (tokenAddress.toHexString() == ADDRESS_ZERO) {
+  if (tokenAddress.equals(ADDRESS_ZERO)) {
     return getNativeTokenSymbol(chainId)
   }
   const contract = ERC20.bind(tokenAddress)
@@ -416,7 +415,7 @@ export function fetchTokenSymbol(
 }
 
 export function fetchTokenName(tokenAddress: Address, chainId: BigInt): string {
-  if (tokenAddress.toHexString() == ADDRESS_ZERO) {
+  if (tokenAddress.equals(ADDRESS_ZERO)) {
     return getNativeTokenName(chainId)
   }
   const contract = ERC20.bind(tokenAddress)
@@ -441,7 +440,7 @@ export function fetchTokenName(tokenAddress: Address, chainId: BigInt): string {
 }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
-  if (tokenAddress.toHexString() == ADDRESS_ZERO) {
+  if (tokenAddress.equals(ADDRESS_ZERO)) {
     return BigInt.fromI32(18)
   }
   const contract = ERC20.bind(tokenAddress)

@@ -1,4 +1,4 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { BigInt } from '@graphprotocol/graph-ts'
 
 import { Claim, Rebalancer } from '../generated/Rebalancer/Rebalancer'
 import {
@@ -12,7 +12,7 @@ import {
   getControllerAddress,
   getRebalancerAddress,
   getSimpleOracleStrategyAddress,
-} from './addresses'
+} from './utils'
 import {
   baseToQuote,
   buildPoolVolumeAndSnapshotId,
@@ -21,10 +21,8 @@ import {
 } from './helpers'
 
 export function handleRebalancerClaim(event: Claim): void {
-  const controller = Controller.bind(Address.fromString(getControllerAddress()))
-  const strategy = SimpleOracleStrategy.bind(
-    Address.fromString(getSimpleOracleStrategyAddress()),
-  )
+  const controller = Controller.bind(getControllerAddress())
+  const strategy = SimpleOracleStrategy.bind(getSimpleOracleStrategyAddress())
 
   const poolKey = event.params.key
   const currencyAClaimedAmount = event.params.claimedAmountA
@@ -84,7 +82,7 @@ export function handleRebalancerClaim(event: Claim): void {
 
 export function handleUpdatePosition(event: UpdatePosition): void {
   const poolKey = event.params.key
-  const rebalancer = Rebalancer.bind(Address.fromString(getRebalancerAddress()))
+  const rebalancer = Rebalancer.bind(getRebalancerAddress())
   const liquidity = rebalancer.getLiquidity(poolKey)
   const liquidityA = liquidity.getLiquidityA()
   const liquidityB = liquidity.getLiquidityB()
