@@ -11,8 +11,7 @@ import {
   VolumeSnapshot,
   WalletSnapshot,
   WalletVolumeSnapshot,
-} from '../generated/schema'
-
+} from '../../generated/schema'
 import {
   ADDRESS_ZERO,
   CHART_LOG_INTERVALS,
@@ -20,7 +19,7 @@ import {
   getUSDCAddress,
   getWETHAddress,
   normalizeDailyTimestamp,
-} from './utils'
+} from '../utils'
 
 export function getOrCreateSnapshot(timestamp: BigInt): Snapshot {
   const dailyNormalizedTimestamp = normalizeDailyTimestamp(timestamp)

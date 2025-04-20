@@ -25,6 +25,9 @@ import {
   Token,
 } from '../../generated/schema'
 import {
+  loadOrCreateToken,
+  mustLoadBook,
+  mustLoadOpenOrder,
   getOrCreateSnapshot,
   getOrCreateVolumeSnapshot,
   getLatestPoolSpread,
@@ -33,7 +36,7 @@ import {
   updateWalletsInSnapshot,
   updateWalletVolumeSnapshot,
   updateBookTransactionsAndTransactionsInSnapshot,
-} from '../helpers'
+} from '../repositories'
 import {
   ADDRESS_ZERO,
   CHART_LOG_INTERVALS,
@@ -51,7 +54,6 @@ import {
   encodeMarketCode,
   tickToPrice,
 } from '../utils'
-import { loadOrCreateToken } from '../repositories'
 
 export function handleBlock(block: ethereum.Block): void {
   const latestBlockId: string = 'latest'
@@ -91,11 +93,7 @@ export function handleOpen(event: Open): void {
 }
 
 export function handleMake(event: Make): void {
-  const book = Book.load(event.params.bookId.toString())
-  if (book === null) {
-    log.error('[MAKE] Book not found: {}', [event.params.bookId.toString()])
-    return
-  }
+  const book = mustLoadBook(event.params.bookId.toString())
   const user = event.params.user
   const tick = BigInt.fromI32(event.params.tick)
   const orderIndex = event.params.orderIndex
@@ -204,11 +202,7 @@ export function handleTake(event: Take): void {
   }
 
   // update book
-  const book = Book.load(event.params.bookId.toString())
-  if (book === null) {
-    log.error('[TAKE] Book not found: {}', [event.params.bookId.toString()])
-    return
-  }
+  const book = mustLoadBook(event.params.bookId.toString())
   const tick = BigInt.fromI32(event.params.tick)
   const price = tickToPrice(tick.toI32())
   book.latestTick = tick
@@ -462,15 +456,9 @@ export function handleCancel(event: Cancel): void {
   }
   const orderId = event.params.orderId
   const bookId = decodeBookIdFromOrderId(orderId)
-  const book = Book.load(bookId)
-  const openOrder = OpenOrder.load(orderId.toString())
-  if (openOrder === null || book === null) {
-    log.error('[CANCEL] Book or OpenOrder not found: {} {}', [
-      bookId,
-      orderId.toString(),
-    ])
-    return
-  }
+  const book = mustLoadBook(bookId)
+  const openOrder = mustLoadOpenOrder(orderId.toString())
+
   const newUnitAmount = openOrder.unitAmount.minus(event.params.unit)
   openOrder.unitAmount = newUnitAmount
   openOrder.baseAmount = unitToBase(book, newUnitAmount, openOrder.price)
@@ -539,15 +527,9 @@ export function handleClaim(event: Claim): void {
   }
   const orderId = event.params.orderId
   const bookId = decodeBookIdFromOrderId(orderId)
-  const openOrder = OpenOrder.load(orderId.toString())
-  const book = Book.load(bookId)
-  if (openOrder === null || book === null) {
-    log.error('[CLAIM] Book or OpenOrder not found: {} {}', [
-      bookId,
-      orderId.toString(),
-    ])
-    return
-  }
+  const openOrder = mustLoadOpenOrder(orderId.toString())
+  const book = mustLoadBook(bookId)
+
   const newUnitClaimedAmount = openOrder.unitClaimedAmount.plus(
     event.params.unit,
   )
@@ -652,12 +634,7 @@ export function handleTransfer(event: Transfer): void {
     return
   }
 
-  const openOrder = OpenOrder.load(orderId.toString())
-
-  if (openOrder === null) {
-    log.error('[TRANSFER] OpenOrder not found: {}', [orderId.toString()])
-    return
-  }
+  const openOrder = mustLoadOpenOrder(orderId.toString())
 
   openOrder.user = to.toHexString()
   openOrder.save()

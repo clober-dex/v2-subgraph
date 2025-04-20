@@ -4,7 +4,7 @@ import {
   getOrCreateVolumeSnapshot,
   updateTransactionsInSnapshot,
   updateWalletsInSnapshot,
-} from '../helpers'
+} from '../repositories'
 
 export function handleSwap(event: Swap): void {
   const snapshot = getOrCreateSnapshot(event.block.timestamp)
