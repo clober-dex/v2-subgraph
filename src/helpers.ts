@@ -192,10 +192,7 @@ export function getOrCreateVolumeSnapshot(
     .concat('-')
     .concat(tokenAddress.toHexString())
   let volumeSnapshot = VolumeSnapshot.load(key)
-  const token = Token.load(tokenAddress.toHexString())
-  if (token === null) {
-    throw new Error('Token not found')
-  }
+  const token = createToken(tokenAddress)
   if (volumeSnapshot === null) {
     volumeSnapshot = new VolumeSnapshot(key)
     volumeSnapshot.timestamp = dailyNormalizedTimestamp
