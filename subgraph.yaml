@@ -192,8 +192,8 @@ dataSources:
     network: monad-testnet
     source:
       abi: RouterGateway
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
+      address: "0xfD845859628946B317A78A9250DA251114FbD846"
+      startBlock: 12271596
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -207,7 +207,8 @@ dataSources:
         - name: RouterGateway
           file: ./abis/RouterGateway.json
       eventHandlers:
-        - event: Swap(indexed address,indexed address,indexed address,uint256,uint256,address,bytes4)
+        - event: Swap(indexed address,indexed address,indexed
+            address,uint256,uint256,address,bytes4)
           handler: handleSwap
       file: ./src/router-gateway.ts
 templates:
