@@ -59,7 +59,7 @@ export function getRebalancerAddress(): string {
   } else if (chainId == ARBITRUM_SEPOLIA) {
     return '0x30b4e9215322B5d0c290249126bCf96C2Ca8e948'
   } else if (chainId == RISE_SEPOLIA) {
-    return '0x0000000000000000000000000000000000000000'
+    return '0x552E53700042e0446C896b1803d9399ba846cF83'
   } else if (chainId == BERA_MAIN) {
     return '0x0000000000000000000000000000000000000000'
   } else {
@@ -78,7 +78,7 @@ export function getSimpleOracleStrategyAddress(): string {
   } else if (chainId == ARBITRUM_SEPOLIA) {
     return '0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C'
   } else if (chainId == RISE_SEPOLIA) {
-    return '0x0000000000000000000000000000000000000000'
+    return '0xa3CC662732e4ae2a2e0156859B7Fbcd57936723c'
   } else if (chainId == BERA_MAIN) {
     return '0x0000000000000000000000000000000000000000'
   } else {
