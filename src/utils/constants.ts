@@ -1,16 +1,7 @@
-import { Address, BigInt, TypedMap } from '@graphprotocol/graph-ts'
-
-import { Multicall3 } from '../../generated/BookManager/Multicall3'
+import { Address, BigInt, TypedMap, dataSource } from '@graphprotocol/graph-ts'
 
 export const ADDRESS_ZERO = Address.fromString(
   '0x0000000000000000000000000000000000000000',
-)
-
-export const MULTICALL3_ADDRESS = Address.fromString(
-  '0xcA11bde05977b3631167028862bE2a173976CA11',
-)
-export const MULTICALL3_FALLBACK_ADDRESS = Address.fromString(
-  '0xF9cda624FBC7e059355ce98a31693d299FACd963',
 )
 
 export const SONIC_MAINNET = BigInt.fromI32(146)
@@ -21,36 +12,21 @@ export const BERA_MAIN = BigInt.fromI32(80094)
 export const RISE_SEPOLIA = BigInt.fromI32(11155931)
 
 export function getChainId(): BigInt {
-  const multiCall = Multicall3.bind(MULTICALL3_ADDRESS)
-  const chainId = multiCall.try_getChainId()
-  if (chainId.reverted) {
-    const multiCallFallback = Multicall3.bind(MULTICALL3_FALLBACK_ADDRESS)
-    const chainIdFallback = multiCallFallback.try_getChainId()
-    if (chainIdFallback.reverted) {
-      return BigInt.fromI32(0)
-    } else {
-      return chainIdFallback.value
-    }
-  }
-  return chainId.value
-}
-
-export function getControllerAddress(): Address {
-  const chainId = getChainId()
-  if (chainId == BASE) {
-    return Address.fromString('0xA694fDd88E7FEE1f5EBF878153B68ADb2ce6EbbF')
-  } else if (chainId == SONIC_MAINNET) {
-    return Address.fromString('0xADc0CC0c3Ea12e57b8BcB7d7C8ac03222487E337')
-  } else if (chainId == MONAD_TESTNET) {
-    return Address.fromString('0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0')
-  } else if (chainId == ARBITRUM_SEPOLIA) {
-    return Address.fromString('0xE64aCE1bF550E57461cd4e24706633d7faC9D7b0')
-  } else if (chainId == RISE_SEPOLIA) {
-    return Address.fromString('0x7792669BEb769c4035bdFcA4F3d794d55922B954')
-  } else if (chainId == BERA_MAIN) {
-    return Address.fromString('0xA9F92548491997eE0De26A03311535A4961EE8eb')
+  const network = dataSource.network()
+  if (network == 'base') {
+    return BASE
+  } else if (network == 'sonic-mainnet') {
+    return SONIC_MAINNET
+  } else if (network == 'monad-testnet') {
+    return MONAD_TESTNET
+  } else if (network == 'arbitrum-sepolia') {
+    return ARBITRUM_SEPOLIA
+  } else if (network == 'berachain-mainnet') {
+    return BERA_MAIN
+  } else if (network == 'rise-sepolia') {
+    return RISE_SEPOLIA
   } else {
-    throw new Error('Chain ID not supported')
+    throw new Error('Unknown network: ' + network)
   }
 }
 
@@ -65,7 +41,7 @@ export function getRebalancerAddress(): Address {
   } else if (chainId == ARBITRUM_SEPOLIA) {
     return Address.fromString('0x30b4e9215322B5d0c290249126bCf96C2Ca8e948')
   } else if (chainId == RISE_SEPOLIA) {
-    return Address.fromString('0x0000000000000000000000000000000000000000')
+    return Address.fromString('0x552E53700042e0446C896b1803d9399ba846cF83')
   } else if (chainId == BERA_MAIN) {
     return Address.fromString('0x0000000000000000000000000000000000000000')
   } else {
@@ -84,7 +60,7 @@ export function getSimpleOracleStrategyAddress(): Address {
   } else if (chainId == ARBITRUM_SEPOLIA) {
     return Address.fromString('0x540488b54c8DE6e44Db7553c3A2C4ABEb09Fc69C')
   } else if (chainId == RISE_SEPOLIA) {
-    return Address.fromString('0x0000000000000000000000000000000000000000')
+    return Address.fromString('0xa3CC662732e4ae2a2e0156859B7Fbcd57936723c')
   } else if (chainId == BERA_MAIN) {
     return Address.fromString('0x0000000000000000000000000000000000000000')
   } else {

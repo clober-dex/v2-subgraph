@@ -2,7 +2,7 @@ import { BigDecimal, BigInt, Bytes } from '@graphprotocol/graph-ts'
 
 import { Book, OpenOrder } from '../../generated/schema'
 
-export const pricePrecision = BigInt.fromI32(2).pow(96)
+export const PRICE_PRECISION = BigInt.fromI32(2).pow(96)
 
 export function normalizeDailyTimestamp(timestamp: BigInt): BigInt {
   return timestamp.minus(timestamp.mod(BigInt.fromI32(86400)))
@@ -20,7 +20,7 @@ export function unitToBase(
   if (price.isZero()) {
     return BigInt.fromI32(0)
   }
-  return unitAmount.times(book.unitSize).times(pricePrecision).div(price)
+  return unitAmount.times(book.unitSize).times(PRICE_PRECISION).div(price)
 }
 
 export function unitToQuote(book: Book, unitAmount: BigInt): BigInt {
@@ -28,7 +28,7 @@ export function unitToQuote(book: Book, unitAmount: BigInt): BigInt {
 }
 
 export function baseToQuote(baseAmount: BigInt, price: BigInt): BigInt {
-  return baseAmount.times(price).div(pricePrecision)
+  return baseAmount.times(price).div(PRICE_PRECISION)
 }
 
 export function formatPrice(
@@ -37,7 +37,7 @@ export function formatPrice(
   quoteDecimals: BigInt,
 ): BigDecimal {
   return BigDecimal.fromString(price.toString())
-    .div(pricePrecision.toBigDecimal())
+    .div(PRICE_PRECISION.toBigDecimal())
     .times(
       BigDecimal.fromString(
         BigInt.fromI32(10)

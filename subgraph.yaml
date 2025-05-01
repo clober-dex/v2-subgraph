@@ -26,16 +26,12 @@ dataSources:
       abis:
         - name: BookManager
           file: ./abis/BookManager.json
-        - name: Controller
-          file: ./abis/Controller.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20SymbolBytes
           file: ./abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
           file: ./abis/ERC20NameBytes.json
-        - name: Multicall3
-          file: ./abis/Multicall3.json
       eventHandlers:
         - event: Open(indexed uint192,indexed address,indexed
             address,uint64,uint24,uint24,address)
@@ -75,10 +71,6 @@ dataSources:
           file: ./abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
           file: ./abis/ERC20NameBytes.json
-        - name: Multicall3
-          file: ./abis/Multicall3.json
-        - name: Controller
-          file: ./abis/Controller.json
       eventHandlers:
         - event: Claim(indexed bytes32,uint256,uint256)
           handler: handleRebalancerClaim
@@ -107,32 +99,7 @@ dataSources:
           file: ./abis/ERC20SymbolBytes.json
         - name: ERC20NameBytes
           file: ./abis/ERC20NameBytes.json
-        - name: Multicall3
-          file: ./abis/Multicall3.json
       eventHandlers:
         - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
           handler: handleUpdatePosition
       file: ./src/handlers/pool.ts
-  - kind: ethereum
-    name: RouterGateway
-    network: monad-testnet
-    source:
-      abi: RouterGateway
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - Snapshot
-        - VolumeSnapshot
-        - TransactionSnapshot
-        - WalletSnapshot
-      abis:
-        - name: RouterGateway
-          file: ./abis/RouterGateway.json
-      eventHandlers:
-        - event: Swap(indexed address,indexed address,indexed address,uint256,uint256,address,bytes4)
-          handler: handleSwap
-      file: ./src/handlers/router-gateway.ts
