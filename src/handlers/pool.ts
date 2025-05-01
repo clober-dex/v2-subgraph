@@ -1,30 +1,88 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { BigInt, log } from '@graphprotocol/graph-ts'
 
-import { Claim, Rebalancer } from '../../generated/Rebalancer/Rebalancer'
+import { Burn, Claim, Mint, Open } from '../../generated/Rebalancer/Rebalancer'
+import { UpdatePosition } from '../../generated/SimpleOracleStrategy/SimpleOracleStrategy'
+import { Book, Pool, PoolSnapshot, PoolVolume } from '../../generated/schema'
 import {
-  SimpleOracleStrategy,
-  UpdatePosition,
-} from '../../generated/SimpleOracleStrategy/SimpleOracleStrategy'
-import { PoolSnapshot, PoolVolume } from '../../generated/schema'
-import {
-  getRebalancerAddress,
-  getSimpleOracleStrategyAddress,
-  encodePoolVolumeAndSnapshotId,
   baseToQuote,
   CHART_LOG_INTERVALS,
-  bytesToBigIntBigEndian,
+  encodePoolVolumeAndSnapshotId,
   tickToPrice,
 } from '../utils'
 
-export function handleRebalancerClaim(event: Claim): void {
-  const strategy = SimpleOracleStrategy.bind(getSimpleOracleStrategyAddress())
+export function handlePoolOpen(event: Open): void {
+  const pool = new Pool(event.params.key.toHexString())
+  const bookA = Book.load(event.params.bookIdA.toHexString())
+  if (bookA != null) {
+    bookA.pool = pool.id
+    bookA.save()
+  } else {
+    log.error('BookA not found for pool: {}', [
+      event.params.bookIdA.toHexString(),
+    ])
+    return
+  }
+  const bookB = Book.load(event.params.bookIdB.toHexString())
+  if (bookB != null) {
+    bookB.pool = pool.id
+    bookB.save()
+  } else {
+    log.error('BookB not found for pool: {}', [
+      event.params.bookIdB.toHexString(),
+    ])
+    return
+  }
+  pool.salt = event.params.salt.toHexString()
+  pool.strategy = event.params.strategy.toHexString()
+  pool.tokenA = bookA.quote
+  pool.tokenB = bookB.quote
+  pool.liquidityA = BigInt.zero()
+  pool.liquidityB = BigInt.zero()
+  pool.totalSupply = BigInt.zero()
+  pool.tickA = BigInt.zero()
+  pool.tickB = BigInt.zero()
+  pool.save()
+}
 
+export function handleMint(event: Mint): void {
+  const pool = Pool.load(event.params.key.toHexString())
+  if (pool === null) {
+    log.error('Pool not found for mint event: {}', [
+      event.params.key.toHexString(),
+    ])
+    return
+  }
+  pool.totalSupply = pool.totalSupply.plus(event.params.lpAmount)
+  pool.liquidityA = pool.liquidityA.plus(event.params.amountA)
+  pool.liquidityB = pool.liquidityB.plus(event.params.amountB)
+  pool.save()
+}
+
+export function handleBurn(event: Burn): void {
+  const pool = Pool.load(event.params.key.toHexString())
+  if (pool === null) {
+    log.error('Pool not found for burn event: {}', [
+      event.params.key.toHexString(),
+    ])
+    return
+  }
+  pool.totalSupply = pool.totalSupply.minus(event.params.lpAmount)
+  pool.liquidityA = pool.liquidityA.minus(event.params.amountA)
+  pool.liquidityB = pool.liquidityB.minus(event.params.amountB)
+  pool.save()
+}
+
+export function handleRebalancerClaim(event: Claim): void {
   const poolKey = event.params.key
+  const pool = Pool.load(poolKey.toHexString())
+  if (pool === null) {
+    log.error('Pool not found for claim event: {}', [poolKey.toHexString()])
+    return
+  }
   const currencyAClaimedAmount = event.params.claimedAmountA
   const currencyBClaimedAmount = event.params.claimedAmountB
-  const strategyPrice = strategy.getPosition(poolKey)
-  const bookAPrice = tickToPrice(strategyPrice.tickA)
-  const bookBPrice = tickToPrice(strategyPrice.tickB)
+  const bookAPrice = tickToPrice(pool.tickA.toI32())
+  const bookBPrice = tickToPrice(pool.tickB.toI32())
 
   const bookACurrencyAVolume = baseToQuote(currencyBClaimedAmount, bookAPrice)
   const bookACurrencyBVolume = currencyBClaimedAmount
@@ -77,17 +135,20 @@ export function handleRebalancerClaim(event: Claim): void {
 
 export function handleUpdatePosition(event: UpdatePosition): void {
   const poolKey = event.params.key
-  const rebalancer = Rebalancer.bind(getRebalancerAddress())
-  const liquidity = rebalancer.getLiquidity(poolKey)
-  const liquidityA = liquidity.getLiquidityA()
-  const liquidityB = liquidity.getLiquidityB()
-  const totalLiquidityA = liquidityA.reserve
-    .plus(liquidityA.cancelable)
-    .plus(liquidityA.claimable)
-  const totalLiquidityB = liquidityB.reserve
-    .plus(liquidityB.cancelable)
-    .plus(liquidityB.claimable)
-  const totalSupply = rebalancer.totalSupply(bytesToBigIntBigEndian(poolKey))
+  const pool = Pool.load(poolKey.toHexString())
+  if (pool === null) {
+    log.error('Pool not found for update position event: {}', [
+      poolKey.toHexString(),
+    ])
+    return
+  }
+  pool.tickA = BigInt.fromI32(event.params.tickA)
+  pool.tickB = BigInt.fromI32(event.params.tickB)
+  pool.save()
+
+  const totalLiquidityA = pool.liquidityA
+  const totalLiquidityB = pool.liquidityB
+  const totalSupply = pool.totalSupply
 
   for (let i = 0; i < CHART_LOG_INTERVALS.entries.length; i++) {
     const intervalEntry = CHART_LOG_INTERVALS.entries[i]

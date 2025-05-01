@@ -20,6 +20,8 @@ type Book @entity {
     latestPrice: BigInt!
     latestTimestamp: BigInt!
     createAt: BigInt!
+
+    pool: Pool
 }
 
 type Depth @entity {
@@ -90,6 +92,22 @@ type ChartLog @entity {
     baseVolume: BigDecimal!
     bidBookBaseVolume: BigDecimal!
     askBookBaseVolume: BigDecimal!
+}
+
+type Pool @entity {
+    # `{poolKey}`
+    id: ID!
+    books: [Book!]! @derivedFrom(field: "pool")
+    salt: String!
+    strategy: String!
+
+    tokenA: Token!
+    tokenB: Token!
+    liquidityA: BigInt!
+    liquidityB: BigInt!
+    totalSupply: BigInt!
+    tickA: BigInt!
+    tickB: BigInt!
 }
 
 type PoolVolume @entity {
