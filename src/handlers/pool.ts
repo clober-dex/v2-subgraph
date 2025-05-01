@@ -12,7 +12,7 @@ import {
 
 export function handlePoolOpen(event: Open): void {
   const pool = new Pool(event.params.key.toHexString())
-  const bookA = Book.load(event.params.bookIdA.toHexString())
+  const bookA = Book.load(event.params.bookIdA.toString())
   if (bookA != null) {
     bookA.pool = pool.id
     bookA.save()
@@ -22,7 +22,7 @@ export function handlePoolOpen(event: Open): void {
     ])
     return
   }
-  const bookB = Book.load(event.params.bookIdB.toHexString())
+  const bookB = Book.load(event.params.bookIdB.toString())
   if (bookB != null) {
     bookB.pool = pool.id
     bookB.save()
