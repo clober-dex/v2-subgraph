@@ -244,8 +244,8 @@ export function handleTake(event: Take): void {
     openOrder.save()
 
     if (Address.fromString(openOrder.user).equals(getRebalancerAddress())) {
-      if (book.pool != null && Pool.load(book.pool) != null) {
-        const pool = Pool.load(book.pool) as Pool
+      if (book.pool != null && Pool.load(book.pool!) != null) {
+        const pool = Pool.load(book.pool!) as Pool
         const filledBaseAmount = unitToBase(book, filledUnitAmount, price)
         const filledQuoteAmount = unitToQuote(book, filledUnitAmount)
 
