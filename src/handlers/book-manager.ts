@@ -244,21 +244,28 @@ export function handleTake(event: Take): void {
     openOrder.save()
 
     if (Address.fromString(openOrder.user).equals(getRebalancerAddress())) {
-      if (book.pool != null && Pool.load(book.pool!) != null) {
-        const pool = Pool.load(book.pool!) as Pool
-        const filledBaseAmount = unitToBase(book, filledUnitAmount, price)
-        const filledQuoteAmount = unitToQuote(book, filledUnitAmount)
-
-        if (
-          Address.fromString(pool.tokenA).equals(Address.fromString(book.base))
-        ) {
-          pool.liquidityA = pool.liquidityA.plus(filledBaseAmount)
-          pool.liquidityB = pool.liquidityB.minus(filledQuoteAmount)
+      const poolKey = book.pool
+      if (poolKey) {
+        const pool = Pool.load(poolKey)
+        if (pool === null) {
+          log.error('[TAKE] Pool not found: {}', [poolKey])
         } else {
-          pool.liquidityA = pool.liquidityA.minus(filledQuoteAmount)
-          pool.liquidityB = pool.liquidityB.plus(filledBaseAmount)
+          const filledBaseAmount = unitToBase(book, filledUnitAmount, price)
+          const filledQuoteAmount = unitToQuote(book, filledUnitAmount)
+
+          if (
+            Address.fromString(pool.tokenA).equals(
+              Address.fromString(book.base),
+            )
+          ) {
+            pool.liquidityA = pool.liquidityA.plus(filledBaseAmount)
+            pool.liquidityB = pool.liquidityB.minus(filledQuoteAmount)
+          } else {
+            pool.liquidityA = pool.liquidityA.minus(filledQuoteAmount)
+            pool.liquidityB = pool.liquidityB.plus(filledBaseAmount)
+          }
+          pool.save()
         }
-        pool.save()
       }
     }
 
