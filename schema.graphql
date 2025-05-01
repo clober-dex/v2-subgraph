@@ -1,3 +1,60 @@
+type Snapshot @entity {
+    id: ID! # timestamp
+    transactionCount: BigInt!
+    walletCount: BigInt!
+    volumeSnapshots: [VolumeSnapshot!]!
+}
+
+type VolumeSnapshot @entity {
+    id: ID! # {timestamp}-${tokenAddress}
+    timestamp: BigInt!
+    token: Token!
+    amount: BigInt!
+}
+
+type BookTransactionSnapshot @entity {
+    id: ID! # {timestamp}-{bookId}
+    timestamp: BigInt!
+    book: Book!
+    makeTransactionCount: BigInt!
+    takeTransactionCount: BigInt!
+}
+
+type TransactionSnapshot @entity {
+    id: ID! # {timestamp}-{txHash}
+    timestamp: BigInt!
+    txHash: String!
+}
+
+type WalletSnapshot @entity {
+    id: ID! # {timestamp}-{walletAddress}
+    timestamp: BigInt!
+    wallet: String!
+}
+
+type WalletVolumeSnapshot @entity {
+    id: ID! # {timestamp}-{walletAddress}
+    timestamp: BigInt!
+    wallet: String!
+
+    ethVolume: BigInt!
+    usdcVolume: BigInt!
+}
+
+type TokenHolder @entity {
+    id: ID!
+    balances: [TokenBalance]! @derivedFrom(field: "user")
+}
+
+type TokenBalance @entity {
+    # `${userAddress}-${tokenAddress}`
+    id: ID!
+    token: Token!
+    user: TokenHolder!
+    amount: BigInt!
+    updatedAt: BigInt!
+}
+
 type Token @entity {
     id: ID!
     symbol: String!
@@ -19,6 +76,7 @@ type Book @entity {
     latestTick: BigInt!
     latestPrice: BigInt!
     latestTimestamp: BigInt!
+    createAt: BigInt!
 }
 
 type Depth @entity {

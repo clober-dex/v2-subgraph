@@ -1,37 +1,30 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { BigInt } from '@graphprotocol/graph-ts'
 
-import { Claim, Rebalancer } from '../generated/Rebalancer/Rebalancer'
+import { Claim, Rebalancer } from '../../generated/Rebalancer/Rebalancer'
 import {
   SimpleOracleStrategy,
   UpdatePosition,
-} from '../generated/SimpleOracleStrategy/SimpleOracleStrategy'
-import { PoolSnapshot, PoolVolume } from '../generated/schema'
-import { Controller } from '../generated/Rebalancer/Controller'
-
+} from '../../generated/SimpleOracleStrategy/SimpleOracleStrategy'
+import { PoolSnapshot, PoolVolume } from '../../generated/schema'
 import {
-  getControllerAddress,
   getRebalancerAddress,
   getSimpleOracleStrategyAddress,
-} from './addresses'
-import {
+  encodePoolVolumeAndSnapshotId,
   baseToQuote,
-  buildPoolVolumeAndSnapshotId,
-  bytesToBigIntBigEndian,
   CHART_LOG_INTERVALS,
-} from './helpers'
+  bytesToBigIntBigEndian,
+  tickToPrice,
+} from '../utils'
 
 export function handleRebalancerClaim(event: Claim): void {
-  const controller = Controller.bind(Address.fromString(getControllerAddress()))
-  const strategy = SimpleOracleStrategy.bind(
-    Address.fromString(getSimpleOracleStrategyAddress()),
-  )
+  const strategy = SimpleOracleStrategy.bind(getSimpleOracleStrategyAddress())
 
   const poolKey = event.params.key
   const currencyAClaimedAmount = event.params.claimedAmountA
   const currencyBClaimedAmount = event.params.claimedAmountB
   const strategyPrice = strategy.getPosition(poolKey)
-  const bookAPrice = controller.toPrice(strategyPrice.tickA)
-  const bookBPrice = controller.toPrice(strategyPrice.tickB)
+  const bookAPrice = tickToPrice(strategyPrice.tickA)
+  const bookBPrice = tickToPrice(strategyPrice.tickB)
 
   const bookACurrencyAVolume = baseToQuote(currencyBClaimedAmount, bookAPrice)
   const bookACurrencyBVolume = currencyBClaimedAmount
@@ -47,7 +40,7 @@ export function handleRebalancerClaim(event: Claim): void {
     (event.block.timestamp.toI64() as number) / intervalInNumber,
   ) * intervalInNumber) as i64
 
-  const poolVolumeId = buildPoolVolumeAndSnapshotId(
+  const poolVolumeId = encodePoolVolumeAndSnapshotId(
     poolKey,
     intervalType,
     timestampForAcc,
@@ -84,7 +77,7 @@ export function handleRebalancerClaim(event: Claim): void {
 
 export function handleUpdatePosition(event: UpdatePosition): void {
   const poolKey = event.params.key
-  const rebalancer = Rebalancer.bind(Address.fromString(getRebalancerAddress()))
+  const rebalancer = Rebalancer.bind(getRebalancerAddress())
   const liquidity = rebalancer.getLiquidity(poolKey)
   const liquidityA = liquidity.getLiquidityA()
   const liquidityB = liquidity.getLiquidityB()
@@ -104,7 +97,7 @@ export function handleUpdatePosition(event: UpdatePosition): void {
       (event.block.timestamp.toI64() as number) / intervalInNumber,
     ) * intervalInNumber) as i64
 
-    const poolSnapshotId = buildPoolVolumeAndSnapshotId(
+    const poolSnapshotId = encodePoolVolumeAndSnapshotId(
       poolKey,
       intervalType,
       timestampForAcc,

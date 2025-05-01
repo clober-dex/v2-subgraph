@@ -63,6 +63,10 @@
     "SimpleOracleStrategy": {
       "address": "0x9eE708876804F9416B3C1a1aad0c016dee9DD804",
       "startBlock": 7546513
+    },
+    "RouterGateway": {
+      "address": "0xfD845859628946B317A78A9250DA251114FbD846",
+      "startBlock": 12271596
     }
   },
   "sonic-mainnet": {

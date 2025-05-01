@@ -50,14 +50,14 @@ dataSources:
           handler: handleClaim
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/book-manager.ts
+      file: ./src/handlers/book-manager.ts
   - kind: ethereum
     name: Rebalancer
     network: monad-testnet
     source:
       abi: Rebalancer
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
+      address: "0x6d8fa3025b6d6604309Ca257563CcA358c0CF1AA"
+      startBlock: 7546157
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -82,14 +82,14 @@ dataSources:
       eventHandlers:
         - event: Claim(indexed bytes32,uint256,uint256)
           handler: handleRebalancerClaim
-      file: ./src/pool.ts
+      file: ./src/handlers/pool.ts
   - kind: ethereum
     name: SimpleOracleStrategy
     network: monad-testnet
     source:
       abi: SimpleOracleStrategy
-      address: "0x0000000000000000000000000000000000000000"
-      startBlock: 0
+      address: "0x9eE708876804F9416B3C1a1aad0c016dee9DD804"
+      startBlock: 7546513
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -112,4 +112,27 @@ dataSources:
       eventHandlers:
         - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
           handler: handleUpdatePosition
-      file: ./src/pool.ts
+      file: ./src/handlers/pool.ts
+  - kind: ethereum
+    name: RouterGateway
+    network: monad-testnet
+    source:
+      abi: RouterGateway
+      address: "0x0000000000000000000000000000000000000000"
+      startBlock: 0
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Snapshot
+        - VolumeSnapshot
+        - TransactionSnapshot
+        - WalletSnapshot
+      abis:
+        - name: RouterGateway
+          file: ./abis/RouterGateway.json
+      eventHandlers:
+        - event: Swap(indexed address,indexed address,indexed address,uint256,uint256,address,bytes4)
+          handler: handleSwap
+      file: ./src/handlers/router-gateway.ts

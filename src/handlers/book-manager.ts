@@ -2,6 +2,7 @@ import {
   Address,
   BigDecimal,
   BigInt,
+  ethereum,
   log,
   store,
 } from '@graphprotocol/graph-ts'
@@ -13,40 +14,61 @@ import {
   Open,
   Take,
   Transfer,
-} from '../generated/BookManager/BookManager'
+} from '../../generated/BookManager/BookManager'
 import {
   Book,
   ChartLog,
   Depth,
+  LatestBlock,
   OpenOrder,
   OrderIndex,
   Token,
-} from '../generated/schema'
-import { Controller } from '../generated/BookManager/Controller'
-
+} from '../../generated/schema'
+import {
+  loadOrCreateToken,
+  mustLoadBook,
+  mustLoadOpenOrder,
+  getOrCreateSnapshot,
+  getOrCreateVolumeSnapshot,
+  getLatestPoolSpread,
+  getPoolSpreadProfit,
+  updateTransactionsInSnapshot,
+  updateWalletsInSnapshot,
+  updateWalletVolumeSnapshot,
+  updateBookTransactionsAndTransactionsInSnapshot,
+} from '../repositories'
 import {
   ADDRESS_ZERO,
-  buildChartLogId,
-  buildDepthId,
-  buildMarketCode,
   CHART_LOG_INTERVALS,
-  createToken,
-  decodeBookIdFromOrderId,
-  encodeOrderId,
   formatInvertedPrice,
   formatPrice,
   formatUnits,
-  getLatestPoolSpread,
   getPendingAmount,
-  getPoolSpreadProfit,
   unitToBase,
   unitToQuote,
-} from './helpers'
-import { getControllerAddress, getRebalancerAddress } from './addresses'
+  getRebalancerAddress,
+  encodeOrderId,
+  decodeBookIdFromOrderId,
+  encodeDepthId,
+  encodeChartLogId,
+  encodeMarketCode,
+  tickToPrice,
+} from '../utils'
+
+export function handleBlock(block: ethereum.Block): void {
+  const latestBlockId: string = 'latest'
+  let latestBlock = LatestBlock.load(latestBlockId)
+  if (latestBlock === null) {
+    latestBlock = new LatestBlock(latestBlockId)
+  }
+  latestBlock.blockNumber = block.number
+  latestBlock.timestamp = block.timestamp
+  latestBlock.save()
+}
 
 export function handleOpen(event: Open): void {
-  const base = createToken(event.params.base)
-  const quote = createToken(event.params.quote)
+  const base = loadOrCreateToken(event.params.base)
+  const quote = loadOrCreateToken(event.params.quote)
   const book = new Book(event.params.id.toString())
   book.base = base.id
   book.quote = quote.id
@@ -57,21 +79,26 @@ export function handleOpen(event: Open): void {
   book.latestTick = BigInt.zero()
   book.latestPrice = BigInt.zero()
   book.latestTimestamp = BigInt.zero()
+  book.createAt = event.block.timestamp
   book.save()
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
 }
 
 export function handleMake(event: Make): void {
-  const book = Book.load(event.params.bookId.toString())
-  if (book === null) {
-    log.error('[MAKE] Book not found: {}', [event.params.bookId.toString()])
-    return
-  }
-  const controller = Controller.bind(Address.fromString(getControllerAddress()))
-  const user = event.params.user.toHexString()
+  const book = mustLoadBook(event.params.bookId.toString())
+  const user = event.params.user
   const tick = BigInt.fromI32(event.params.tick)
   const orderIndex = event.params.orderIndex
   const unitAmount = event.params.unit
-  const price = controller.toPrice(tick.toI32())
+  const price = tickToPrice(tick.toI32())
   const baseAmount = unitToBase(book, unitAmount, price)
   const quoteAmount = unitToQuote(book, unitAmount)
   const orderId = encodeOrderId(book.id, tick, orderIndex)
@@ -82,7 +109,7 @@ export function handleMake(event: Make): void {
   openOrder.tick = tick
   openOrder.orderIndex = orderIndex
   openOrder.price = price
-  openOrder.user = user
+  openOrder.user = user.toHexString()
   openOrder.txHash = event.transaction.hash.toHexString()
   openOrder.createdAt = event.block.timestamp
   openOrder.unitAmount = unitAmount
@@ -103,7 +130,7 @@ export function handleMake(event: Make): void {
   openOrder.save()
 
   // update depth
-  const depthId = buildDepthId(book.id, tick)
+  const depthId = encodeDepthId(book.id, tick)
   let depth = Depth.load(depthId)
   let orderIndexEntity = OrderIndex.load(depthId)
   if (depth === null) {
@@ -127,7 +154,7 @@ export function handleMake(event: Make): void {
   depth.baseAmount = unitToBase(book, newUnitAmount, price)
   depth.quoteAmount = unitToQuote(book, newUnitAmount)
 
-  if (user == Address.fromString(getRebalancerAddress()).toHexString()) {
+  if (user.equals(getRebalancerAddress())) {
     const baseToken = Token.load(book.base) as Token
     const quoteToken = Token.load(book.quote) as Token
 
@@ -156,29 +183,35 @@ export function handleMake(event: Make): void {
 
   depth.save()
   orderIndexEntity.save()
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateBookTransactionsAndTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+    book,
+    true,
+  )
 }
 
 export function handleTake(event: Take): void {
   if (event.params.unit.isZero()) {
     return
   }
-  const controller = Controller.bind(Address.fromString(getControllerAddress()))
 
   // update book
-  const book = Book.load(event.params.bookId.toString())
-  if (book === null) {
-    log.error('[TAKE] Book not found: {}', [event.params.bookId.toString()])
-    return
-  }
+  const book = mustLoadBook(event.params.bookId.toString())
   const tick = BigInt.fromI32(event.params.tick)
-  const price = controller.toPrice(tick.toI32())
+  const price = tickToPrice(tick.toI32())
   book.latestTick = tick
   book.latestPrice = price
   book.latestTimestamp = event.block.timestamp
   book.save()
 
   // update depth & open order
-  const depthId = buildDepthId(book.id, tick)
+  const depthId = encodeDepthId(book.id, tick)
   const depth = Depth.load(depthId)
   const orderIndexEntity = OrderIndex.load(depthId)
   if (depth === null || orderIndexEntity === null) {
@@ -248,6 +281,13 @@ export function handleTake(event: Take): void {
     }
     openOrder.save()
 
+    updateWalletVolumeSnapshot(
+      event.block.timestamp,
+      Address.fromString(openOrder.user),
+      Address.fromString(book.quote),
+      unitToQuote(book, newUnitFilledAmount),
+    )
+
     if (openOrder.unitAmount == openOrder.unitFilledAmount) {
       currentOrderIndex = currentOrderIndex.plus(BigInt.fromI32(1))
     }
@@ -279,13 +319,13 @@ export function handleTake(event: Take): void {
     ) * intervalInNumber) as i64
 
     // natural chart log
-    const chartLogId = buildChartLogId(
+    const chartLogId = encodeChartLogId(
       baseToken,
       quoteToken,
       intervalType,
       timestampForAcc,
     )
-    const marketCode = buildMarketCode(baseToken, quoteToken)
+    const marketCode = encodeMarketCode(baseToken, quoteToken)
     let chartLog = ChartLog.load(chartLogId)
     if (chartLog === null) {
       chartLog = new ChartLog(chartLogId)
@@ -324,13 +364,13 @@ export function handleTake(event: Take): void {
       quoteTakenAmount,
       quoteToken.decimals.toI32() as u8,
     )
-    const invertedChartLogId = buildChartLogId(
+    const invertedChartLogId = encodeChartLogId(
       quoteToken,
       baseToken,
       intervalType,
       timestampForAcc,
     )
-    const invertedMarketCode = buildMarketCode(quoteToken, baseToken)
+    const invertedMarketCode = encodeMarketCode(quoteToken, baseToken)
     let invertedChartLog = ChartLog.load(invertedChartLogId)
     if (invertedChartLog === null) {
       invertedChartLog = new ChartLog(invertedChartLogId)
@@ -366,6 +406,48 @@ export function handleTake(event: Take): void {
   } else {
     depth.save()
   }
+
+  const snapshot = getOrCreateSnapshot(event.block.timestamp)
+  const volumeSnapshot = getOrCreateVolumeSnapshot(
+    event.block.timestamp,
+    Address.fromString(book.quote),
+  )
+  volumeSnapshot.amount = volumeSnapshot.amount.plus(
+    unitToQuote(book, takenUnitAmount),
+  )
+  volumeSnapshot.save()
+
+  let find = false
+  for (let i = 0; i < snapshot.volumeSnapshots.length; i++) {
+    if (snapshot.volumeSnapshots[i] == volumeSnapshot.id) {
+      find = true
+      break
+    }
+  }
+  if (!find) {
+    const volumeSnapshots = snapshot.volumeSnapshots
+    volumeSnapshots.push(volumeSnapshot.id)
+    snapshot.volumeSnapshots = volumeSnapshots
+  }
+  snapshot.save()
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateBookTransactionsAndTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+    book,
+    false,
+  )
+
+  updateWalletVolumeSnapshot(
+    event.block.timestamp,
+    event.transaction.from,
+    Address.fromString(book.base),
+    baseTakenAmount,
+  )
 }
 
 export function handleCancel(event: Cancel): void {
@@ -374,15 +456,9 @@ export function handleCancel(event: Cancel): void {
   }
   const orderId = event.params.orderId
   const bookId = decodeBookIdFromOrderId(orderId)
-  const book = Book.load(bookId)
-  const openOrder = OpenOrder.load(orderId.toString())
-  if (openOrder === null || book === null) {
-    log.error('[CANCEL] Book or OpenOrder not found: {} {}', [
-      bookId,
-      orderId.toString(),
-    ])
-    return
-  }
+  const book = mustLoadBook(bookId)
+  const openOrder = mustLoadOpenOrder(orderId.toString())
+
   const newUnitAmount = openOrder.unitAmount.minus(event.params.unit)
   openOrder.unitAmount = newUnitAmount
   openOrder.baseAmount = unitToBase(book, newUnitAmount, openOrder.price)
@@ -408,7 +484,7 @@ export function handleCancel(event: Cancel): void {
   const unitPendingAmount = getPendingAmount(openOrder)
 
   // update depth
-  const depthId = buildDepthId(book.id, openOrder.tick)
+  const depthId = encodeDepthId(book.id, openOrder.tick)
   const depth = Depth.load(depthId)
   if (depth === null) {
     log.error('[CANCEL] Depth not found: {}', [depthId])
@@ -434,6 +510,15 @@ export function handleCancel(event: Cancel): void {
   } else {
     depth.save()
   }
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
 }
 
 export function handleClaim(event: Claim): void {
@@ -442,15 +527,9 @@ export function handleClaim(event: Claim): void {
   }
   const orderId = event.params.orderId
   const bookId = decodeBookIdFromOrderId(orderId)
-  const openOrder = OpenOrder.load(orderId.toString())
-  const book = Book.load(bookId)
-  if (openOrder === null || book === null) {
-    log.error('[CLAIM] Book or OpenOrder not found: {} {}', [
-      bookId,
-      orderId.toString(),
-    ])
-    return
-  }
+  const openOrder = mustLoadOpenOrder(orderId.toString())
+  const book = mustLoadBook(bookId)
+
   const newUnitClaimedAmount = openOrder.unitClaimedAmount.plus(
     event.params.unit,
   )
@@ -480,9 +559,7 @@ export function handleClaim(event: Claim): void {
     ])
   }
 
-  if (
-    openOrder.user == Address.fromString(getRebalancerAddress()).toHexString()
-  ) {
+  if (Address.fromString(openOrder.user).equals(getRebalancerAddress())) {
     const baseToken = Token.load(book.base) as Token
     const quoteToken = Token.load(book.quote) as Token
     const claimedAmountInUnit = event.params.unit
@@ -536,25 +613,29 @@ export function handleClaim(event: Claim): void {
   } else {
     openOrder.save()
   }
+
+  updateWalletsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.from,
+  )
+  updateTransactionsInSnapshot(
+    getOrCreateSnapshot(event.block.timestamp),
+    event.transaction.hash,
+  )
 }
 
 export function handleTransfer(event: Transfer): void {
-  const from = event.params.from.toHexString()
-  const to = event.params.to.toHexString()
+  const from = event.params.from
+  const to = event.params.to
   const orderId = event.params.tokenId
 
-  if (from == ADDRESS_ZERO || to == ADDRESS_ZERO) {
+  if (from.equals(ADDRESS_ZERO) || to.equals(ADDRESS_ZERO)) {
     // mint or burn events are handled in the make, cancel, and claim events
     return
   }
 
-  const openOrder = OpenOrder.load(orderId.toString())
+  const openOrder = mustLoadOpenOrder(orderId.toString())
 
-  if (openOrder === null) {
-    log.error('[TRANSFER] OpenOrder not found: {}', [orderId.toString()])
-    return
-  }
-
-  openOrder.user = to
+  openOrder.user = to.toHexString()
   openOrder.save()
 }
