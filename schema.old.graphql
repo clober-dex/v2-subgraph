@@ -1,0 +1,161 @@
+type Token @entity {
+    id: ID!
+    symbol: String!
+    name: String!
+    decimals: BigInt!
+}
+
+type Book @entity {
+    # bookId
+    id: ID!
+    base: Token!
+    quote: Token!
+    unitSize: BigInt!
+    makerPolicy: BigInt!
+    takerPolicy: BigInt!
+    hooks: String!
+    depths: [Depth!]! @derivedFrom(field: "book")
+    openOrders: [OpenOrder!]! @derivedFrom(field: "book")
+    latestTick: BigInt!
+    latestPrice: BigInt!
+    latestTimestamp: BigInt!
+    createAt: BigInt!
+
+    pool: Pool
+}
+
+type Depth @entity {
+    # `${bookId}-${tick}`
+    id: ID!
+    book: Book!
+    tick: BigInt!
+    price: BigInt!
+    unitAmount: BigInt!
+    baseAmount: BigInt!
+    quoteAmount: BigInt!
+}
+
+type OrderIndex @entity {
+    # `${bookId}-${tick}`
+    id: ID!
+    book: Book!
+    tick: BigInt!
+    price: BigInt!
+    latestTakenOrderIndex: BigInt!
+}
+
+type OpenOrder @entity {
+    # orderId
+    id: ID!
+    book: Book!
+    tick: BigInt!
+    orderIndex: BigInt!
+    price: BigInt!
+    user: String!
+    txHash: String!
+    createdAt: BigInt!
+
+    unitAmount: BigInt!
+    baseAmount: BigInt!
+    quoteAmount: BigInt!
+
+    unitFilledAmount: BigInt!
+    baseFilledAmount: BigInt!
+    quoteFilledAmount: BigInt!
+
+    unitClaimedAmount: BigInt!
+    baseClaimedAmount: BigInt!
+    quoteClaimedAmount: BigInt!
+
+    unitClaimableAmount: BigInt!
+    baseClaimableAmount: BigInt!
+    quoteClaimableAmount: BigInt!
+
+    unitOpenAmount: BigInt!
+    baseOpenAmount: BigInt!
+    quoteOpenAmount: BigInt!
+}
+
+type ChartLog @entity {
+    # `${baseToken}/${quoteToekn}-${intervalType}-${timestamp}`
+    id: ID!
+    # `${baseToken}/${quoteToekn}`
+    marketCode: String!
+    # interval type: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 1d, 1w
+    intervalType: String!
+    # normalized candle timestamp of the block where event occurred (second)
+    timestamp: BigInt!
+    open: BigDecimal!
+    high: BigDecimal!
+    low: BigDecimal!
+    close: BigDecimal!
+    baseVolume: BigDecimal!
+    bidBookBaseVolume: BigDecimal!
+    askBookBaseVolume: BigDecimal!
+}
+
+type Pool @entity {
+    # `{poolKey}`
+    id: ID!
+    books: [Book!]! @derivedFrom(field: "pool")
+    salt: String!
+    strategy: String!
+
+    tokenA: Token!
+    tokenB: Token!
+    liquidityA: BigInt!
+    liquidityB: BigInt!
+    totalSupply: BigInt!
+    tickA: BigInt!
+    tickB: BigInt!
+}
+
+type PoolVolume @entity {
+    # `{poolKey}-{intervalType}-{timestamp}`
+    id: ID!
+    poolKey: String!
+    # interval type: 5m
+    intervalType: String!
+    # normalized candle timestamp of the block where event occurred (second)
+    timestamp: BigInt!
+    currencyAVolume: BigInt!
+    currencyBVolume: BigInt!
+    bookACurrencyAVolume: BigInt!
+    bookACurrencyBVolume: BigInt!
+    bookBCurrencyAVolume: BigInt!
+    bookBCurrencyBVolume: BigInt!
+}
+
+type PoolSnapshot @entity {
+    # `{poolKey}-{intervalType}-{timestamp}`
+    id: ID!
+    poolKey: String!
+    # interval type: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 1d, 1w
+    intervalType: String!
+    # normalized candle timestamp of the block where event occurred (second)
+    timestamp: BigInt!
+    price: BigInt!
+    liquidityA: BigInt!
+    liquidityB: BigInt!
+    totalSupply: BigInt!
+}
+
+# NOTE: below types needs to be updated when multiple pools are supported
+type LatestPoolSpread @entity {
+    # latest
+    id: ID!
+    askTick: BigInt!
+    bidTick: BigInt!
+    askPrice: BigDecimal! # human readable
+    bidPrice: BigDecimal! # human readable
+}
+
+type PoolSpreadProfit @entity {
+    # `{intervalType}-{timestamp}`
+    id: ID!
+    # interval type: 5m
+    intervalType: String!
+    # normalized candle timestamp of the block where event occurred (second)
+    timestamp: BigInt!
+    accumulatedProfitInUsd: BigDecimal!
+}
