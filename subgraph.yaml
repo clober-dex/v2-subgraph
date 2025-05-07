@@ -59,6 +59,8 @@ dataSources:
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
+        - Pool
+        - Book
         - PoolVolume
       abis:
         - name: Rebalancer
@@ -74,6 +76,12 @@ dataSources:
       eventHandlers:
         - event: Claim(indexed bytes32,uint256,uint256)
           handler: handleRebalancerClaim
+        - event: Open(indexed bytes32,indexed uint192,indexed uint192,bytes32,address)
+          handler: handlePoolOpen
+        - event: Mint(indexed address,indexed bytes32,uint256,uint256,uint256)
+          handler: handleMint
+        - event: Burn(indexed address,indexed bytes32,uint256,uint256,uint256)
+          handler: handleBurn
       file: ./src/handlers/pool.ts
   - kind: ethereum
     name: SimpleOracleStrategy

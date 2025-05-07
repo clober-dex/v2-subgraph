@@ -20,6 +20,7 @@ import {
   Depth,
   OpenOrder,
   OrderIndex,
+  Pool,
   Token,
 } from '../../generated/schema'
 import {
@@ -247,6 +248,32 @@ export function handleTake(event: Take): void {
       log.error('[TAKE] Negative open unit amount: {}', [orderId.toString()])
     }
     openOrder.save()
+
+    if (Address.fromString(openOrder.user).equals(getRebalancerAddress())) {
+      const poolKey = book.pool
+      if (poolKey) {
+        const pool = Pool.load(poolKey)
+        if (pool === null) {
+          log.error('[TAKE] Pool not found: {}', [poolKey])
+        } else {
+          const filledBaseAmount = unitToBase(book, filledUnitAmount, price)
+          const filledQuoteAmount = unitToQuote(book, filledUnitAmount)
+
+          if (
+            Address.fromString(pool.tokenA).equals(
+              Address.fromString(book.base),
+            )
+          ) {
+            pool.liquidityA = pool.liquidityA.plus(filledBaseAmount)
+            pool.liquidityB = pool.liquidityB.minus(filledQuoteAmount)
+          } else {
+            pool.liquidityA = pool.liquidityA.minus(filledQuoteAmount)
+            pool.liquidityB = pool.liquidityB.plus(filledBaseAmount)
+          }
+          pool.save()
+        }
+      }
+    }
 
     if (openOrder.unitAmount == openOrder.unitFilledAmount) {
       currentOrderIndex = currentOrderIndex.plus(BigInt.fromI32(1))
