@@ -5,3 +5,6 @@ generated/
 node_modules/
 .DS_STORE
 yarn-error.log
+tests/.bin/
+tests/.docker/
+tests/.latest.json
