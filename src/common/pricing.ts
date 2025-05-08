@@ -88,3 +88,17 @@ export function getTokenPrice(
 
   return bestPrice
 }
+
+export function calculateOrderValueUSD(
+  quoteAmountDecimal: BigDecimal,
+  quoteInUSD: BigDecimal,
+  baseAmountDecimal: BigDecimal,
+  baseInUSD: BigDecimal,
+): BigDecimal {
+  if (quoteInUSD.gt(ZERO_BD)) {
+    return quoteAmountDecimal.times(quoteInUSD)
+  } else if (baseInUSD.gt(ZERO_BD)) {
+    return baseAmountDecimal.times(baseInUSD)
+  }
+  return ZERO_BD
+}

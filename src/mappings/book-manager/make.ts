@@ -10,7 +10,7 @@ import {
 } from '../../common/tick'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
-import { getTokenPrice } from '../../common/pricing'
+import { calculateOrderValueUSD, getTokenPrice } from '../../common/pricing'
 import { encodeOrderId } from '../../common/order'
 import { updateBookDayData, updateTokenDayData } from '../interval-updates'
 import {
@@ -39,9 +39,12 @@ export function handleMake(event: Make): void {
     const baseAmountDecimal = convertTokenToDecimal(baseAmount, base.decimals)
     const baseInUSD = getTokenPrice(base)
 
-    const amountUSD = quoteAmountDecimal
-      .times(quoteInUSD)
-      .plus(baseAmountDecimal.times(baseInUSD))
+    const amountUSD = calculateOrderValueUSD(
+      quoteAmountDecimal,
+      quoteInUSD,
+      baseAmountDecimal,
+      baseInUSD,
+    )
 
     // update quote data
     quote.txCount = quote.txCount.plus(ONE_BI)
