@@ -3,6 +3,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 
 import { ERC20 } from '../../generated/BookManager/ERC20'
 import { ERC20SymbolBytes } from '../../generated/BookManager/ERC20SymbolBytes'
+import { ERC20NameBytes } from '../../generated/BookManager/ERC20NameBytes'
 
 import { TokenDefinition } from './chain'
 import { getStaticDefinition } from './static-token-definition'
@@ -61,6 +62,11 @@ export function fetchTokenName(tokenAddress: Address): string {
 }
 
 export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
+  let staticDefinition = getStaticDefinition(tokenAddress)
+  if (staticDefinition != null) {
+    return (staticDefinition as TokenDefinition).totalSupply
+  }
+
   let contract = ERC20.bind(tokenAddress)
   let totalSupplyValue = BigInt.zero()
   let totalSupplyResult = contract.try_totalSupply()
