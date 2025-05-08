@@ -10,7 +10,7 @@ import {
   STABLE_COINS,
 } from './chain'
 
-export function getTokenPrice(
+export function getTokenUSDPrice(
   token: Token,
   visited: string[] = [],
   depth: i32 = 0,
@@ -61,14 +61,14 @@ export function getTokenPrice(
       }
 
       // recursively get the price of the quote token
-      const quotePrice = getTokenPrice(
+      const quoteUSDPrice = getTokenUSDPrice(
         quoteToken,
         visited.concat([tokenID]),
         depth + 1,
       )
 
       // calculate how much USD is locked in this book (liquidity weight)
-      const usdLocked = book.totalValueLocked.times(quotePrice)
+      const usdLocked = book.totalValueLocked.times(quoteUSDPrice)
 
       // choose the price from the book with the largest valid USD liquidity
       if (
@@ -76,7 +76,7 @@ export function getTokenPrice(
         usdLocked.gt(largestLiquidityUsd)
       ) {
         largestLiquidityUsd = usdLocked
-        bestPrice = book.price.times(quotePrice)
+        bestPrice = book.price.times(quoteUSDPrice)
       }
     }
   }
@@ -89,7 +89,7 @@ export function getTokenPrice(
   return bestPrice
 }
 
-export function calculateOrderValueUSD(
+export function calculateValueUSD(
   quoteAmountDecimal: BigDecimal,
   quoteInUSD: BigDecimal,
   baseAmountDecimal: BigDecimal,
