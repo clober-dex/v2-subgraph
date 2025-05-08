@@ -7,10 +7,7 @@
     "create-local": "graph create --node http://localhost:8020/ v2-core-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ v2-core-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 v2-core-subgraph --network localhost",
-    "deploy-base": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph-base --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network base",
-    "deploy-sonic-mainnet": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph-sonic-mainnet --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network sonic-mainnet",
-    "deploy-berachain-mainnet": "dotenv -e .env -- cross-var graph deploy v2-core-subgraph-berachain-mainnet --version-label %DEPLOY_VERSION% --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key %DEPLOY_KEY% --ipfs https://ipfs.satsuma.xyz --network berachain-mainnet",
-    "test": "graph test"
+    "test": "graph test -d"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.89.0",
