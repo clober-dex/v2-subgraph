@@ -15,10 +15,10 @@ export function getTokenPrice(
   visited: string[] = [],
   depth: i32 = 0,
 ): BigDecimal {
-  const tokenId = token.id.toHexString()
+  const tokenID = token.id.toHexString()
 
   // prevent infinite loops by checking visited tokens
-  if (visited.includes(tokenId)) {
+  if (visited.includes(tokenID)) {
     return ZERO_BD
   }
 
@@ -34,12 +34,12 @@ export function getTokenPrice(
   }
 
   // stablecoins are always priced at 1 USD
-  if (STABLE_COINS.includes(tokenId)) {
+  if (STABLE_COINS.includes(tokenID)) {
     return ONE_BD
   }
 
   // if it's the reference/native token, return its known price
-  if (tokenId == REFERENCE_TOKEN || tokenId == ADDRESS_ZERO) {
+  if (tokenID == REFERENCE_TOKEN || tokenID == ADDRESS_ZERO) {
     return nativePrice
   }
 
@@ -63,7 +63,7 @@ export function getTokenPrice(
       // recursively get the price of the quote token
       const quotePrice = getTokenPrice(
         quoteToken,
-        visited.concat([tokenId]),
+        visited.concat([tokenID]),
         depth + 1,
       )
 
@@ -83,7 +83,7 @@ export function getTokenPrice(
 
   // log a warning if no valid price was found
   if (bestPrice.equals(ZERO_BD)) {
-    log.warning('No price found for token {}', [tokenId])
+    log.warning('No price found for token {}', [tokenID])
   }
 
   return bestPrice

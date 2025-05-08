@@ -25,14 +25,14 @@ const MINT_FIXTURE: MintFixture = {
 
 describe('encode', () => {
   test('success - encodeOrderId', () => {
-    const orderId = encodeOrderId(
+    const orderID = encodeOrderId(
       MINT_FIXTURE.bookId.toString(),
       BigInt.fromI32(MINT_FIXTURE.tick as i32),
       MINT_FIXTURE.orderIndex,
     )
 
     assert.assertTrue(
-      orderId ==
+      orderID ==
         BigInt.fromString(
           '53566444723624360785422944131996696091141564570442382186621897550883387867403',
         ),
