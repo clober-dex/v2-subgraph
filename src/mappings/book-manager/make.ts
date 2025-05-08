@@ -111,9 +111,9 @@ export function handleMake(event: Make): void {
 
     // depth data
     const depthId = book.id.toString().concat('-').concat(tick.toString())
-    const depth = Depth.load(depthId)
+    let depth = Depth.load(depthId)
     if (depth === null) {
-      const depth = new Depth(depthId)
+      depth = new Depth(depthId)
       depth.book = book.id
       depth.tick = tick
       depth.latestTakenOrderIndex = ZERO_BI
