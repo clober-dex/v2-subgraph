@@ -8,3 +8,7 @@ yarn-error.log
 tests/.bin/
 tests/.docker/
 tests/.latest.json
+/.subgraph-env
+subgraph.yaml
+/src/common/chain.ts
+/*subgraph.yaml
