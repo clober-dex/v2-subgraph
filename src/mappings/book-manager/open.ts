@@ -14,6 +14,7 @@ const FEE_PRECISION = BigDecimal.fromString('1000000')
 const RATE_MASK = BigInt.fromI32(8388607)
 const MAX_FEE_RATE = BigInt.fromI32(500000)
 
+// @ts-ignore
 function getFeeRate(feePolicy: i32): BigDecimal {
   const feeBigInt = BigInt.fromI32(feePolicy)
     .bitAnd(RATE_MASK)
