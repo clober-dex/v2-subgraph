@@ -34,7 +34,7 @@ type Token @entity {
 type Book @entity {
   # immutable values
   # book id
-  id: String!
+  id: ID!
   # creation
   createdAtTimestamp: BigInt!
   # block book was created at
@@ -119,7 +119,7 @@ type Depth @entity {
 type OpenOrder @entity {
   # immutable values
   # orderId
-  id: String!
+  id: ID!
   # which txn the make was included in
   transaction: Transaction!
   # time of txn
