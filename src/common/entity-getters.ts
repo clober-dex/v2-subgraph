@@ -1,6 +1,6 @@
-import { BigInt, ethereum } from '@graphprotocol/graph-ts'
+import { BigInt, Bytes, ethereum, log } from '@graphprotocol/graph-ts'
 
-import { Transaction } from '../../generated/schema'
+import { Book, Depth, Token, Transaction } from '../../generated/schema'
 
 export function getOrCreateTransaction(event: ethereum.Event): Transaction {
   let transaction = Transaction.load(event.transaction.hash.toHexString())
@@ -16,4 +16,31 @@ export function getOrCreateTransaction(event: ethereum.Event): Transaction {
   transaction.value = event.transaction.value
   transaction.save()
   return transaction as Transaction
+}
+
+export function getTokenOrLog(tokenId: Bytes, eventType: string): Token | null {
+  const token = Token.load(tokenId)
+  if (token === null) {
+    log.error('[{}] Token not found: {}', [eventType, tokenId.toHexString()])
+  }
+  return token
+}
+
+export function getBookOrLog(bookId: string, eventType: string): Book | null {
+  const book = Book.load(bookId)
+  if (book === null) {
+    log.error('[{}] Book not found: {}', [eventType, bookId])
+  }
+  return book
+}
+
+export function getDepthOrLog(
+  depthId: string,
+  eventType: string,
+): Depth | null {
+  const depth = Depth.load(depthId)
+  if (depth === null) {
+    log.error('[{}] Depth not found: {}', [eventType, depthId])
+  }
+  return depth
 }

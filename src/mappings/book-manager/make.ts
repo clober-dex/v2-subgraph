@@ -1,7 +1,7 @@
-import { BigInt, log } from '@graphprotocol/graph-ts'
+import { BigInt } from '@graphprotocol/graph-ts'
 
 import { Make } from '../../../generated/BookManager/BookManager'
-import { Book, Depth, OpenOrder, Token } from '../../../generated/schema'
+import { Depth, OpenOrder } from '../../../generated/schema'
 import { unitToBase, unitToQuote } from '../../common/amount'
 import {
   formatInvertedPrice,
@@ -13,17 +13,16 @@ import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenPrice } from '../../common/pricing'
 import { encodeOrderId } from '../../common/order'
 import { updateBookDayData, updateTokenDayData } from '../interval-updates'
-import { getOrCreateTransaction } from '../../common/entity-getters'
+import {
+  getBookOrLog,
+  getOrCreateTransaction,
+  getTokenOrLog,
+} from '../../common/entity-getters'
 
 export function handleMake(event: Make): void {
-  const book = Book.load(event.params.bookId.toString())
-  if (book === null) {
-    log.error('[MAKE] Book not found: {}', [event.params.bookId.toString()])
-    return
-  }
-
-  const quote = Token.load(book.quote)
-  const base = Token.load(book.base)
+  const book = getBookOrLog(event.params.bookId.toString(), 'MAKE')
+  const quote = getTokenOrLog(book.quote, 'MAKE')
+  const base = getTokenOrLog(book.base, 'MAKE')
   if (quote && base) {
     const tick = BigInt.fromI32(event.params.tick)
     const priceRaw = tickToPrice(tick.toI32())
@@ -143,9 +142,5 @@ export function handleMake(event: Make): void {
     base.save()
     openOrder.save()
     depth.save()
-  } else if (quote === null) {
-    log.error('[MAKE] Quote token not found: {}', [book.quote.toString()])
-  } else if (base === null) {
-    log.error('[MAKE] Base token not found: {}', [book.base.toString()])
   }
 }
