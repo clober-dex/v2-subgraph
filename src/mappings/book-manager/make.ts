@@ -27,7 +27,7 @@ export function handleMake(event: Make): void {
   if (quote && base) {
     const tick = BigInt.fromI32(event.params.tick)
     const priceRaw = tickToPrice(tick.toI32())
-    const orderId = encodeOrderId(book.id, tick, event.params.orderIndex)
+    const orderID = encodeOrderId(book.id, tick, event.params.orderIndex)
 
     const quoteAmount = unitToQuote(book.unitSize, event.params.unit)
     const quoteAmountDecimal = convertTokenToDecimal(
@@ -66,7 +66,7 @@ export function handleMake(event: Make): void {
     const transaction = loadOrCreateTransaction(event)
 
     // open order data
-    const openOrder = new OpenOrder(orderId.toString())
+    const openOrder = new OpenOrder(orderID.toString())
     openOrder.transaction = transaction.id
     openOrder.timestamp = event.block.timestamp
     openOrder.book = book.id
@@ -110,10 +110,10 @@ export function handleMake(event: Make): void {
     openOrder.openQuoteAmount = quoteAmount
 
     // depth data
-    const depthId = book.id.toString().concat('-').concat(tick.toString())
-    let depth = Depth.load(depthId)
+    const depthID = book.id.toString().concat('-').concat(tick.toString())
+    let depth = Depth.load(depthID)
     if (depth === null) {
-      depth = new Depth(depthId)
+      depth = new Depth(depthID)
       depth.book = book.id
       depth.tick = tick
       depth.latestTakenOrderIndex = ZERO_BI
@@ -133,8 +133,9 @@ export function handleMake(event: Make): void {
       depth.quoteAmount = depth.quoteAmount.plus(quoteAmount)
     }
 
-    updateBookDayData(event)
-    updateTokenDayData(event)
+    updateBookDayData(book, event)
+    updateTokenDayData(quote, quoteInUSD, event)
+    updateTokenDayData(base, baseInUSD, event)
 
     // save all
     book.save()
