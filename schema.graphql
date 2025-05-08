@@ -1,10 +1,3 @@
-# stores for USD calculations
-type Bundle @entity {
-  id: ID!
-  # price of native in usd
-  nativePriceUSD: BigDecimal!
-}
-
 type Token @entity {
   # immutable values
   # token address
@@ -35,6 +28,7 @@ type Token @entity {
   totalValueLockedUSD: BigDecimal!
   # derived fields
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
+  books: [Book!]! @derivedFrom(field: "base")
 }
 
 type Book @entity {
@@ -94,11 +88,11 @@ type Book @entity {
   # tvl USD
   totalValueLockedUSD: BigDecimal!
   # derived fields
-  ticks: [Tick!]! @derivedFrom(field: "book")
+  depths: [Depth!]! @derivedFrom(field: "book")
   openOrders: [OpenOrder!]! @derivedFrom(field: "book")
 }
 
-type Tick @entity {
+type Depth @entity {
   # immutable values
   # `${bookId}-${tick}`
   id: ID!
@@ -106,24 +100,20 @@ type Tick @entity {
   book: Book!
   # tick
   tick: BigInt!
-  # latest tick index
-  latestTakenOrderIndex: BigInt!
-
-  # mutable values
-  # amount
-  unitAmount: BigInt!
-  baseAmount: BigInt!
-  quoteAmount: BigInt!
   # current price tracker
   priceRaw: BigInt!
   # quote per base
   price: BigDecimal!
   # base per quote
   inversePrice: BigDecimal!
-  # created time
-  createdAtTimestamp: BigInt!
-  # created block
-  createdAtBlockNumber: BigInt!
+
+  # mutable values
+  # amount
+  unitAmount: BigInt!
+  baseAmount: BigInt!
+  quoteAmount: BigInt!
+  # latest tick index
+  latestTakenOrderIndex: BigInt!
 }
 
 type OpenOrder @entity {
@@ -142,8 +132,6 @@ type OpenOrder @entity {
   base: Token!
   # txn origin
   origin: Bytes! # the EOA that initiated the txn
-
-  # mutable values
   # owner of position where liquidity made to
   owner: Bytes!
   # current price tracker
@@ -152,6 +140,10 @@ type OpenOrder @entity {
   tick: BigInt!
   # current order index
   orderIndex: BigInt!
+  # quote per base
+  price: BigDecimal!
+  # base per quote
+  inversePrice: BigDecimal!
 
   # initial
   amountUSD: BigDecimal!
@@ -159,6 +151,7 @@ type OpenOrder @entity {
   baseAmount: BigInt!
   quoteAmount: BigInt!
 
+  # mutable values
   # filled
   filledAmountUSD: BigDecimal!
   filledUnitAmount: BigInt!
