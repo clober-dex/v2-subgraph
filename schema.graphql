@@ -1,8 +1,8 @@
 # stores for USD calculations
 type Bundle @entity {
   id: ID!
-  # price of ETH in usd
-  ethPriceUSD: BigDecimal!
+  # price of native in usd
+  nativePriceUSD: BigDecimal!
 }
 
 type Token @entity {
@@ -23,20 +23,12 @@ type Token @entity {
   volume: BigDecimal!
   # volume in derived USD
   volumeUSD: BigDecimal!
-  # volume in USD even on books with less reliable USD values
-  untrackedVolumeUSD: BigDecimal!
   # protocolFees in USD
   protocolFeesUSD: BigDecimal!
   # liquidity across all books in token units
   totalValueLocked: BigDecimal!
   # liquidity across all books in derived USD
   totalValueLockedUSD: BigDecimal!
-  # TVL derived in USD untracked
-  totalValueLockedUSDUntracked: BigDecimal!
-  # Note: for chains where ETH is not the native token, this will be the derived
-  # price of that chain's native token, effectively, this should be renamed
-  # derivedNative
-  derivedETH: BigDecimal!
   # derived fields
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
 }
@@ -65,8 +57,6 @@ type Market @entity {
   volumeBase: BigDecimal!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # all time USD swapped, unfiltered for unreliable USD books
-  untrackedVolumeUSD: BigDecimal!
   # all time number of transactions
   txCount: BigInt!
   # all time protocolFees quote
@@ -81,8 +71,6 @@ type Market @entity {
   totalValueLockedBase: BigDecimal!
   # tvl USD
   totalValueLockedUSD: BigDecimal!
-  # TVL derived in USD untracked
-  totalValueLockedUSDUntracked: BigDecimal!
   # derived fields
   marketDayData: [MarketDayData!]! @derivedFrom(field: "market")
 }
@@ -129,8 +117,6 @@ type Book @entity {
   volumeBase: BigDecimal!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # all time USD swapped, unfiltered for unreliable USD books
-  untrackedVolumeUSD: BigDecimal!
   # all time number of transactions
   txCount: BigInt!
   # all time protocolFees quote
@@ -145,10 +131,9 @@ type Book @entity {
   totalValueLockedBase: BigDecimal!
   # tvl USD
   totalValueLockedUSD: BigDecimal!
-  # TVL derived in USD untracked
-  totalValueLockedUSDUntracked: BigDecimal!
   # derived fields
   ticks: [Tick!]! @derivedFrom(field: "book")
+  openOrders: [OpenOrder!]! @derivedFrom(field: "book")
 }
 
 type Tick @entity {
@@ -247,6 +232,12 @@ type Transaction @entity {
   # gas used during txn execution
   gasUsed: BigInt!
   gasPrice: BigInt!
+  # address of the txn sender
+  from: Bytes!
+  # address of the txn receiver
+  to: Bytes!
+  # txn value
+  value: BigInt!
 }
 
 type ChartLog @entity {
@@ -322,8 +313,6 @@ type Pool @entity {
   volumeTokenB: BigInt!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # all time USD swapped, unfiltered for unreliable USD pools
-  untrackedVolumeUSD: BigDecimal!
   # all time number of transactions
   txCount: BigInt!
   # spread profit in USD
@@ -351,8 +340,6 @@ type MarketDayData @entity {
   volumeBase: BigDecimal!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # all time USD swapped, unfiltered for unreliable USD books
-  untrackedVolumeUSD: BigDecimal!
   # all time number of transactions
   txCount: BigInt!
   # all time protocolFees quote
@@ -367,8 +354,6 @@ type MarketDayData @entity {
   totalValueLockedBase: BigDecimal!
   # tvl USD
   totalValueLockedUSD: BigDecimal!
-  # TVL derived in USD untracked
-  totalValueLockedUSDUntracked: BigDecimal!
 }
 
 # Data accumulated and condensed into day stats for each pool
@@ -457,8 +442,6 @@ type TokenDayData @entity {
   volume: BigDecimal!
   # volume in derived USD
   volumeUSD: BigDecimal!
-  # volume in USD even on pools with less reliable USD values
-  untrackedVolumeUSD: BigDecimal!
   # liquidity across all pools in token units
   totalValueLocked: BigDecimal!
   # liquidity across all pools in derived USD
