@@ -76,7 +76,7 @@ export function getTokenPrice(
         usdLocked.gt(largestLiquidityUsd)
       ) {
         largestLiquidityUsd = usdLocked
-        bestPrice = book.price
+        bestPrice = book.price.times(quotePrice)
       }
     }
   }
