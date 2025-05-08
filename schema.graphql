@@ -65,8 +65,6 @@ type Book @entity {
   inversePrice: BigDecimal!
   # current tick
   tick: BigInt!
-  # current order index
-  orderIndex: BigInt!
   # all time quote swapped
   volumeQuote: BigDecimal!
   # all time base swapped
@@ -132,8 +130,6 @@ type OpenOrder @entity {
   base: Token!
   # txn origin
   origin: Bytes! # the EOA that initiated the txn
-  # owner of position where liquidity made to
-  owner: Bytes!
   # current price tracker
   priceRaw: BigInt!
   # current tick
@@ -152,6 +148,9 @@ type OpenOrder @entity {
   quoteAmount: BigInt!
 
   # mutable values
+  # owner of position where liquidity made to
+  owner: Bytes!
+
   # filled
   filledAmountUSD: BigDecimal!
   filledUnitAmount: BigInt!
