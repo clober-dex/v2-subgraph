@@ -17,6 +17,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Token
+        - Book
       abis:
         - name: BookManager
           file: ./abis/BookManager.json
