@@ -12,8 +12,8 @@ import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenPrice } from '../../common/pricing'
 import { encodeOrderId } from '../../common/order'
-import { loadOrCreateTransaction } from '../utils'
 import { updateBookDayData, updateTokenDayData } from '../interval-updates'
+import { getOrCreateTransaction } from '../../common/entity-getters'
 
 export function handleMake(event: Make): void {
   const book = Book.load(event.params.bookId.toString())
@@ -63,7 +63,7 @@ export function handleMake(event: Make): void {
       book.totalValueLockedBase.plus(baseAmountDecimal)
     book.totalValueLockedUSD = book.totalValueLockedUSD.plus(amountUSD)
 
-    const transaction = loadOrCreateTransaction(event)
+    const transaction = getOrCreateTransaction(event)
 
     // open order data
     const openOrder = new OpenOrder(orderID.toString())
@@ -143,5 +143,9 @@ export function handleMake(event: Make): void {
     base.save()
     openOrder.save()
     depth.save()
+  } else if (quote === null) {
+    log.error('[MAKE] Quote token not found: {}', [book.quote.toString()])
+  } else if (base === null) {
+    log.error('[MAKE] Base token not found: {}', [book.base.toString()])
   }
 }
