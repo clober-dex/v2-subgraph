@@ -58,10 +58,7 @@ export function handleMake(event: Make): void {
 
     // book data
     book.txCount = book.txCount.plus(ONE_BI)
-    book.totalValueLockedQuote =
-      book.totalValueLockedQuote.plus(quoteAmountDecimal)
-    book.totalValueLockedBase =
-      book.totalValueLockedBase.plus(baseAmountDecimal)
+    book.totalValueLocked = book.totalValueLocked.plus(quoteAmountDecimal)
     book.totalValueLockedUSD = book.totalValueLockedUSD.plus(amountUSD)
 
     const transaction = getOrCreateTransaction(event)

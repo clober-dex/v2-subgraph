@@ -68,7 +68,7 @@ export function getTokenPrice(
       )
 
       // calculate how much USD is locked in this book (liquidity weight)
-      const usdLocked = book.totalValueLockedQuote.times(quotePrice)
+      const usdLocked = book.totalValueLocked.times(quotePrice)
 
       // choose the price from the book with the largest valid USD liquidity
       if (
