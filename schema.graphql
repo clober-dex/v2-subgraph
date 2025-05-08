@@ -8,7 +8,7 @@ type Bundle @entity {
 type Token @entity {
   # immutable values
   # token address
-  id: ID!
+  id: Bytes!
   # token symbol
   symbol: String!
   # token name
@@ -25,6 +25,10 @@ type Token @entity {
   volumeUSD: BigDecimal!
   # protocolFees in USD
   protocolFeesUSD: BigDecimal!
+  # transactions across all pools that include this token
+  txCount: BigInt!
+  # number of pools containing this token
+  bookCount: BigInt!
   # liquidity across all books in token units
   totalValueLocked: BigDecimal!
   # liquidity across all books in derived USD
@@ -33,52 +37,10 @@ type Token @entity {
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
 }
 
-type Market @entity {
-  # immutable values
-  # `${baseToken}/${quoteToken}`
-  id: ID!
-  # bid book
-  bidBook: Book
-  # ask book
-  askBook: Book
-  # base
-  base: Token!
-  # quote
-  quote: Token!
-
-  # mutable values
-  # quote per base
-  price: BigDecimal!
-  # base per quote
-  inversePrice: BigDecimal!
-  # all time quote swapped
-  volumeQuote: BigDecimal!
-  # all time base swapped
-  volumeBase: BigDecimal!
-  # all time USD swapped
-  volumeUSD: BigDecimal!
-  # all time number of transactions
-  txCount: BigInt!
-  # all time protocolFees quote
-  protocolFeesQuote: BigDecimal!
-  # all time protocolFees base
-  protocolFeesBase: BigDecimal!
-  # all time protocolFees derived USD
-  protocolFeesUSD: BigDecimal!
-  # total quote across all ticks
-  totalValueLockedQuote: BigDecimal!
-  # total base across all ticks
-  totalValueLockedBase: BigDecimal!
-  # tvl USD
-  totalValueLockedUSD: BigDecimal!
-  # derived fields
-  marketDayData: [MarketDayData!]! @derivedFrom(field: "market")
-}
-
 type Book @entity {
   # immutable values
-  # book address
-  id: ID!
+  # book id
+  id: String!
   # creation
   createdAtTimestamp: BigInt!
   # block book was created at
@@ -98,7 +60,7 @@ type Book @entity {
   # taker fee
   takerFee: BigDecimal!
   # hooks
-  hooks: String!
+  hooks: Bytes!
 
   # mutable values
   # current price tracker
@@ -167,7 +129,7 @@ type Tick @entity {
 type OpenOrder @entity {
   # immutable values
   # orderId
-  id: ID!
+  id: String!
   # which txn the make was included in
   transaction: Transaction!
   # time of txn
@@ -262,11 +224,11 @@ type ChartLog @entity {
 type Pool @entity {
   # immutable values
   # pool key
-  id: ID!
+  id: Bytes!
   # salt
-  salt: String!
+  salt: Bytes!
   # strategy contract address
-  strategy: String!
+  strategy: Bytes!
   # creation
   createdAtTimestamp: BigInt!
   # block pool was created at
@@ -321,39 +283,6 @@ type Pool @entity {
   poolHourData: [PoolHourData!]! @derivedFrom(field: "pool")
   # daily snapshots of pool data
   poolDayData: [PoolDayData!]! @derivedFrom(field: "pool")
-}
-
-type MarketDayData @entity {
-  # `${poolKey}-{periodStartUnix}`
-  id: ID!
-  # timestamp rounded to current day by dividing by 86400
-  date: Int!
-  # pointer to market
-  market: Market!
-  # quote per base
-  price: BigDecimal!
-  # base per quote
-  inversePrice: BigDecimal!
-  # all time quote swapped
-  volumeQuote: BigDecimal!
-  # all time base swapped
-  volumeBase: BigDecimal!
-  # all time USD swapped
-  volumeUSD: BigDecimal!
-  # all time number of transactions
-  txCount: BigInt!
-  # all time protocolFees quote
-  protocolFeesQuote: BigDecimal!
-  # all time protocolFees base
-  protocolFeesBase: BigDecimal!
-  # all time protocolFees derived USD
-  protocolFeesUSD: BigDecimal!
-  # total quote across all ticks
-  totalValueLockedQuote: BigDecimal!
-  # total base across all ticks
-  totalValueLockedBase: BigDecimal!
-  # tvl USD
-  totalValueLockedUSD: BigDecimal!
 }
 
 # Data accumulated and condensed into day stats for each pool
