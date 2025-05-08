@@ -90,7 +90,6 @@ export function handleOpen(event: Open): void {
   book.price = ZERO_BD
   book.inversePrice = ZERO_BD
   book.tick = ZERO_BI
-  book.orderIndex = ZERO_BI
   book.volumeQuote = ZERO_BD
   book.volumeBase = ZERO_BD
   book.volumeUSD = ZERO_BD
@@ -98,8 +97,7 @@ export function handleOpen(event: Open): void {
   book.protocolFeesQuote = ZERO_BD
   book.protocolFeesBase = ZERO_BD
   book.protocolFeesUSD = ZERO_BD
-  book.totalValueLockedQuote = ZERO_BD
-  book.totalValueLockedBase = ZERO_BD
+  book.totalValueLocked = ZERO_BD
   book.totalValueLockedUSD = ZERO_BD
   book.save()
 }
