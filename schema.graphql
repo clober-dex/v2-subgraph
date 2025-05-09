@@ -55,6 +55,8 @@ type Book @entity {
   isTakerFeeInQuote: Boolean!
   # hooks
   hooks: Bytes!
+  # bindings pool if exists
+  pool: Pool
 
   # mutable values
   # current price tracker
