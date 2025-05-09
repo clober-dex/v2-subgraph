@@ -302,6 +302,30 @@ type BookDayData @entity {
   totalValueLockedUSD: BigDecimal!
 }
 
+type TokenDayData @entity {
+  # token address concatendated with date
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: Int!
+  # pointer to token
+  token: Token!
+
+  # volume in token units
+  volume: BigDecimal!
+  # volume in derived USD
+  volumeUSD: BigDecimal!
+  # tvl derived in token units (denominated in quote token units)
+  totalValueLocked: BigDecimal!
+  # tvl derived in USD at end of period
+  totalValueLockedUSD: BigDecimal!
+  # price at end of period in USD
+  priceUSD: BigDecimal!
+  # protocolFees in token units
+  protocolFees: BigDecimal!
+  # protocolFees in USD
+  protocolFeesUSD: BigDecimal!
+}
+
 # Data accumulated and condensed into day stats for each pool
 type PoolDayData @entity {
   # `${poolKey}-{periodStartUnix}`
@@ -370,28 +394,4 @@ type PoolHourData @entity {
   volumeUSD: BigDecimal!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
-}
-
-type TokenDayData @entity {
-  # token address concatendated with date
-  id: ID!
-  # timestamp rounded to current day by dividing by 86400
-  date: Int!
-  # pointer to token
-  token: Token!
-
-  # volume in token units
-  volume: BigDecimal!
-  # volume in derived USD
-  volumeUSD: BigDecimal!
-  # tvl derived in token units (denominated in quote token units)
-  totalValueLocked: BigDecimal!
-  # tvl derived in USD at end of period
-  totalValueLockedUSD: BigDecimal!
-  # price at end of period in USD
-  priceUSD: BigDecimal!
-  # protocolFees in token units
-  protocolFees: BigDecimal!
-  # protocolFees in USD
-  protocolFeesUSD: BigDecimal!
 }
