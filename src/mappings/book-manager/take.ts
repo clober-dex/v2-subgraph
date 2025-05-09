@@ -350,7 +350,7 @@ export function handleTake(event: Take): void {
       filledUnitAmount,
     )
 
-    if (openOrder.unitAmount.equals(openOrder.filledUnitAmount)) {
+    if (openOrder.openUnitAmount.equals(openOrder.filledUnitAmount)) {
       currentOrderIndex = currentOrderIndex.plus(ONE_BI)
     }
   }
