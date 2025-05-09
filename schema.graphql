@@ -260,9 +260,9 @@ type Pool @entity {
   priceBRaw: BigInt!
   tickB: BigInt!
   # all time tokenA swapped
-  volumeTokenA: BigInt!
+  volumeTokenA: BigDecimal!
   # all time tokenB swapped
-  volumeTokenB: BigInt!
+  volumeTokenB: BigDecimal!
   # all time USD swapped
   volumeUSD: BigDecimal!
   # all time spread profit in USD
@@ -352,9 +352,9 @@ type PoolDayData @entity {
   priceBRaw: BigInt!
   tickB: BigInt!
   # tokenA swapped
-  volumeTokenA: BigInt!
+  volumeTokenA: BigDecimal!
   # tokenB swapped
-  volumeTokenB: BigInt!
+  volumeTokenB: BigDecimal!
   # USD swapped
   volumeUSD: BigDecimal!
   # spread profit in USD
@@ -387,9 +387,9 @@ type PoolHourData @entity {
   priceBRaw: BigInt!
   tickB: BigInt!
   # tokenA swapped
-  volumeTokenA: BigInt!
+  volumeTokenA: BigDecimal!
   # tokenB swapped
-  volumeTokenB: BigInt!
+  volumeTokenB: BigDecimal!
   # USD swapped
   volumeUSD: BigDecimal!
   # spread profit in USD

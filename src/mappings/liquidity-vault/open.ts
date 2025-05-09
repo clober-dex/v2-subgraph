@@ -35,8 +35,8 @@ export function handlePoolOpen(event: Open): void {
     pool.priceB = ZERO_BD
     pool.priceBRaw = ZERO_BI
     pool.tickB = ZERO_BI
-    pool.volumeTokenA = ZERO_BI
-    pool.volumeTokenB = ZERO_BI
+    pool.volumeTokenA = ZERO_BD
+    pool.volumeTokenB = ZERO_BD
     pool.volumeUSD = ZERO_BD
     pool.spreadProfitUSD = ZERO_BD
 
