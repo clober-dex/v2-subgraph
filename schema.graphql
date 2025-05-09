@@ -252,12 +252,12 @@ type Pool @entity {
   # total liquidity of tokenB
   liquidityB: BigInt!
   # current priceA tracker
+  priceA: BigDecimal!
   priceARaw: BigInt!
-  # current priceB tracker
-  priceBRaw: BigInt!
-  # current tickA
   tickA: BigInt!
-  # current tickB
+  # current priceB tracker
+  priceB: BigDecimal!
+  priceBRaw: BigInt!
   tickB: BigInt!
   # all time tokenA swapped
   volumeTokenA: BigInt!
@@ -265,7 +265,7 @@ type Pool @entity {
   volumeTokenB: BigInt!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # spread profit in USD
+  # all time spread profit in USD
   spreadProfitUSD: BigDecimal!
   # hourly snapshots of pool data
   poolHourData: [PoolHourData!]! @derivedFrom(field: "pool")
@@ -344,18 +344,18 @@ type PoolDayData @entity {
   # total liquidity of tokenB
   liquidityB: BigInt!
   # current priceA tracker
+  priceA: BigDecimal!
   priceARaw: BigInt!
-  # current priceB tracker
-  priceBRaw: BigInt!
-  # current tickA
   tickA: BigInt!
-  # current tickB
+  # current priceB tracker
+  priceB: BigDecimal!
+  priceBRaw: BigInt!
   tickB: BigInt!
-  # all time tokenA swapped
+  # tokenA swapped
   volumeTokenA: BigInt!
-  # all time tokenB swapped
+  # tokenB swapped
   volumeTokenB: BigInt!
-  # all time USD swapped
+  # USD swapped
   volumeUSD: BigDecimal!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
@@ -379,18 +379,18 @@ type PoolHourData @entity {
   # total liquidity of tokenB
   liquidityB: BigInt!
   # current priceA tracker
+  priceA: BigDecimal!
   priceARaw: BigInt!
-  # current priceB tracker
-  priceBRaw: BigInt!
-  # current tickA
   tickA: BigInt!
-  # current tickB
+  # current priceB tracker
+  priceB: BigDecimal!
+  priceBRaw: BigInt!
   tickB: BigInt!
-  # all time tokenA swapped
+  # tokenA swapped
   volumeTokenA: BigInt!
-  # all time tokenB swapped
+  # tokenB swapped
   volumeTokenB: BigInt!
-  # all time USD swapped
+  # USD swapped
   volumeUSD: BigDecimal!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
