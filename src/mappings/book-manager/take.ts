@@ -1,8 +1,14 @@
-import { BigDecimal, BigInt, log, store } from '@graphprotocol/graph-ts'
+import {
+  BigDecimal,
+  BigInt,
+  ethereum,
+  log,
+  store,
+} from '@graphprotocol/graph-ts'
 
 import { Take } from '../../../generated/BookManager/BookManager'
 import { unitToBase, unitToQuote } from '../../common/amount'
-import { OpenOrder, Token } from '../../../generated/schema'
+import { Book, ChartLog, OpenOrder, Token } from '../../../generated/schema'
 import { encodeOrderId } from '../../common/order'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import {
@@ -18,6 +24,11 @@ import {
   tickToPrice,
 } from '../../common/tick'
 import { updateBookDayData, updateTokenDayData } from '../interval-updates'
+import {
+  CHART_LOG_INTERVALS,
+  encodeChartLogId,
+  encodeMarketCode,
+} from '../../common/chart'
 
 function fillOpenOrder(
   openOrder: OpenOrder,
@@ -82,6 +93,97 @@ function fillOpenOrder(
   }
 
   openOrder.save()
+}
+
+function updateChart(
+  block: ethereum.Block,
+  takenBaseAmountDecimal: BigDecimal,
+  takenQuoteAmountDecimal: BigDecimal,
+  book: Book,
+  base: Token,
+  quote: Token,
+): void {
+  for (let i = 0; i < CHART_LOG_INTERVALS.entries.length; i++) {
+    const entry = CHART_LOG_INTERVALS.entries[i]
+    const intervalType = entry.key
+    const intervalInNumber = entry.value
+    const timestampForAcc = (Math.floor(
+      (block.timestamp.toI64() as number) / intervalInNumber,
+    ) * intervalInNumber) as i64
+
+    // natural chart log
+    const chartLogId = encodeChartLogId(
+      base,
+      quote,
+      intervalType,
+      timestampForAcc,
+    )
+    const marketCode = encodeMarketCode(base, quote)
+    let chartLog = ChartLog.load(chartLogId)
+    if (chartLog === null) {
+      chartLog = new ChartLog(chartLogId)
+      chartLog.marketCode = marketCode
+      chartLog.intervalType = intervalType
+      chartLog.timestamp = BigInt.fromI64(timestampForAcc)
+      chartLog.open = book.price
+      chartLog.high = book.price
+      chartLog.low = book.price
+      chartLog.close = book.price
+      chartLog.baseVolume = takenBaseAmountDecimal
+      chartLog.bidBookBaseVolume = takenBaseAmountDecimal
+      chartLog.askBookBaseVolume = ZERO_BD
+    } else {
+      if (book.price.gt(chartLog.high)) {
+        chartLog.high = book.price
+      }
+      if (book.price.lt(chartLog.low)) {
+        chartLog.low = book.price
+      }
+      chartLog.close = book.price
+      chartLog.baseVolume = chartLog.baseVolume.plus(takenBaseAmountDecimal)
+      chartLog.bidBookBaseVolume = chartLog.bidBookBaseVolume.plus(
+        takenBaseAmountDecimal,
+      )
+    }
+    chartLog.save()
+
+    // inverted chart log
+    const invertedChartLogId = encodeChartLogId(
+      quote,
+      base,
+      intervalType,
+      timestampForAcc,
+    )
+    const invertedMarketCode = encodeMarketCode(quote, base)
+    let invertedChartLog = ChartLog.load(invertedChartLogId)
+    if (invertedChartLog === null) {
+      invertedChartLog = new ChartLog(invertedChartLogId)
+      invertedChartLog.marketCode = invertedMarketCode
+      invertedChartLog.intervalType = intervalType
+      invertedChartLog.timestamp = BigInt.fromI64(timestampForAcc)
+      invertedChartLog.open = book.inversePrice
+      invertedChartLog.high = book.inversePrice
+      invertedChartLog.low = book.inversePrice
+      invertedChartLog.close = book.inversePrice
+      invertedChartLog.baseVolume = takenQuoteAmountDecimal
+      invertedChartLog.bidBookBaseVolume = ZERO_BD
+      invertedChartLog.askBookBaseVolume = takenQuoteAmountDecimal
+    } else {
+      if (book.inversePrice.gt(invertedChartLog.high)) {
+        invertedChartLog.high = book.inversePrice
+      }
+      if (book.inversePrice.lt(invertedChartLog.low)) {
+        invertedChartLog.low = book.inversePrice
+      }
+      invertedChartLog.close = book.inversePrice
+      invertedChartLog.baseVolume = invertedChartLog.baseVolume.plus(
+        takenQuoteAmountDecimal,
+      )
+      invertedChartLog.askBookBaseVolume =
+        invertedChartLog.askBookBaseVolume.plus(takenQuoteAmountDecimal)
+    }
+    invertedChartLog.save()
+  }
 }
 
 export function handleTake(event: Take): void {
@@ -216,6 +318,15 @@ export function handleTake(event: Take): void {
   baseDayData.protocolFeesUSD =
     baseDayData.protocolFeesUSD.plus(protocolFeesTotalUSD)
 
+  updateChart(
+    event.block,
+    takenBaseAmountDecimal,
+    takenQuoteAmountDecimal,
+    book,
+    base,
+    quote,
+  )
+
   let currentOrderIndex = depth.latestTakenOrderIndex
   let remainingTakenUnitAmount = takenUnitAmount
   while (remainingTakenUnitAmount.gt(ZERO_BI)) {
@@ -265,4 +376,7 @@ export function handleTake(event: Take): void {
   bookDayData.save()
   quoteDayData.save()
   baseDayData.save()
+  // openOrder.save() // already saved in fillOpenOrder
+  // chartLog.save() // already saved in updateChart
+  // invertedChartLog.save() // already saved in updateChart
 }
