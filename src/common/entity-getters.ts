@@ -24,40 +24,51 @@ export function getOrCreateTransaction(event: ethereum.Event): Transaction {
   return transaction as Transaction
 }
 
-export function getTokenOrLog(tokenId: Bytes, eventType: string): Token | null {
-  const token = Token.load(tokenId)
+export function getTokenOrLog(tokenID: Bytes, eventType: string): Token | null {
+  const token = Token.load(tokenID)
   if (token === null) {
-    log.error('[{}] Token not found: {}', [eventType, tokenId.toHexString()])
+    log.error('[{}] Token not found: {}', [eventType, tokenID.toHexString()])
   }
   return token
 }
 
-export function getBookOrLog(bookId: string, eventType: string): Book | null {
-  const book = Book.load(bookId)
+export function getBookOrLog(bookID: string, eventType: string): Book | null {
+  const book = Book.load(bookID)
   if (book === null) {
-    log.error('[{}] Book not found: {}', [eventType, bookId])
+    log.error('[{}] Book not found: {}', [eventType, bookID])
   }
   return book
 }
 
 export function getDepthOrLog(
-  depthId: string,
+  depthID: string,
   eventType: string,
 ): Depth | null {
-  const depth = Depth.load(depthId)
+  const depth = Depth.load(depthID)
   if (depth === null) {
-    log.error('[{}] Depth not found: {}', [eventType, depthId])
+    log.error('[{}] Depth not found: {}', [eventType, depthID])
   }
   return depth
 }
 
 export function getOpenOrderOrLog(
-  orderId: string,
+  openOrderID: string,
   eventType: string,
 ): OpenOrder | null {
-  const openOrder = OpenOrder.load(orderId)
+  const openOrder = OpenOrder.load(openOrderID)
   if (openOrder === null) {
-    log.error('[{}] Open order not found: {}', [eventType, orderId])
+    log.error('[{}] Open order not found: {}', [eventType, openOrderID])
   }
   return openOrder
 }
+
+// export function getPoolOrLog(
+//   orderId: string,
+//   eventType: string,
+// ): OpenOrder | null {
+//   const openOrder = OpenOrder.load(orderId)
+//   if (openOrder === null) {
+//     log.error('[{}] Open order not found: {}', [eventType, orderId])
+//   }
+//   return openOrder
+// }

@@ -11,7 +11,7 @@ import {
 import { ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
-import { encodeOrderId } from '../../common/order'
+import { encodeOrderID } from '../../common/order'
 import { updateBookDayData, updateTokenDayData } from '../interval-updates'
 import {
   getBookOrLog,
@@ -30,7 +30,7 @@ export function handleMake(event: Make): void {
   if (quote && base) {
     const tick = BigInt.fromI32(event.params.tick)
     const priceRaw = tickToPrice(tick.toI32())
-    const orderID = encodeOrderId(book.id, tick, event.params.orderIndex)
+    const orderID = encodeOrderID(book.id, tick, event.params.orderIndex)
 
     const quoteAmount = unitToQuote(book.unitSize, event.params.unit)
     const quoteAmountDecimal = convertTokenToDecimal(

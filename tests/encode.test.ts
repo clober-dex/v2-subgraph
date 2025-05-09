@@ -1,7 +1,7 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { describe, test, assert } from 'matchstick-as'
 
-import { encodeOrderId } from '../src/common/order'
+import { encodeOrderID } from '../src/common/order'
 
 class MintFixture {
   bookId: BigInt
@@ -24,7 +24,7 @@ const MINT_FIXTURE: MintFixture = {
 describe('encode', () => {
   test('success - encodeOrderId', () => {
     assert.assertTrue(
-      encodeOrderId(
+      encodeOrderID(
         MINT_FIXTURE.bookId.toString(),
         BigInt.fromI32(-259218 as i32),
         MINT_FIXTURE.orderIndex,
@@ -35,7 +35,7 @@ describe('encode', () => {
     )
 
     assert.assertTrue(
-      encodeOrderId(
+      encodeOrderID(
         MINT_FIXTURE.bookId.toString(),
         BigInt.fromI32(-1 as i32),
         MINT_FIXTURE.orderIndex,
@@ -46,7 +46,7 @@ describe('encode', () => {
     )
 
     assert.assertTrue(
-      encodeOrderId(
+      encodeOrderID(
         MINT_FIXTURE.bookId.toString(),
         BigInt.fromI32(-2 as i32),
         MINT_FIXTURE.orderIndex,

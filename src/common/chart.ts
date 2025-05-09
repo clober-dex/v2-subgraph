@@ -19,7 +19,7 @@ CHART_LOG_INTERVALS.set('1w', 7 * 24 * 60 * 60)
 export function encodeMarketCode(base: Token, quote: Token): string {
   return base.id.toHexString().concat('-').concat(quote.id.toHexString())
 }
-export function encodeChartLogId(
+export function encodeChartLogID(
   base: Token,
   quote: Token,
   intervalType: string,

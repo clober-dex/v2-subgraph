@@ -2,7 +2,7 @@ import { store } from '@graphprotocol/graph-ts'
 
 import { Cancel } from '../../../generated/BookManager/BookManager'
 import {
-  decodeBookIdFromOrderId,
+  decodeBookIDFromOrderID,
   getPendingUnitAmount,
 } from '../../common/order'
 import {
@@ -23,7 +23,7 @@ export function handleCancel(event: Cancel): void {
     return
   }
 
-  const bookID = decodeBookIdFromOrderId(event.params.orderId)
+  const bookID = decodeBookIDFromOrderID(event.params.orderId)
   const book = getBookOrLog(bookID, 'CANCEL')
   if (book === null) {
     return

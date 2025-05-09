@@ -9,7 +9,7 @@ import {
 import { Take } from '../../../generated/BookManager/BookManager'
 import { unitToBase, unitToQuote } from '../../common/amount'
 import { Book, ChartLog, OpenOrder, Token } from '../../../generated/schema'
-import { encodeOrderId } from '../../common/order'
+import { encodeOrderID } from '../../common/order'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import {
   getBookOrLog,
@@ -26,7 +26,7 @@ import {
 import { updateBookDayData, updateTokenDayData } from '../interval-updates'
 import {
   CHART_LOG_INTERVALS,
-  encodeChartLogId,
+  encodeChartLogID,
   encodeMarketCode,
 } from '../../common/chart'
 
@@ -112,16 +112,16 @@ function updateChart(
     ) * intervalInNumber) as i64
 
     // natural chart log
-    const chartLogId = encodeChartLogId(
+    const chartLogID = encodeChartLogID(
       base,
       quote,
       intervalType,
       timestampForAcc,
     )
     const marketCode = encodeMarketCode(base, quote)
-    let chartLog = ChartLog.load(chartLogId)
+    let chartLog = ChartLog.load(chartLogID)
     if (chartLog === null) {
-      chartLog = new ChartLog(chartLogId)
+      chartLog = new ChartLog(chartLogID)
       chartLog.marketCode = marketCode
       chartLog.intervalType = intervalType
       chartLog.timestamp = BigInt.fromI64(timestampForAcc)
@@ -148,16 +148,16 @@ function updateChart(
     chartLog.save()
 
     // inverted chart log
-    const invertedChartLogId = encodeChartLogId(
+    const invertedChartLogID = encodeChartLogID(
       quote,
       base,
       intervalType,
       timestampForAcc,
     )
     const invertedMarketCode = encodeMarketCode(quote, base)
-    let invertedChartLog = ChartLog.load(invertedChartLogId)
+    let invertedChartLog = ChartLog.load(invertedChartLogID)
     if (invertedChartLog === null) {
-      invertedChartLog = new ChartLog(invertedChartLogId)
+      invertedChartLog = new ChartLog(invertedChartLogID)
       invertedChartLog.marketCode = invertedMarketCode
       invertedChartLog.intervalType = intervalType
       invertedChartLog.timestamp = BigInt.fromI64(timestampForAcc)
@@ -327,7 +327,7 @@ export function handleTake(event: Take): void {
   let currentOrderIndex = depth.latestTakenOrderIndex
   let remainingTakenUnitAmount = takenUnitAmount
   while (remainingTakenUnitAmount.gt(ZERO_BI)) {
-    const orderID = encodeOrderId(book.id, tick, currentOrderIndex)
+    const orderID = encodeOrderID(book.id, tick, currentOrderIndex)
     const openOrder = OpenOrder.load(orderID.toString())
     if (openOrder === null) {
       currentOrderIndex = currentOrderIndex.plus(ONE_BI)

@@ -2,7 +2,7 @@ import { store } from '@graphprotocol/graph-ts'
 
 import { Claim } from '../../../generated/BookManager/BookManager'
 import {
-  decodeBookIdFromOrderId,
+  decodeBookIDFromOrderID,
   getPendingUnitAmount,
 } from '../../common/order'
 import {
@@ -20,7 +20,7 @@ export function handleClaim(event: Claim): void {
     return
   }
 
-  const bookID = decodeBookIdFromOrderId(event.params.orderId)
+  const bookID = decodeBookIDFromOrderID(event.params.orderId)
   const book = getBookOrLog(bookID, 'CLAIM')
   if (book === null) {
     return
