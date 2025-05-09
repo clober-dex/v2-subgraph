@@ -132,7 +132,6 @@ export function handleMake(event: Make): void {
     // save all
     book.save()
     quote.save()
-    base.save()
     openOrder.save()
     depth.save()
   }

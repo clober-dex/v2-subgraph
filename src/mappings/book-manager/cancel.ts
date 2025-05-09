@@ -100,6 +100,5 @@ export function handleCancel(event: Cancel): void {
     }
     book.save()
     quote.save()
-    base.save()
   }
 }
