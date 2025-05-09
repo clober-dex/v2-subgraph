@@ -83,7 +83,7 @@ type Book @entity {
   protocolFeesBase: BigDecimal!
   # all time protocolFees derived USD
   protocolFeesUSD: BigDecimal!
-  # total quote across all ticks
+  # total TVL across all ticks (denominated in quote token units)
   totalValueLocked: BigDecimal!
   # tvl USD
   totalValueLockedUSD: BigDecimal!
@@ -304,7 +304,7 @@ type BookDayData @entity {
   protocolFeesBase: BigDecimal!
   # all time protocolFees derived USD
   protocolFeesUSD: BigDecimal!
-  # total quote across all ticks
+  # total TVL across all ticks (denominated in quote token units)
   totalValueLocked: BigDecimal!
   # tvl USD
   totalValueLockedUSD: BigDecimal!
