@@ -8,7 +8,7 @@ import {
   formatPrice,
   tickToPrice,
 } from '../../common/tick'
-import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
+import { ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
 import { encodeOrderId } from '../../common/order'
@@ -21,6 +21,10 @@ import {
 
 export function handleMake(event: Make): void {
   const book = getBookOrLog(event.params.bookId.toString(), 'MAKE')
+  if (book === null) {
+    return
+  }
+
   const quote = getTokenOrLog(book.quote, 'MAKE')
   const base = getTokenOrLog(book.base, 'MAKE')
   if (quote && base) {

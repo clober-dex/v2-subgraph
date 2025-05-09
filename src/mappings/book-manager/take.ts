@@ -190,6 +190,7 @@ export function handleTake(event: Take): void {
   if (event.params.unit.isZero()) {
     return
   }
+  const tick = BigInt.fromI32(event.params.tick)
   const priceRaw = tickToPrice(event.params.tick)
   const book = getBookOrLog(event.params.bookId.toString(), 'TAKE')
   if (book === null) {
@@ -199,7 +200,7 @@ export function handleTake(event: Take): void {
   const depthID = event.params.bookId
     .toString()
     .concat('-')
-    .concat(event.params.tick.toString())
+    .concat(tick.toString())
   const depth = getDepthOrLog(depthID, 'TAKE')
   if (depth === null) {
     return
@@ -254,7 +255,7 @@ export function handleTake(event: Take): void {
     base.decimals,
     quote.decimals,
   )
-  book.tick = event.params.tick
+  book.tick = tick
   book.volumeQuote = book.volumeQuote.plus(takenQuoteAmountDecimal)
   book.volumeBase = book.volumeBase.plus(takenBaseAmountDecimal)
   book.volumeUSD = book.volumeUSD.plus(amountTotalUSD)
@@ -326,7 +327,7 @@ export function handleTake(event: Take): void {
   let currentOrderIndex = depth.latestTakenOrderIndex
   let remainingTakenUnitAmount = takenUnitAmount
   while (remainingTakenUnitAmount.gt(ZERO_BI)) {
-    const orderID = encodeOrderId(book.id, event.params.tick, currentOrderIndex)
+    const orderID = encodeOrderId(book.id, tick, currentOrderIndex)
     const openOrder = OpenOrder.load(orderID.toString())
     if (openOrder === null) {
       currentOrderIndex = currentOrderIndex.plus(ONE_BI)

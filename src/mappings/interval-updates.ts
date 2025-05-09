@@ -1,14 +1,7 @@
 import { Address, BigDecimal, ethereum } from '@graphprotocol/graph-ts'
 
-import {
-  Book,
-  BookDayData,
-  PoolDayData,
-  PoolHourData,
-  Token,
-  TokenDayData,
-} from '../../generated/schema'
-import { ONE_BI, ZERO_BD, ZERO_BI } from '../common/constants'
+import { Book, BookDayData, Token, TokenDayData } from '../../generated/schema'
+import { ZERO_BD } from '../common/constants'
 
 export function updateBookDayData(
   book: Book,
@@ -74,6 +67,6 @@ export function updateTokenDayData(
   return tokenDayData as TokenDayData
 }
 
-export function updatePoolDayData(event: ethereum.Event): PoolDayData {}
-
-export function updatePoolHourData(event: ethereum.Event): PoolHourData {}
+// export function updatePoolDayData(event: ethereum.Event): PoolDayData {}
+//
+// export function updatePoolHourData(event: ethereum.Event): PoolHourData {}
