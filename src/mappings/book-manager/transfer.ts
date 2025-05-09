@@ -1,8 +1,6 @@
-import { log } from '@graphprotocol/graph-ts'
-
 import { Transfer } from '../../../generated/BookManager/BookManager'
 import { ADDRESS_ZERO } from '../../common/constants'
-import { OpenOrder } from '../../../generated/schema'
+import { getOpenOrderOrLog } from '../../common/entity-getters'
 
 export function handleTransfer(event: Transfer): void {
   const from = event.params.from
@@ -14,9 +12,8 @@ export function handleTransfer(event: Transfer): void {
     return
   }
 
-  const openOrder = OpenOrder.load(orderId.toString())
+  const openOrder = getOpenOrderOrLog(orderId.toString(), 'TRANSFER')
   if (openOrder === null) {
-    log.error('[TRANSFER] OpenOrder not found: {}', [orderId.toString()])
     return
   }
 

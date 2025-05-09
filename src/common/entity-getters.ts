@@ -1,6 +1,12 @@
 import { BigInt, Bytes, ethereum, log } from '@graphprotocol/graph-ts'
 
-import { Book, Depth, Token, Transaction } from '../../generated/schema'
+import {
+  Book,
+  Depth,
+  OpenOrder,
+  Token,
+  Transaction,
+} from '../../generated/schema'
 
 export function getOrCreateTransaction(event: ethereum.Event): Transaction {
   let transaction = Transaction.load(event.transaction.hash.toHexString())
@@ -43,4 +49,15 @@ export function getDepthOrLog(
     log.error('[{}] Depth not found: {}', [eventType, depthId])
   }
   return depth
+}
+
+export function getOpenOrderOrLog(
+  orderId: string,
+  eventType: string,
+): OpenOrder | null {
+  const openOrder = OpenOrder.load(orderId)
+  if (openOrder === null) {
+    log.error('[{}] Open order not found: {}', [eventType, orderId])
+  }
+  return openOrder
 }
