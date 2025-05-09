@@ -18,6 +18,12 @@ dataSources:
       entities:
         - Token
         - Book
+        - Depth
+        - OpenOrder
+        - Transaction
+        - ChartLog
+        - BookDayData
+        - TokenDayData
       abis:
         - name: BookManager
           file: ./abis/BookManager.json
