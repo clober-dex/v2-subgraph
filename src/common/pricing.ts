@@ -1,4 +1,4 @@
-import { BigDecimal, log } from '@graphprotocol/graph-ts'
+import { BigDecimal } from '@graphprotocol/graph-ts'
 
 import { Book, Token } from '../../generated/schema'
 
@@ -82,9 +82,9 @@ export function getTokenUSDPrice(
   }
 
   // log a warning if no valid price was found
-  if (bestPrice.equals(ZERO_BD)) {
-    log.warning('No price found for token {}', [tokenID])
-  }
+  // if (bestPrice.equals(ZERO_BD)) {
+  //   log.warning('No price found for token {}', [tokenID])
+  // }
 
   return bestPrice
 }
