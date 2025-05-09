@@ -83,7 +83,7 @@ function fillOpenOrder(
   )
 
   if (remainingOpenUnitAmount.lt(ZERO_BI)) {
-    log.error('[TAKE] Negative open unit amount: {}', [openOrder.id])
+    log.error('[TAKE] Negative open unit amount', [])
   }
 
   openOrder.save()

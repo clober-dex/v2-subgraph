@@ -75,7 +75,7 @@ export function handleClaim(event: Claim): void {
     openOrder.claimableAmountUSD = openOrder.claimableAmountUSD.minus(amountUSD)
 
     if (getPendingUnitAmount(openOrder).isZero()) {
-      store.remove('OpenOrder', openOrderID.toString())
+      store.remove('OpenOrder', openOrderID)
     } else {
       openOrder.save()
     }
