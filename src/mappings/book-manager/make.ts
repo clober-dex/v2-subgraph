@@ -51,11 +51,6 @@ export function handleMake(event: Make): void {
     quote.totalValueLocked = quote.totalValueLocked.plus(quoteAmountDecimal)
     quote.totalValueLockedUSD = quote.totalValueLocked.times(quoteInUSD)
 
-    // update base date
-    base.txCount = base.txCount.plus(ONE_BI)
-    base.totalValueLocked = base.totalValueLocked.plus(baseAmountDecimal)
-    base.totalValueLockedUSD = base.totalValueLocked.times(baseInUSD)
-
     // book data
     book.txCount = book.txCount.plus(ONE_BI)
     book.totalValueLocked = book.totalValueLocked.plus(quoteAmountDecimal)
@@ -133,7 +128,6 @@ export function handleMake(event: Make): void {
 
     updateBookDayData(book, event)
     updateTokenDayData(quote, quoteInUSD, event)
-    updateTokenDayData(base, baseInUSD, event)
 
     // save all
     book.save()
