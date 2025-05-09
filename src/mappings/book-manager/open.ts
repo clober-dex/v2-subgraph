@@ -6,7 +6,6 @@ import {
   fetchTokenDecimals,
   fetchTokenName,
   fetchTokenSymbol,
-  fetchTokenTotalSupply,
 } from '../../common/token'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 
@@ -31,7 +30,7 @@ export function handleOpen(event: Open): void {
     quote = new Token(event.params.quote)
     quote.symbol = fetchTokenSymbol(event.params.quote)
     quote.name = fetchTokenName(event.params.quote)
-    quote.totalSupply = fetchTokenTotalSupply(event.params.quote)
+    // quote.totalSupply = fetchTokenTotalSupply(event.params.quote)
     const decimals = fetchTokenDecimals(event.params.quote)
 
     // bail if we couldn't figure out the decimals
@@ -55,7 +54,7 @@ export function handleOpen(event: Open): void {
     base = new Token(event.params.base)
     base.symbol = fetchTokenSymbol(event.params.base)
     base.name = fetchTokenName(event.params.base)
-    base.totalSupply = fetchTokenTotalSupply(event.params.base)
+    // base.totalSupply = fetchTokenTotalSupply(event.params.base)
     const decimals = fetchTokenDecimals(event.params.base)
 
     // bail if we couldn't figure out the decimals

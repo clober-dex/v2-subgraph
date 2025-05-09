@@ -5,7 +5,6 @@ export class TokenDefinition {
   symbol: string
   name: string
   decimals: BigInt
-  totalSupply: BigInt
 }
 
 export const NATIVE_TOKEN_DEFINITION: TokenDefinition = {
@@ -13,7 +12,6 @@ export const NATIVE_TOKEN_DEFINITION: TokenDefinition = {
   symbol: 'MON',
   name: 'Monad',
   decimals: BigInt.fromI32(18),
-  totalSupply: BigInt.fromString('120000000000000000000000000'),
 }
 
 export const NATIVE_TOKEN_BOOK_ID: BigInt = BigInt.fromString(

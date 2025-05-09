@@ -61,20 +61,20 @@ export function fetchTokenName(tokenAddress: Address): string {
   return nameValue
 }
 
-export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
-  let staticDefinition = getStaticDefinition(tokenAddress)
-  if (staticDefinition != null) {
-    return (staticDefinition as TokenDefinition).totalSupply
-  }
-
-  let contract = ERC20.bind(tokenAddress)
-  let totalSupplyValue = BigInt.zero()
-  let totalSupplyResult = contract.try_totalSupply()
-  if (!totalSupplyResult.reverted) {
-    totalSupplyValue = totalSupplyResult.value
-  }
-  return totalSupplyValue
-}
+// export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
+//   let staticDefinition = getStaticDefinition(tokenAddress)
+//   if (staticDefinition != null) {
+//     return (staticDefinition as TokenDefinition).totalSupply
+//   }
+//
+//   let contract = ERC20.bind(tokenAddress)
+//   let totalSupplyValue = BigInt.zero()
+//   let totalSupplyResult = contract.try_totalSupply()
+//   if (!totalSupplyResult.reverted) {
+//     totalSupplyValue = totalSupplyResult.value
+//   }
+//   return totalSupplyValue
+// }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt | null {
   let staticDefinition = getStaticDefinition(tokenAddress)

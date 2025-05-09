@@ -8,8 +8,6 @@ type Token @entity {
   name: String!
   # token decimals
   decimals: BigInt!
-  # token total supply
-  totalSupply: BigInt!
 
   # mutable values
   # volume in token units

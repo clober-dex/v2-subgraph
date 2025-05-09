@@ -7,29 +7,30 @@
     "create-local": "graph create --node http://localhost:8020/ v2-core-subgraph",
     "remove-local": "graph remove --node http://localhost:8020/ v2-core-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 v2-core-subgraph --network localhost",
-    "test": "graph test -d"
+    "test": "graph test -d",
+    "build-token-info": "cross-env ts-node ./script/build-token-info"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.89.0",
     "@graphprotocol/graph-ts": "0.35.1"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.1",
     "@typescript-eslint/eslint-plugin": "^6.2.0",
     "@typescript-eslint/parser": "^6.2.0",
+    "cross-env": "^7.0.3",
     "cross-var": "^1.1.0",
     "dotenv": "^16.3.1",
     "dotenv-cli": "^7.3.0",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
-    "@types/fs-extra": "^11.0.1",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^5.0.0",
+    "fs-extra": "^11.1.0",
     "matchstick-as": "0.5.0",
+    "mustache": "^3.1.0",
     "prettier": "^3.0.0",
     "typescript": "^5.1.6",
-    "fs-extra": "^11.1.0",
-    "cross-env": "^7.0.3",
-    "mustache": "^3.1.0",
     "yargs": "17.7.2"
   }
 }
