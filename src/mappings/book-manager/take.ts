@@ -1,4 +1,4 @@
-import { BigDecimal, BigInt, log } from '@graphprotocol/graph-ts'
+import { BigDecimal, BigInt, log, store } from '@graphprotocol/graph-ts'
 
 import { Take } from '../../../generated/BookManager/BookManager'
 import { unitToBase, unitToQuote } from '../../common/amount'
@@ -94,13 +94,11 @@ export function handleTake(event: Take): void {
     return
   }
 
-  const depth = getDepthOrLog(
-    event.params.bookId
-      .toString()
-      .concat('-')
-      .concat(event.params.tick.toString()),
-    'TAKE',
-  )
+  const depthID = event.params.bookId
+    .toString()
+    .concat('-')
+    .concat(event.params.tick.toString())
+  const depth = getDepthOrLog(depthID, 'TAKE')
   if (depth === null) {
     return
   }
@@ -255,8 +253,12 @@ export function handleTake(event: Take): void {
     }
   }
 
-  depth.latestTakenOrderIndex = currentOrderIndex
-  depth.save()
+  if (depth.unitAmount.isZero()) {
+    store.remove('Depth', depthID)
+  } else {
+    depth.latestTakenOrderIndex = currentOrderIndex
+    depth.save()
+  }
   book.save()
   quote.save()
   base.save()
