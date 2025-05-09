@@ -361,12 +361,8 @@ export function handleTake(event: Take): void {
     }
   }
 
-  if (depth.unitAmount.isZero()) {
-    store.remove('Depth', depthID)
-  } else {
-    depth.latestTakenOrderIndex = currentOrderIndex
-    depth.save()
-  }
+  depth.latestTakenOrderIndex = currentOrderIndex
+  depth.save()
   book.save()
   quote.save()
   base.save()

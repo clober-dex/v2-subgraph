@@ -91,11 +91,7 @@ export function handleCancel(event: Cancel): void {
     } else {
       openOrder.save()
     }
-    if (depth.unitAmount.isZero()) {
-      store.remove('Depth', depthID)
-    } else {
-      depth.save()
-    }
+    depth.save()
     book.save()
     quote.save()
   }
