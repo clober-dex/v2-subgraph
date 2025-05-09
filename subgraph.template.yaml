@@ -30,7 +30,7 @@ dataSources:
       eventHandlers:
         - event: Open(indexed uint192,indexed address,indexed
             address,uint64,uint24,uint24,address)
-          handler: handleOpen
+          handler: handleBookOpen
         - event: Make(indexed uint192,indexed address,int24,uint256,uint64,address)
           handler: handleMake
         - event: Take(indexed uint192,indexed address,int24,uint64)

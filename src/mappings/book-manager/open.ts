@@ -21,7 +21,7 @@ function getFeeRate(feePolicy: i32): BigDecimal {
   return BigDecimal.fromString(feeBigInt.toString()).div(FEE_PRECISION)
 }
 
-export function handleOpen(event: Open): void {
+export function handleBookOpen(event: Open): void {
   const book = new Book(event.params.id.toString()) as Book
   let quote = Token.load(event.params.quote)
   let base = Token.load(event.params.base)
