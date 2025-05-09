@@ -15,7 +15,6 @@ import { tickToPrice } from '../../common/tick'
 import { unitToBase, unitToQuote } from '../../common/amount'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
-import { ONE_BI } from '../../common/constants'
 import { updateBookDayData, updateTokenDayData } from '../interval-updates'
 
 export function handleCancel(event: Cancel): void {

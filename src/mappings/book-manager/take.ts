@@ -1,10 +1,4 @@
-import {
-  BigDecimal,
-  BigInt,
-  ethereum,
-  log,
-  store,
-} from '@graphprotocol/graph-ts'
+import { BigDecimal, BigInt, ethereum, log } from '@graphprotocol/graph-ts'
 
 import { Take } from '../../../generated/BookManager/BookManager'
 import { unitToBase, unitToQuote } from '../../common/amount'
