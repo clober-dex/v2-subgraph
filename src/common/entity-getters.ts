@@ -4,6 +4,7 @@ import {
   Book,
   Depth,
   OpenOrder,
+  Pool,
   Token,
   Transaction,
 } from '../../generated/schema'
@@ -62,13 +63,10 @@ export function getOpenOrderOrLog(
   return openOrder
 }
 
-// export function getPoolOrLog(
-//   orderId: string,
-//   eventType: string,
-// ): OpenOrder | null {
-//   const openOrder = OpenOrder.load(orderId)
-//   if (openOrder === null) {
-//     log.error('[{}] Open order not found: {}', [eventType, orderId])
-//   }
-//   return openOrder
-// }
+export function getPoolOrLog(poolID: Bytes, eventType: string): Pool | null {
+  const pool = Pool.load(poolID)
+  if (pool === null) {
+    log.error('[{}] Pool not found: {}', [eventType, poolID.toHexString()])
+  }
+  return pool
+}

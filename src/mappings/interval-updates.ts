@@ -1,6 +1,14 @@
 import { Address, BigDecimal, ethereum } from '@graphprotocol/graph-ts'
 
-import { Book, BookDayData, Token, TokenDayData } from '../../generated/schema'
+import {
+  Book,
+  BookDayData,
+  Pool,
+  PoolDayData,
+  PoolHourData,
+  Token,
+  TokenDayData,
+} from '../../generated/schema'
 import { ZERO_BD } from '../common/constants'
 
 export function updateBookDayData(
@@ -67,6 +75,74 @@ export function updateTokenDayData(
   return tokenDayData as TokenDayData
 }
 
-// export function updatePoolDayData(event: ethereum.Event): PoolDayData {}
-//
-// export function updatePoolHourData(event: ethereum.Event): PoolHourData {}
+export function updatePoolDayData(
+  pool: Pool,
+  event: ethereum.Event,
+): PoolDayData {
+  const timestamp = event.block.timestamp.toI32()
+  const dayID = timestamp / 86400
+  const dayStartTimestamp = dayID * 86400
+  const tokenDayID = pool.id.toHexString().concat('-').concat(dayID.toString())
+
+  let poolDayData = PoolDayData.load(tokenDayID)
+  if (poolDayData === null) {
+    poolDayData = new PoolDayData(tokenDayID)
+    poolDayData.date = dayStartTimestamp
+    poolDayData.pool = pool.id
+    // things that dont get initialized always
+    poolDayData.volumeTokenA = ZERO_BD
+    poolDayData.volumeTokenB = ZERO_BD
+    poolDayData.volumeUSD = ZERO_BD
+    poolDayData.spreadProfitUSD = ZERO_BD
+  }
+  poolDayData.oraclePrice = pool.oraclePrice
+  poolDayData.totalSupply = pool.totalSupply
+  poolDayData.liquidityA = pool.liquidityA
+  poolDayData.liquidityB = pool.liquidityB
+  poolDayData.priceA = pool.priceA
+  poolDayData.priceARaw = pool.priceARaw
+  poolDayData.tickA = pool.tickA
+  poolDayData.priceB = pool.priceB
+  poolDayData.priceBRaw = pool.priceBRaw
+  poolDayData.tickB = pool.tickB
+  poolDayData.save()
+
+  return poolDayData as PoolDayData
+}
+
+export function updatePoolHourData(
+  pool: Pool,
+  event: ethereum.Event,
+): PoolHourData {
+  const timestamp = event.block.timestamp.toI32()
+  const hourIndex = timestamp / 3600 // get unique hour within unix history
+  const hourStartUnix = hourIndex * 3600 // want the rounded effect
+  const tokenHourID = pool.id
+    .toHexString()
+    .concat('-')
+    .concat(hourIndex.toString())
+
+  let poolHourData = PoolHourData.load(tokenHourID)
+  if (poolHourData === null) {
+    poolHourData = new PoolHourData(tokenHourID)
+    poolHourData.date = hourStartUnix
+    poolHourData.pool = pool.id
+    // things that dont get initialized always
+    poolHourData.volumeTokenA = ZERO_BD
+    poolHourData.volumeTokenB = ZERO_BD
+    poolHourData.volumeUSD = ZERO_BD
+  }
+  poolHourData.oraclePrice = pool.oraclePrice
+  poolHourData.totalSupply = pool.totalSupply
+  poolHourData.liquidityA = pool.liquidityA
+  poolHourData.liquidityB = pool.liquidityB
+  poolHourData.priceA = pool.priceA
+  poolHourData.priceARaw = pool.priceARaw
+  poolHourData.tickA = pool.tickA
+  poolHourData.priceB = pool.priceB
+  poolHourData.priceBRaw = pool.priceBRaw
+  poolHourData.tickB = pool.tickB
+  poolHourData.save()
+
+  return poolHourData as PoolHourData
+}

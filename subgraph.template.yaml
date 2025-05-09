@@ -62,7 +62,6 @@ dataSources:
       entities:
         - Pool
         - Book
-        - PoolVolume
       abis:
         - name: Rebalancer
           file: ./abis/Rebalancer.json
