@@ -8,7 +8,7 @@ import {
   fetchTokenSymbol,
   fetchTokenTotalSupply,
 } from '../../common/token'
-import { ZERO_BD, ZERO_BI } from '../../common/constants'
+import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 
 const FEE_PRECISION = BigDecimal.fromString('1000000')
 const RATE_MASK = BigInt.fromI32(8388607)
@@ -49,8 +49,8 @@ export function handleOpen(event: Open): void {
     quote.bookCount = ZERO_BI
     quote.totalValueLocked = ZERO_BD
     quote.totalValueLockedUSD = ZERO_BD
-    quote.save()
   }
+  quote.bookCount = quote.bookCount.plus(ONE_BI)
 
   if (base === null) {
     base = new Token(event.params.base)
@@ -74,8 +74,8 @@ export function handleOpen(event: Open): void {
     base.bookCount = ZERO_BI
     base.totalValueLocked = ZERO_BD
     base.totalValueLockedUSD = ZERO_BD
-    base.save()
   }
+  base.bookCount = base.bookCount.plus(ONE_BI)
 
   book.createdAtTimestamp = event.block.timestamp
   book.createdAtBlockNumber = event.block.number
@@ -104,4 +104,6 @@ export function handleOpen(event: Open): void {
   book.totalValueLocked = ZERO_BD
   book.totalValueLockedUSD = ZERO_BD
   book.save()
+  quote.save()
+  base.save()
 }
