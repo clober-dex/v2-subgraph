@@ -20,8 +20,6 @@ type Token @entity {
   protocolFees: BigDecimal!
   # protocolFees in USD
   protocolFeesUSD: BigDecimal!
-  # transactions across all pools that include this token
-  txCount: BigInt!
   # number of pools containing this token
   bookCount: BigInt!
   # liquidity across all books in token units
@@ -75,8 +73,6 @@ type Book @entity {
   volumeBase: BigDecimal!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # all time number of transactions
-  txCount: BigInt!
   # all time protocolFees quote
   protocolFeesQuote: BigDecimal!
   # all time protocolFees base
@@ -269,8 +265,6 @@ type Pool @entity {
   volumeTokenB: BigInt!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # all time number of transactions
-  txCount: BigInt!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
   # hourly snapshots of pool data
@@ -296,8 +290,6 @@ type BookDayData @entity {
   volumeBase: BigDecimal!
   # volume in USD
   volumeUSD: BigDecimal!
-  # all time number of transactions
-  txCount: BigInt!
   # protocolFees in quote units
   protocolFeesQuote: BigDecimal!
   # protocolFees in base units
@@ -341,8 +333,6 @@ type PoolDayData @entity {
   volumeTokenB: BigInt!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # number of transactions during period
-  txCount: BigInt!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
 }
@@ -378,8 +368,6 @@ type PoolHourData @entity {
   volumeTokenB: BigInt!
   # all time USD swapped
   volumeUSD: BigDecimal!
-  # numebr of transactions during period
-  txCount: BigInt!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
 }

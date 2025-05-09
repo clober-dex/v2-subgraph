@@ -258,7 +258,6 @@ export function handleTake(event: Take): void {
   book.volumeQuote = book.volumeQuote.plus(takenQuoteAmountDecimal)
   book.volumeBase = book.volumeBase.plus(takenBaseAmountDecimal)
   book.volumeUSD = book.volumeUSD.plus(amountTotalUSD)
-  book.txCount = book.txCount.plus(ONE_BI)
   book.protocolFeesQuote = book.protocolFeesQuote.plus(protocolFeesQuote)
   book.protocolFeesBase = book.protocolFeesBase.plus(protocolFeesBase)
   book.protocolFeesUSD = book.protocolFeesUSD.plus(protocolFeesTotalUSD)
@@ -275,7 +274,6 @@ export function handleTake(event: Take): void {
   quote.volumeUSD = quote.volumeUSD.plus(amountTotalUSD)
   quote.protocolFees = quote.protocolFees.plus(protocolFeesQuote)
   quote.protocolFeesUSD = quote.protocolFeesUSD.plus(protocolFeesTotalUSD)
-  quote.txCount = quote.txCount.plus(ONE_BI)
   quote.totalValueLocked = quote.totalValueLocked.minus(takenQuoteAmountDecimal)
   quote.totalValueLockedUSD = quote.totalValueLockedUSD.minus(amountTotalUSD)
 
@@ -284,7 +282,6 @@ export function handleTake(event: Take): void {
   base.volumeUSD = base.volumeUSD.plus(amountTotalUSD)
   base.protocolFees = base.protocolFees.plus(protocolFeesBase)
   base.protocolFeesUSD = base.protocolFeesUSD.plus(protocolFeesTotalUSD)
-  base.txCount = base.txCount.plus(ONE_BI)
   // note: do not update base.totalValueLocked
 
   // interval data

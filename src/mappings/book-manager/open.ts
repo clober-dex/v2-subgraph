@@ -45,7 +45,6 @@ export function handleOpen(event: Open): void {
     quote.volumeUSD = ZERO_BD
     quote.protocolFees = ZERO_BD
     quote.protocolFeesUSD = ZERO_BD
-    quote.txCount = ZERO_BI
     quote.bookCount = ZERO_BI
     quote.totalValueLocked = ZERO_BD
     quote.totalValueLockedUSD = ZERO_BD
@@ -70,7 +69,6 @@ export function handleOpen(event: Open): void {
     base.volumeUSD = ZERO_BD
     base.protocolFees = ZERO_BD
     base.protocolFeesUSD = ZERO_BD
-    base.txCount = ZERO_BI
     base.bookCount = ZERO_BI
     base.totalValueLocked = ZERO_BD
     base.totalValueLockedUSD = ZERO_BD
@@ -97,7 +95,6 @@ export function handleOpen(event: Open): void {
   book.volumeQuote = ZERO_BD
   book.volumeBase = ZERO_BD
   book.volumeUSD = ZERO_BD
-  book.txCount = ZERO_BI
   book.protocolFeesQuote = ZERO_BD
   book.protocolFeesBase = ZERO_BD
   book.protocolFeesUSD = ZERO_BD

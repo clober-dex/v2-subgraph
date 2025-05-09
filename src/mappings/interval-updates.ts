@@ -27,7 +27,6 @@ export function updateBookDayData(
     bookDayData.volumeQuote = ZERO_BD
     bookDayData.volumeBase = ZERO_BD
     bookDayData.volumeUSD = ZERO_BD
-    bookDayData.txCount = ZERO_BI
     bookDayData.protocolFeesQuote = ZERO_BD
     bookDayData.protocolFeesBase = ZERO_BD
     bookDayData.protocolFeesUSD = ZERO_BD
@@ -35,7 +34,6 @@ export function updateBookDayData(
 
   bookDayData.price = book.price
   bookDayData.inversePrice = book.inversePrice
-  bookDayData.txCount = bookDayData.txCount.plus(ONE_BI)
   bookDayData.totalValueLocked = book.totalValueLocked
   bookDayData.totalValueLockedUSD = book.totalValueLockedUSD
   bookDayData.save()

@@ -65,12 +65,10 @@ export function handleCancel(event: Cancel): void {
     )
 
     // update quote data
-    quote.txCount = quote.txCount.plus(ONE_BI)
     quote.totalValueLocked = quote.totalValueLocked.minus(quoteAmountDecimal)
     quote.totalValueLockedUSD = quote.totalValueLocked.times(quoteInUSD)
 
     // book data
-    book.txCount = book.txCount.plus(ONE_BI)
     book.totalValueLocked = book.totalValueLocked.minus(quoteAmountDecimal)
     book.totalValueLockedUSD = book.totalValueLockedUSD.minus(amountUSD)
 
