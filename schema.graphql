@@ -290,23 +290,23 @@ type BookDayData @entity {
   price: BigDecimal!
   # base per quote
   inversePrice: BigDecimal!
-  # all time quote swapped
+  # volume in quote units
   volumeQuote: BigDecimal!
-  # all time base swapped
+  # volume in base units
   volumeBase: BigDecimal!
-  # all time USD swapped
+  # volume in USD
   volumeUSD: BigDecimal!
   # all time number of transactions
   txCount: BigInt!
-  # all time protocolFees quote
+  # protocolFees in quote units
   protocolFeesQuote: BigDecimal!
-  # all time protocolFees base
+  # protocolFees in base units
   protocolFeesBase: BigDecimal!
-  # all time protocolFees derived USD
+  # protocolFees in USD
   protocolFeesUSD: BigDecimal!
-  # total TVL across all ticks (denominated in quote token units)
+  # tvl derived in quote token units (denominated in quote token units)
   totalValueLocked: BigDecimal!
-  # tvl USD
+  # tvl derived in USD at end of period
   totalValueLockedUSD: BigDecimal!
 }
 
@@ -396,9 +396,9 @@ type TokenDayData @entity {
   volume: BigDecimal!
   # volume in derived USD
   volumeUSD: BigDecimal!
-  # liquidity across all pools in token units
+  # tvl derived in token units (denominated in quote token units)
   totalValueLocked: BigDecimal!
-  # liquidity across all pools in derived USD
+  # tvl derived in USD at end of period
   totalValueLockedUSD: BigDecimal!
   # price at end of period in USD
   priceUSD: BigDecimal!

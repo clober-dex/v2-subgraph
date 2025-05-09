@@ -298,7 +298,6 @@ export function handleTake(event: Take): void {
   )
   bookDayData.volumeBase = bookDayData.volumeBase.plus(takenBaseAmountDecimal)
   bookDayData.volumeUSD = bookDayData.volumeUSD.plus(amountTotalUSD)
-  bookDayData.txCount = bookDayData.txCount.plus(ONE_BI)
   bookDayData.protocolFeesQuote =
     bookDayData.protocolFeesQuote.plus(protocolFeesQuote)
   bookDayData.protocolFeesBase =

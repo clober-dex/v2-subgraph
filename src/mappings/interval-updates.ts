@@ -8,7 +8,7 @@ import {
   Token,
   TokenDayData,
 } from '../../generated/schema'
-import { ONE_BI, ZERO_BI } from '../common/constants'
+import { ONE_BI, ZERO_BD, ZERO_BI } from '../common/constants'
 
 export function updateBookDayData(
   book: Book,
@@ -23,15 +23,19 @@ export function updateBookDayData(
     bookDayData = new BookDayData(dayBookID)
     bookDayData.date = dayStartTimestamp
     bookDayData.book = book.id
+    // things that dont get initialized always
+    bookDayData.volumeQuote = ZERO_BD
+    bookDayData.volumeBase = ZERO_BD
+    bookDayData.volumeUSD = ZERO_BD
     bookDayData.txCount = ZERO_BI
+    bookDayData.protocolFeesQuote = ZERO_BD
+    bookDayData.protocolFeesBase = ZERO_BD
+    bookDayData.protocolFeesUSD = ZERO_BD
   }
 
   bookDayData.price = book.price
   bookDayData.inversePrice = book.inversePrice
   bookDayData.txCount = bookDayData.txCount.plus(ONE_BI)
-  bookDayData.protocolFeesQuote = book.protocolFeesQuote
-  bookDayData.protocolFeesBase = book.protocolFeesBase
-  bookDayData.protocolFeesUSD = book.protocolFeesUSD
   bookDayData.totalValueLocked = book.totalValueLocked
   bookDayData.totalValueLockedUSD = book.totalValueLockedUSD
   bookDayData.save()
@@ -57,13 +61,16 @@ export function updateTokenDayData(
     tokenDayData = new TokenDayData(tokenDayID)
     tokenDayData.date = dayStartTimestamp
     tokenDayData.token = token.id
+    // things that dont get initialized always
+    tokenDayData.volume = ZERO_BD
+    tokenDayData.volumeUSD = ZERO_BD
+    tokenDayData.protocolFees = ZERO_BD
+    tokenDayData.protocolFeesUSD = ZERO_BD
   }
 
   tokenDayData.totalValueLocked = token.totalValueLocked
   tokenDayData.totalValueLockedUSD = token.totalValueLockedUSD
   tokenDayData.priceUSD = tokenPrice
-  tokenDayData.protocolFees = token.protocolFees
-  tokenDayData.protocolFeesUSD = token.protocolFeesUSD
   tokenDayData.save()
 
   return tokenDayData as TokenDayData
