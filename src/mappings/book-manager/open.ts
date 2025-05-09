@@ -82,8 +82,10 @@ export function handleOpen(event: Open): void {
   book.unitSize = event.params.unitSize
   book.makerPolicy = BigInt.fromI32(event.params.makerPolicy)
   book.makerFee = getFeeRate(event.params.makerPolicy)
+  book.isMakerFeeInQuote = book.makerPolicy.rightShift(23).gt(ZERO_BI)
   book.takerPolicy = BigInt.fromI32(event.params.takerPolicy)
   book.takerFee = getFeeRate(event.params.takerPolicy)
+  book.isTakerFeeInQuote = book.takerPolicy.rightShift(23).gt(ZERO_BI)
   book.hooks = event.params.hooks
 
   book.priceRaw = ZERO_BI

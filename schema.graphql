@@ -49,10 +49,12 @@ type Book @entity {
   makerPolicy: BigInt!
   # maker fee
   makerFee: BigDecimal!
+  isMakerFeeInQuote: Boolean!
   # taker policy
   takerPolicy: BigInt!
   # taker fee
   takerFee: BigDecimal!
+  isTakerFeeInQuote: Boolean!
   # hooks
   hooks: Bytes!
 
