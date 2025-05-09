@@ -334,7 +334,7 @@ export function handleTake(event: Take): void {
       continue
     }
 
-    const openOrderRemainingUnitAmount = openOrder.unitAmount.minus(
+    const openOrderRemainingUnitAmount = openOrder.openUnitAmount.minus(
       openOrder.filledUnitAmount,
     )
     let filledUnitAmount = ZERO_BI
