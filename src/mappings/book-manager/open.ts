@@ -43,6 +43,7 @@ export function handleOpen(event: Open): void {
     quote.decimals = decimals
     quote.volume = ZERO_BD
     quote.volumeUSD = ZERO_BD
+    quote.protocolFees = ZERO_BD
     quote.protocolFeesUSD = ZERO_BD
     quote.txCount = ZERO_BI
     quote.bookCount = ZERO_BI
@@ -67,6 +68,7 @@ export function handleOpen(event: Open): void {
     base.decimals = decimals
     base.volume = ZERO_BD
     base.volumeUSD = ZERO_BD
+    base.protocolFees = ZERO_BD
     base.protocolFeesUSD = ZERO_BD
     base.txCount = ZERO_BI
     base.bookCount = ZERO_BI

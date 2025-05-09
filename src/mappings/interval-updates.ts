@@ -32,8 +32,7 @@ export function updateBookDayData(
   bookDayData.protocolFeesQuote = book.protocolFeesQuote
   bookDayData.protocolFeesBase = book.protocolFeesBase
   bookDayData.protocolFeesUSD = book.protocolFeesUSD
-  bookDayData.totalValueLockedQuote = book.totalValueLockedQuote
-  bookDayData.totalValueLockedBase = book.totalValueLockedBase
+  bookDayData.totalValueLocked = book.totalValueLocked
   bookDayData.totalValueLockedUSD = book.totalValueLockedUSD
   bookDayData.save()
 
@@ -63,6 +62,7 @@ export function updateTokenDayData(
   tokenDayData.totalValueLocked = token.totalValueLocked
   tokenDayData.totalValueLockedUSD = token.totalValueLockedUSD
   tokenDayData.priceUSD = tokenPrice
+  tokenDayData.protocolFees = token.protocolFees
   tokenDayData.protocolFeesUSD = token.protocolFeesUSD
   tokenDayData.save()
 

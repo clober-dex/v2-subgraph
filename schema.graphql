@@ -16,6 +16,8 @@ type Token @entity {
   volume: BigDecimal!
   # volume in derived USD
   volumeUSD: BigDecimal!
+  # protocolFees in token units
+  protocolFees: BigDecimal!
   # protocolFees in USD
   protocolFeesUSD: BigDecimal!
   # transactions across all pools that include this token
@@ -400,6 +402,8 @@ type TokenDayData @entity {
   totalValueLockedUSD: BigDecimal!
   # price at end of period in USD
   priceUSD: BigDecimal!
+  # protocolFees in token units
+  protocolFees: BigDecimal!
   # protocolFees in USD
   protocolFeesUSD: BigDecimal!
 }
