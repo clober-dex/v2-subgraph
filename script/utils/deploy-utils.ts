@@ -5,6 +5,12 @@ import { prepare } from './prepare-network'
 
 const exec = util.promisify(execCallback)
 
+const codegen = async (): Promise<void> => {
+  const { stdout, stderr } = await exec(`graph codegen subgraph.yaml`)
+  console.log(stdout)
+  console.log(stderr)
+}
+
 export const build = async (network: string): Promise<void> => {
   console.log(`Building subgraph for ${network}`)
   console.log(`\n Copying constants & templates for ${network} \n`)
@@ -13,7 +19,9 @@ export const build = async (network: string): Promise<void> => {
   await exec(
     `cross-env mustache config/${network}/config.json subgraph.template.yaml > subgraph.yaml`,
   )
-  const { stdout, stderr } = await exec(`graph codegen subgraph.yaml`)
+  await codegen()
+
+  const { stdout, stderr } = await exec(`graph build --network ${network}`)
   console.log(stdout)
   console.log(stderr)
 }
