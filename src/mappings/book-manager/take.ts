@@ -27,10 +27,6 @@ import {
 function fillOpenOrder(
   openOrder: OpenOrder,
   unitSize: BigInt,
-  quote: Token,
-  quoteInUSD: BigDecimal,
-  base: Token,
-  baseInUSD: BigDecimal,
   filledUnitAmount: BigInt,
 ): void {
   const updatedFilledUnitAmount =
@@ -43,13 +39,6 @@ function fillOpenOrder(
   )
   openOrder.filledQuoteAmount = unitToQuote(unitSize, updatedFilledUnitAmount)
 
-  openOrder.filledAmountUSD = calculateValueUSD(
-    convertTokenToDecimal(openOrder.filledQuoteAmount, quote.decimals),
-    quoteInUSD,
-    convertTokenToDecimal(openOrder.filledBaseAmount, base.decimals),
-    baseInUSD,
-  )
-
   const claimableUnitAfterFill =
     openOrder.claimableUnitAmount.plus(filledUnitAmount)
   openOrder.claimableUnitAmount = claimableUnitAfterFill
@@ -59,12 +48,6 @@ function fillOpenOrder(
     openOrder.priceRaw,
   )
   openOrder.claimableQuoteAmount = unitToQuote(unitSize, claimableUnitAfterFill)
-  openOrder.claimableAmountUSD = calculateValueUSD(
-    convertTokenToDecimal(openOrder.claimableQuoteAmount, quote.decimals),
-    quoteInUSD,
-    convertTokenToDecimal(openOrder.claimableBaseAmount, base.decimals),
-    baseInUSD,
-  )
 
   const remainingCancelableUnitAmount =
     openOrder.cancelableUnitAmount.minus(filledUnitAmount)
@@ -77,12 +60,6 @@ function fillOpenOrder(
   openOrder.cancelableQuoteAmount = unitToQuote(
     unitSize,
     remainingCancelableUnitAmount,
-  )
-  openOrder.cancelableAmountUSD = calculateValueUSD(
-    convertTokenToDecimal(openOrder.cancelableQuoteAmount, quote.decimals),
-    quoteInUSD,
-    convertTokenToDecimal(openOrder.cancelableBaseAmount, base.decimals),
-    baseInUSD,
   )
 
   if (remainingCancelableUnitAmount.lt(ZERO_BI)) {
@@ -343,15 +320,7 @@ export function handleTake(event: Take): void {
 
     remainingTakenUnitAmount = remainingTakenUnitAmount.minus(filledUnitAmount)
 
-    fillOpenOrder(
-      openOrder,
-      book.unitSize,
-      quote,
-      quoteInUSD,
-      base,
-      baseInUSD,
-      filledUnitAmount,
-    )
+    fillOpenOrder(openOrder, book.unitSize, filledUnitAmount)
 
     if (openOrder.unitAmount.equals(openOrder.filledUnitAmount)) {
       currentOrderIndex = currentOrderIndex.plus(ONE_BI)

@@ -75,7 +75,12 @@ export function handleCancel(event: Cancel): void {
     openOrder.unitAmount = openOrder.unitAmount.minus(event.params.unit)
     openOrder.quoteAmount = openOrder.quoteAmount.minus(quoteAmount)
     openOrder.baseAmount = openOrder.baseAmount.minus(baseAmount)
-    openOrder.amountUSD = openOrder.amountUSD.minus(amountUSD)
+    openOrder.amountUSD = calculateValueUSD(
+      convertTokenToDecimal(openOrder.quoteAmount, quote.decimals),
+      quoteInUSD,
+      convertTokenToDecimal(openOrder.baseAmount, base.decimals),
+      baseInUSD,
+    )
 
     openOrder.cancelableUnitAmount = openOrder.cancelableUnitAmount.minus(
       event.params.unit,
@@ -84,8 +89,6 @@ export function handleCancel(event: Cancel): void {
       openOrder.cancelableQuoteAmount.minus(quoteAmount)
     openOrder.cancelableBaseAmount =
       openOrder.cancelableBaseAmount.minus(baseAmount)
-    openOrder.cancelableAmountUSD =
-      openOrder.cancelableAmountUSD.minus(amountUSD)
 
     // depth data
     depth.unitAmount = depth.unitAmount.minus(event.params.unit)

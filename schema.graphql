@@ -143,32 +143,28 @@ type OpenOrder @entity {
   # owner of position where liquidity made to
   owner: Bytes!
 
-  # order size
+  # order size (descending when cancel)
   amountUSD: BigDecimal!
   unitAmount: BigInt!
   baseAmount: BigInt!
   quoteAmount: BigInt!
 
-  # filled
-  filledAmountUSD: BigDecimal!
+  # filled (ascending when taken)
   filledUnitAmount: BigInt!
   filledBaseAmount: BigInt!
   filledQuoteAmount: BigInt!
 
-  # claimed
-  claimedAmountUSD: BigDecimal!
+  # claimed (descending when claim)
   claimedUnitAmount: BigInt!
   claimedBaseAmount: BigInt!
   claimedQuoteAmount: BigInt!
 
-  # claimable
-  claimableAmountUSD: BigDecimal!
+  # claimable (ascending when taken)
   claimableUnitAmount: BigInt!
   claimableBaseAmount: BigInt!
   claimableQuoteAmount: BigInt!
 
-  # open
-  cancelableAmountUSD: BigDecimal!
+  # cancelable (descending when fill or cancel)
   cancelableUnitAmount: BigInt!
   cancelableBaseAmount: BigInt!
   cancelableQuoteAmount: BigInt!

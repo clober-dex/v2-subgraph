@@ -8,7 +8,7 @@ import {
   formatPrice,
   tickToPrice,
 } from '../../common/tick'
-import { ZERO_BD, ZERO_BI } from '../../common/constants'
+import { ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
 import { encodeOrderID } from '../../common/order'
@@ -84,22 +84,18 @@ export function handleMake(event: Make): void {
     openOrder.baseAmount = baseAmount
     openOrder.quoteAmount = quoteAmount
     // filled
-    openOrder.filledAmountUSD = ZERO_BD
     openOrder.filledUnitAmount = ZERO_BI
     openOrder.filledBaseAmount = ZERO_BI
     openOrder.filledQuoteAmount = ZERO_BI
     // claimed
-    openOrder.claimedAmountUSD = ZERO_BD
     openOrder.claimedUnitAmount = ZERO_BI
     openOrder.claimedBaseAmount = ZERO_BI
     openOrder.claimedQuoteAmount = ZERO_BI
     // claimable
-    openOrder.claimableAmountUSD = ZERO_BD
     openOrder.claimableUnitAmount = ZERO_BI
     openOrder.claimableBaseAmount = ZERO_BI
     openOrder.claimableQuoteAmount = ZERO_BI
     // open
-    openOrder.cancelableAmountUSD = amountUSD
     openOrder.cancelableUnitAmount = event.params.unit
     openOrder.cancelableBaseAmount = baseAmount
     openOrder.cancelableQuoteAmount = quoteAmount
