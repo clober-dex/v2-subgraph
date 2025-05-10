@@ -2,12 +2,19 @@ import { BigDecimal, BigInt, ethereum, log } from '@graphprotocol/graph-ts'
 
 import { Take } from '../../../generated/BookManager/BookManager'
 import { unitToBase, unitToQuote } from '../../common/amount'
-import { Book, ChartLog, OpenOrder, Token } from '../../../generated/schema'
+import {
+  Book,
+  ChartLog,
+  OpenOrder,
+  Pool,
+  Token,
+} from '../../../generated/schema'
 import { encodeOrderID } from '../../common/order'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import {
   getBookOrLog,
   getDepthOrLog,
+  getPoolOrLog,
   getTokenOrLog,
 } from '../../common/entity-getters'
 import { convertTokenToDecimal } from '../../common/utils'
@@ -17,7 +24,12 @@ import {
   formatPrice,
   tickToPrice,
 } from '../../common/tick'
-import { updateBookDayData, updateTokenDayData } from '../interval-updates'
+import {
+  updateBookDayData,
+  updatePoolDayData,
+  updatePoolHourData,
+  updateTokenDayData,
+} from '../interval-updates'
 import {
   CHART_LOG_INTERVALS,
   encodeChartLogID,
@@ -158,6 +170,90 @@ function updateChart(
     }
     invertedChartLog.save()
   }
+}
+
+function updatePool(
+  pool: Pool,
+  book: Book,
+  base: Token,
+  quote: Token,
+  baseInUSD: BigDecimal,
+  quoteInUSD: BigDecimal,
+  filledUnitAmount: BigInt,
+  priceRaw: BigInt,
+  event: ethereum.Event,
+): void {
+  const filledBaseAmount = unitToBase(book.unitSize, filledUnitAmount, priceRaw)
+  const filledBaseAmountDecimal = convertTokenToDecimal(
+    filledBaseAmount,
+    base.decimals,
+  )
+  const filledQuoteAmount = unitToQuote(book.unitSize, filledUnitAmount)
+  const filledQuoteAmountDecimal = convertTokenToDecimal(
+    filledQuoteAmount,
+    quote.decimals,
+  )
+  const filledUSDAmount = calculateValueUSD(
+    filledQuoteAmountDecimal,
+    quoteInUSD,
+    filledBaseAmountDecimal,
+    baseInUSD,
+  )
+
+  const poolHourData = updatePoolHourData(pool, event)
+  const poolDayData = updatePoolDayData(pool, event)
+
+  if (pool.tokenA.equals(book.base)) {
+    pool.liquidityA = pool.liquidityA.plus(filledBaseAmount)
+    pool.liquidityB = pool.liquidityB.minus(filledQuoteAmount)
+
+    pool.volumeTokenA = pool.volumeTokenA.plus(filledBaseAmountDecimal)
+    pool.volumeTokenB = pool.volumeTokenB.plus(filledQuoteAmountDecimal)
+    pool.volumeUSD = pool.volumeUSD.plus(filledUSDAmount)
+
+    // update interval data
+    poolHourData.volumeTokenA = poolHourData.volumeTokenA.plus(
+      filledBaseAmountDecimal,
+    )
+    poolHourData.volumeTokenB = poolHourData.volumeTokenB.plus(
+      filledQuoteAmountDecimal,
+    )
+    poolHourData.volumeUSD = poolHourData.volumeUSD.plus(filledUSDAmount)
+    poolDayData.volumeTokenA = poolDayData.volumeTokenA.plus(
+      filledBaseAmountDecimal,
+    )
+    poolDayData.volumeTokenB = poolDayData.volumeTokenB.plus(
+      filledQuoteAmountDecimal,
+    )
+    poolDayData.volumeUSD = poolDayData.volumeUSD.plus(filledUSDAmount)
+  } else {
+    pool.liquidityA = pool.liquidityA.minus(filledQuoteAmount)
+    pool.liquidityB = pool.liquidityB.plus(filledBaseAmount)
+
+    pool.volumeTokenA = pool.volumeTokenA.plus(filledQuoteAmountDecimal)
+    pool.volumeTokenB = pool.volumeTokenB.plus(filledBaseAmountDecimal)
+    pool.volumeUSD = pool.volumeUSD.plus(filledUSDAmount)
+
+    // update interval data
+    poolHourData.volumeTokenA = poolHourData.volumeTokenA.plus(
+      filledQuoteAmountDecimal,
+    )
+    poolHourData.volumeTokenB = poolHourData.volumeTokenB.plus(
+      filledBaseAmountDecimal,
+    )
+    poolHourData.volumeUSD = poolHourData.volumeUSD.plus(filledUSDAmount)
+    poolDayData.volumeTokenA = poolDayData.volumeTokenA.plus(
+      filledQuoteAmountDecimal,
+    )
+    poolDayData.volumeTokenB = poolDayData.volumeTokenB.plus(
+      filledBaseAmountDecimal,
+    )
+    poolDayData.volumeUSD = poolDayData.volumeUSD.plus(filledUSDAmount)
+  }
+
+  pool.save()
+  poolHourData.save()
+  poolDayData.save()
 }
 
 export function handleTake(event: Take): void {
@@ -321,6 +417,23 @@ export function handleTake(event: Take): void {
     remainingTakenUnitAmount = remainingTakenUnitAmount.minus(filledUnitAmount)
 
     fillOpenOrder(openOrder, book.unitSize, filledUnitAmount)
+
+    if (book.pool !== null) {
+      const pool = getPoolOrLog(book.pool, 'TAKE')
+      if (pool) {
+        updatePool(
+          pool,
+          book,
+          base,
+          quote,
+          baseInUSD,
+          quoteInUSD,
+          filledUnitAmount,
+          priceRaw,
+          event,
+        )
+      }
+    }
 
     if (openOrder.unitAmount.equals(openOrder.filledUnitAmount)) {
       currentOrderIndex = currentOrderIndex.plus(ONE_BI)
