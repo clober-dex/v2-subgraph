@@ -1,161 +1,395 @@
 type Token @entity {
-    id: ID!
-    symbol: String!
-    name: String!
-    decimals: BigInt!
+  # immutable values
+  # token address
+  id: Bytes!
+  # token symbol
+  symbol: String!
+  # token name
+  name: String!
+  # token decimals
+  decimals: BigInt!
+
+  # mutable values
+  # volume in token units
+  volume: BigDecimal!
+  # volume in derived USD
+  volumeUSD: BigDecimal!
+  # protocolFees in token units
+  protocolFees: BigDecimal!
+  # protocolFees in USD
+  protocolFeesUSD: BigDecimal!
+  # number of pools containing this token
+  bookCount: BigInt!
+  # liquidity across all books in token units
+  totalValueLocked: BigDecimal!
+  # liquidity across all books in derived USD
+  totalValueLockedUSD: BigDecimal!
+  # derived fields
+  tokenDayData: [TokenDayData!]! @derivedFrom(field: "token")
+  books: [Book!]! @derivedFrom(field: "base")
 }
 
 type Book @entity {
-    # bookId
-    id: ID!
-    base: Token!
-    quote: Token!
-    unitSize: BigInt!
-    makerPolicy: BigInt!
-    takerPolicy: BigInt!
-    hooks: String!
-    depths: [Depth!]! @derivedFrom(field: "book")
-    openOrders: [OpenOrder!]! @derivedFrom(field: "book")
-    latestTick: BigInt!
-    latestPrice: BigInt!
-    latestTimestamp: BigInt!
-    createAt: BigInt!
+  # immutable values
+  # book id
+  id: ID!
+  # creation
+  createdAtTimestamp: BigInt!
+  # block book was created at
+  createdAtBlockNumber: BigInt!
+  # quote
+  quote: Token!
+  # base
+  base: Token!
+  # unit size
+  unitSize: BigInt!
+  # maker policy
+  makerPolicy: BigInt!
+  # maker fee
+  makerFee: BigDecimal!
+  isMakerFeeInQuote: Boolean!
+  # taker policy
+  takerPolicy: BigInt!
+  # taker fee
+  takerFee: BigDecimal!
+  isTakerFeeInQuote: Boolean!
+  # hooks
+  hooks: Bytes!
+  # bindings pool if exists
+  pool: Pool
 
-    pool: Pool
+  # mutable values
+  # current price tracker
+  priceRaw: BigInt!
+  # quote per base
+  price: BigDecimal!
+  # base per quote
+  inversePrice: BigDecimal!
+  # current tick
+  tick: BigInt!
+  # all time quote swapped
+  volumeQuote: BigDecimal!
+  # all time base swapped
+  volumeBase: BigDecimal!
+  # all time USD swapped
+  volumeUSD: BigDecimal!
+  # all time protocolFees quote
+  protocolFeesQuote: BigDecimal!
+  # all time protocolFees base
+  protocolFeesBase: BigDecimal!
+  # all time protocolFees derived USD
+  protocolFeesUSD: BigDecimal!
+  # total TVL across all ticks (denominated in quote token units)
+  totalValueLocked: BigDecimal!
+  # tvl USD
+  totalValueLockedUSD: BigDecimal!
+  # derived fields
+  depths: [Depth!]! @derivedFrom(field: "book")
+  openOrders: [OpenOrder!]! @derivedFrom(field: "book")
 }
 
 type Depth @entity {
-    # `${bookId}-${tick}`
-    id: ID!
-    book: Book!
-    tick: BigInt!
-    price: BigInt!
-    unitAmount: BigInt!
-    baseAmount: BigInt!
-    quoteAmount: BigInt!
-}
+  # immutable values
+  # `${bookId}-${tick}`
+  id: ID!
+  # book
+  book: Book!
+  # tick
+  tick: BigInt!
+  # current price tracker
+  priceRaw: BigInt!
+  # quote per base
+  price: BigDecimal!
+  # base per quote
+  inversePrice: BigDecimal!
 
-type OrderIndex @entity {
-    # `${bookId}-${tick}`
-    id: ID!
-    book: Book!
-    tick: BigInt!
-    price: BigInt!
-    latestTakenOrderIndex: BigInt!
+  # mutable values
+  # amount
+  unitAmount: BigInt!
+  baseAmount: BigInt!
+  quoteAmount: BigInt!
+  # latest tick index
+  latestTakenOrderIndex: BigInt!
 }
 
 type OpenOrder @entity {
-    # orderId
-    id: ID!
-    book: Book!
-    tick: BigInt!
-    orderIndex: BigInt!
-    price: BigInt!
-    user: String!
-    txHash: String!
-    createdAt: BigInt!
+  # immutable values
+  # orderId
+  id: ID!
+  # which txn the make was included in
+  transaction: Transaction!
+  # time of txn
+  timestamp: BigInt!
+  # book position is within
+  book: Book!
+  # allow indexing by tokens
+  quote: Token!
+  # allow indexing by tokens
+  base: Token!
+  # txn origin
+  origin: Bytes! # the EOA that initiated the txn
+  # current price tracker
+  priceRaw: BigInt!
+  # current tick
+  tick: BigInt!
+  # current order index
+  orderIndex: BigInt!
+  # quote per base
+  price: BigDecimal!
+  # base per quote
+  inversePrice: BigDecimal!
 
-    unitAmount: BigInt!
-    baseAmount: BigInt!
-    quoteAmount: BigInt!
+  # mutable values
+  # owner of position where liquidity made to
+  owner: Bytes!
 
-    unitFilledAmount: BigInt!
-    baseFilledAmount: BigInt!
-    quoteFilledAmount: BigInt!
+  # order size (descending when cancel)
+  amountUSD: BigDecimal!
+  unitAmount: BigInt!
+  baseAmount: BigInt!
+  quoteAmount: BigInt!
 
-    unitClaimedAmount: BigInt!
-    baseClaimedAmount: BigInt!
-    quoteClaimedAmount: BigInt!
+  # filled (ascending when taken)
+  filledUnitAmount: BigInt!
+  filledBaseAmount: BigInt!
+  filledQuoteAmount: BigInt!
 
-    unitClaimableAmount: BigInt!
-    baseClaimableAmount: BigInt!
-    quoteClaimableAmount: BigInt!
+  # claimed (descending when claim)
+  claimedUnitAmount: BigInt!
+  claimedBaseAmount: BigInt!
+  claimedQuoteAmount: BigInt!
 
-    unitOpenAmount: BigInt!
-    baseOpenAmount: BigInt!
-    quoteOpenAmount: BigInt!
+  # claimable (ascending when taken)
+  claimableUnitAmount: BigInt!
+  claimableBaseAmount: BigInt!
+  claimableQuoteAmount: BigInt!
+
+  # cancelable (descending when fill or cancel)
+  cancelableUnitAmount: BigInt!
+  cancelableBaseAmount: BigInt!
+  cancelableQuoteAmount: BigInt!
+}
+
+type Transaction @entity {
+  # txn hash
+  id: ID!
+  # block txn was included in
+  blockNumber: BigInt!
+  # timestamp txn was confirmed
+  timestamp: BigInt!
+  # gas used during txn execution
+  gasUsed: BigInt!
+  gasPrice: BigInt!
+  # address of the txn sender
+  from: Bytes!
+  # address of the txn receiver
+  to: Bytes
+  # txn value
+  value: BigInt!
 }
 
 type ChartLog @entity {
-    # `${baseToken}/${quoteToekn}-${intervalType}-${timestamp}`
-    id: ID!
-    # `${baseToken}/${quoteToekn}`
-    marketCode: String!
-    # interval type: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 1d, 1w
-    intervalType: String!
-    # normalized candle timestamp of the block where event occurred (second)
-    timestamp: BigInt!
-    open: BigDecimal!
-    high: BigDecimal!
-    low: BigDecimal!
-    close: BigDecimal!
-    baseVolume: BigDecimal!
-    bidBookBaseVolume: BigDecimal!
-    askBookBaseVolume: BigDecimal!
+  # `${baseToken}/${quoteToken}-${intervalType}-${timestamp}`
+  id: ID!
+  # `${baseToken}/${quoteToken}`
+  marketCode: String!
+  # interval type: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 1d, 1w
+  intervalType: String!
+  # normalized candle timestamp of the block where event occurred (second)
+  timestamp: BigInt!
+  open: BigDecimal!
+  high: BigDecimal!
+  low: BigDecimal!
+  close: BigDecimal!
+  # total traded volume in base token (sum of bid + ask filled)
+  baseVolume: BigDecimal!
+  bidBookBaseVolume: BigDecimal!
+  askBookBaseVolume: BigDecimal!
 }
 
 type Pool @entity {
-    # `{poolKey}`
-    id: ID!
-    books: [Book!]! @derivedFrom(field: "pool")
-    salt: String!
-    strategy: String!
+  # immutable values
+  # pool key
+  id: Bytes!
+  # salt
+  salt: Bytes!
+  # strategy contract address
+  strategy: Bytes!
+  # creation
+  createdAtTimestamp: BigInt!
+  # block pool was created at
+  createdAtBlockNumber: BigInt!
+  # transaction pool was created in
+  createdAtTransaction: Transaction!
+  # amount of tokenA deposited at pool creation
+  initialTokenAAmount: BigInt!
+  # amount of tokenB deposited at pool creation
+  initialTokenBAmount: BigInt!
+  # total supply of liquidity tokens minted at pool creation
+  initialTotalSupply: BigInt!
+  # initial price of liquidity tokens in USD
+  initialLPPriceUSD: BigDecimal!
+  # initial mint transaction
+  initialMintTransaction: Transaction!
+  # tokenA
+  tokenA: Token!
+  # tokenB
+  tokenB: Token!
+  # bookA
+  bookA: Book!
+  # bookB
+  bookB: Book!
 
-    tokenA: Token!
-    tokenB: Token!
-    liquidityA: BigInt!
-    liquidityB: BigInt!
-    totalSupply: BigInt!
-    tickA: BigInt!
-    tickB: BigInt!
+  # mutable values
+  # oracle price
+  oraclePrice: BigInt!
+  # total supply of liquidity tokens
+  totalSupply: BigInt!
+  # total liquidity of tokenA
+  liquidityA: BigInt!
+  # total liquidity of tokenB
+  liquidityB: BigInt!
+  # current priceA tracker
+  priceA: BigDecimal!
+  priceARaw: BigInt!
+  tickA: BigInt!
+  # current priceB tracker
+  priceB: BigDecimal!
+  priceBRaw: BigInt!
+  tickB: BigInt!
+  # all time tokenA swapped
+  volumeTokenA: BigDecimal!
+  # all time tokenB swapped
+  volumeTokenB: BigDecimal!
+  # all time USD swapped
+  volumeUSD: BigDecimal!
+  # all time spread profit in USD
+  spreadProfitUSD: BigDecimal!
+  # hourly snapshots of pool data
+  poolHourData: [PoolHourData!]! @derivedFrom(field: "pool")
+  # daily snapshots of pool data
+  poolDayData: [PoolDayData!]! @derivedFrom(field: "pool")
 }
 
-type PoolVolume @entity {
-    # `{poolKey}-{intervalType}-{timestamp}`
-    id: ID!
-    poolKey: String!
-    # interval type: 5m
-    intervalType: String!
-    # normalized candle timestamp of the block where event occurred (second)
-    timestamp: BigInt!
-    currencyAVolume: BigInt!
-    currencyBVolume: BigInt!
-    bookACurrencyAVolume: BigInt!
-    bookACurrencyBVolume: BigInt!
-    bookBCurrencyAVolume: BigInt!
-    bookBCurrencyBVolume: BigInt!
+type BookDayData @entity {
+  # `${bookId}-{periodStartUnix}`
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: Int!
+  # pointer to book
+  book: Book!
+  # quote per base
+  price: BigDecimal!
+  # base per quote
+  inversePrice: BigDecimal!
+  # volume in quote units
+  volumeQuote: BigDecimal!
+  # volume in base units
+  volumeBase: BigDecimal!
+  # volume in USD
+  volumeUSD: BigDecimal!
+  # protocolFees in quote units
+  protocolFeesQuote: BigDecimal!
+  # protocolFees in base units
+  protocolFeesBase: BigDecimal!
+  # protocolFees in USD
+  protocolFeesUSD: BigDecimal!
+  # tvl derived in quote token units (denominated in quote token units)
+  totalValueLocked: BigDecimal!
+  # tvl derived in USD at end of period
+  totalValueLockedUSD: BigDecimal!
 }
 
-type PoolSnapshot @entity {
-    # `{poolKey}-{intervalType}-{timestamp}`
-    id: ID!
-    poolKey: String!
-    # interval type: 1m, 3m, 5m, 15m, 30m, 1h, 2h, 4h, 6h, 1d, 1w
-    intervalType: String!
-    # normalized candle timestamp of the block where event occurred (second)
-    timestamp: BigInt!
-    price: BigInt!
-    liquidityA: BigInt!
-    liquidityB: BigInt!
-    totalSupply: BigInt!
+type TokenDayData @entity {
+  # token address concatendated with date
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: Int!
+  # pointer to token
+  token: Token!
+
+  # volume in token units
+  volume: BigDecimal!
+  # volume in derived USD
+  volumeUSD: BigDecimal!
+  # tvl derived in token units (denominated in quote token units)
+  totalValueLocked: BigDecimal!
+  # tvl derived in USD at end of period
+  totalValueLockedUSD: BigDecimal!
+  # price at end of period in USD
+  priceUSD: BigDecimal!
+  # protocolFees in token units
+  protocolFees: BigDecimal!
+  # protocolFees in USD
+  protocolFeesUSD: BigDecimal!
 }
 
-# NOTE: below types needs to be updated when multiple pools are supported
-type LatestPoolSpread @entity {
-    # latest
-    id: ID!
-    askTick: BigInt!
-    bidTick: BigInt!
-    askPrice: BigDecimal! # human readable
-    bidPrice: BigDecimal! # human readable
+# Data accumulated and condensed into day stats for each pool
+type PoolDayData @entity {
+  # `${poolKey}-{periodStartUnix}`
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: Int!
+  # pointer to pool
+  pool: Pool!
+
+  # oracle price
+  oraclePrice: BigInt!
+  # total supply of liquidity tokens
+  totalSupply: BigInt!
+  # total liquidity of tokenA
+  liquidityA: BigInt!
+  # total liquidity of tokenB
+  liquidityB: BigInt!
+  # current priceA tracker
+  priceA: BigDecimal!
+  priceARaw: BigInt!
+  tickA: BigInt!
+  # current priceB tracker
+  priceB: BigDecimal!
+  priceBRaw: BigInt!
+  tickB: BigInt!
+  # tokenA swapped
+  volumeTokenA: BigDecimal!
+  # tokenB swapped
+  volumeTokenB: BigDecimal!
+  # USD swapped
+  volumeUSD: BigDecimal!
+  # spread profit in USD
+  spreadProfitUSD: BigDecimal!
 }
 
-type PoolSpreadProfit @entity {
-    # `{intervalType}-{timestamp}`
-    id: ID!
-    # interval type: 5m
-    intervalType: String!
-    # normalized candle timestamp of the block where event occurred (second)
-    timestamp: BigInt!
-    accumulatedProfitInUsd: BigDecimal!
+# hourly stats tracker for pool
+type PoolHourData @entity {
+  # ${poolKey}-{periodStartUnix}
+  id: ID!
+  # unix timestamp for start of hour
+  date: Int!
+  # pointer to pool
+  pool: Pool!
+
+  # oracle price
+  oraclePrice: BigInt!
+  # total supply of liquidity tokens
+  totalSupply: BigInt!
+  # total liquidity of tokenA
+  liquidityA: BigInt!
+  # total liquidity of tokenB
+  liquidityB: BigInt!
+  # current priceA tracker
+  priceA: BigDecimal!
+  priceARaw: BigInt!
+  tickA: BigInt!
+  # current priceB tracker
+  priceB: BigDecimal!
+  priceBRaw: BigInt!
+  tickB: BigInt!
+  # tokenA swapped
+  volumeTokenA: BigDecimal!
+  # tokenB swapped
+  volumeTokenB: BigDecimal!
+  # USD swapped
+  volumeUSD: BigDecimal!
+  # spread profit in USD
+  spreadProfitUSD: BigDecimal!
 }

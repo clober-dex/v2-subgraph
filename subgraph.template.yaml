@@ -6,11 +6,11 @@ indexerHints:
 dataSources:
   - kind: ethereum
     name: BookManager
-    network: monad-testnet
+    network: {{ network }}
     source:
       abi: BookManager
-      address: "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A"
-      startBlock: 3196033
+      address: "{{ BookManager.address }}"
+      startBlock: {{ BookManager.startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -19,10 +19,14 @@ dataSources:
         - Token
         - Book
         - Depth
-        - OrderIndex
         - OpenOrder
+        - Transaction
         - ChartLog
-        - LatestBlock
+        - Pool
+        - BookDayData
+        - TokenDayData
+        - PoolDayData
+        - PoolHourData
       abis:
         - name: BookManager
           file: ./abis/BookManager.json
@@ -35,7 +39,7 @@ dataSources:
       eventHandlers:
         - event: Open(indexed uint192,indexed address,indexed
             address,uint64,uint24,uint24,address)
-          handler: handleOpen
+          handler: handleBookOpen
         - event: Make(indexed uint192,indexed address,int24,uint256,uint64,address)
           handler: handleMake
         - event: Take(indexed uint192,indexed address,int24,uint64)
@@ -46,68 +50,52 @@ dataSources:
           handler: handleClaim
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/handlers/book-manager.ts
+      file: ./src/mappings/core.ts
   - kind: ethereum
     name: Rebalancer
-    network: monad-testnet
+    network: {{ network }}
     source:
       abi: Rebalancer
-      address: "0x6d8fa3025b6d6604309Ca257563CcA358c0CF1AA"
-      startBlock: 7546157
+      address: "{{ Rebalancer.address }}"
+      startBlock: {{ Rebalancer.startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
         - Pool
-        - Book
-        - PoolVolume
+        - Transaction
+        - PoolDayData
+        - PoolHourData
+        - TokenDayData
       abis:
         - name: Rebalancer
           file: ./abis/Rebalancer.json
-        - name: SimpleOracleStrategy
-          file: ./abis/SimpleOracleStrategy.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
       eventHandlers:
-        - event: Claim(indexed bytes32,uint256,uint256)
-          handler: handleRebalancerClaim
         - event: Open(indexed bytes32,indexed uint192,indexed uint192,bytes32,address)
           handler: handlePoolOpen
         - event: Mint(indexed address,indexed bytes32,uint256,uint256,uint256)
           handler: handleMint
         - event: Burn(indexed address,indexed bytes32,uint256,uint256,uint256)
           handler: handleBurn
-      file: ./src/handlers/pool.ts
+      file: ./src/mappings/core.ts
   - kind: ethereum
     name: SimpleOracleStrategy
-    network: monad-testnet
+    network: {{ network }}
     source:
       abi: SimpleOracleStrategy
-      address: "0x9eE708876804F9416B3C1a1aad0c016dee9DD804"
-      startBlock: 7546513
+      address: "{{ SimpleOracleStrategy.address }}"
+      startBlock: {{ SimpleOracleStrategy.startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
       language: wasm/assemblyscript
       entities:
-        - PoolSnapshot
+        - Pool
       abis:
-        - name: Rebalancer
-          file: ./abis/Rebalancer.json
         - name: SimpleOracleStrategy
           file: ./abis/SimpleOracleStrategy.json
-        - name: ERC20
-          file: ./abis/ERC20.json
-        - name: ERC20SymbolBytes
-          file: ./abis/ERC20SymbolBytes.json
-        - name: ERC20NameBytes
-          file: ./abis/ERC20NameBytes.json
       eventHandlers:
         - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
           handler: handleUpdatePosition
-      file: ./src/handlers/pool.ts
+      file: ./src/mappings/core.ts

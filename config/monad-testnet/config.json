@@ -1,0 +1,15 @@
+{
+  "network": "monad-testnet",
+  "BookManager": {
+    "address": "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A",
+    "startBlock": 3196033
+  },
+  "Rebalancer": {
+    "address": "0x6d8fa3025b6d6604309Ca257563CcA358c0CF1AA",
+    "startBlock": 7546157
+  },
+  "SimpleOracleStrategy": {
+    "address": "0x9eE708876804F9416B3C1a1aad0c016dee9DD804",
+    "startBlock": 7546513
+  }
+}
