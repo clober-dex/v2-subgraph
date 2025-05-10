@@ -1,4 +1,3 @@
-import { UpdatePosition } from '../../../generated/Rebalancer/SimpleOracleStrategy'
 import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
 import {
   formatInvertedPrice,
@@ -8,6 +7,7 @@ import {
 import { BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenUSDPrice } from '../../common/pricing'
+import { UpdatePosition } from '../../../generated/SimpleOracleStrategy/SimpleOracleStrategy'
 
 export function handleUpdatePosition(event: UpdatePosition): void {
   const pool = getPoolOrLog(event.params.key, 'UPDATE_POSITION')
