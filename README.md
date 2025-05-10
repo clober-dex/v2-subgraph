@@ -16,3 +16,7 @@ Note: Deployments will fail if there are uncommitted changes in the subgraph. Pl
 - Add an entity to track and sort LP balances per user
 - Merge schema from [clober-analytics-subgraph](https://github.com/clober-dex/clober-analytics-subgraph)  
   _(Note: that repo does not store accurate TVL snapshots)_
+
+### References
+
+Much of the implementation was inspired by [Uniswap v3 Subgraph](https://github.com/Uniswap/v3-subgraph).
