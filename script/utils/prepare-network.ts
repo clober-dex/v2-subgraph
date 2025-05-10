@@ -10,6 +10,16 @@ export enum NETWORK {
 
 const CHAIN_CONSTANTS_FILE_NAME = 'chain.ts'
 
+export function validateDeploymentEnvironment(tag: string): void {
+  const regex = /^\d+\.\d+\.\d+$/
+  if (!regex.test(tag)) {
+    console.error(
+      'invalid deploy tag format, expected [number].[number].[number]',
+    )
+    process.exit(-1)
+  }
+}
+
 export function validateNetwork(network: string): void {
   if (!network) {
     console.error('no network parameter passed')
