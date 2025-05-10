@@ -25,7 +25,7 @@ export function handlePoolOpen(event: Open): void {
     pool.bookA = bookA.id
     pool.bookB = bookB.id
 
-    pool.oraclePrice = ZERO_BD
+    pool.oraclePrice = ZERO_BI
     pool.totalSupply = ZERO_BI
     pool.liquidityA = ZERO_BI
     pool.liquidityB = ZERO_BI
