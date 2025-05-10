@@ -55,6 +55,7 @@ async function main(): Promise<void> {
     ']'
 
   fs.writeFileSync('./tokens.txt', text)
+  console.log('tokens.txt generated successfully')
 }
 
 main()
