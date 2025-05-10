@@ -56,7 +56,7 @@ export function handleMake(event: Make): void {
 
     // book data
     book.totalValueLocked = book.totalValueLocked.plus(quoteAmountDecimal)
-    book.totalValueLockedUSD = book.totalValueLockedUSD.plus(amountUSD)
+    book.totalValueLockedUSD = book.totalValueLocked.times(quoteInUSD)
 
     const transaction = getOrCreateTransaction(event)
 

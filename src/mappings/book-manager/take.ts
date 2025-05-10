@@ -333,7 +333,7 @@ export function handleTake(event: Take): void {
   book.protocolFeesBase = book.protocolFeesBase.plus(protocolFeesBase)
   book.protocolFeesUSD = book.protocolFeesUSD.plus(protocolFeesTotalUSD)
   book.totalValueLocked = book.totalValueLocked.minus(takenQuoteAmountDecimal)
-  book.totalValueLockedUSD = book.totalValueLockedUSD.minus(amountTotalUSD)
+  book.totalValueLockedUSD = book.totalValueLocked.times(quoteInUSD)
 
   // depth data
   depth.unitAmount = depth.unitAmount.minus(takenUnitAmount)
@@ -346,7 +346,7 @@ export function handleTake(event: Take): void {
   quote.protocolFees = quote.protocolFees.plus(protocolFeesQuote)
   quote.protocolFeesUSD = quote.protocolFeesUSD.plus(protocolFeesTotalUSD)
   quote.totalValueLocked = quote.totalValueLocked.minus(takenQuoteAmountDecimal)
-  quote.totalValueLockedUSD = quote.totalValueLockedUSD.minus(amountTotalUSD)
+  quote.totalValueLockedUSD = quote.totalValueLocked.times(quoteInUSD)
 
   // base token data
   base.volume = base.volume.plus(takenBaseAmountDecimal)
