@@ -37,13 +37,9 @@ export function handleBurn(event: Burn): void {
 
     // update token state
     tokenA.totalValueLocked = tokenA.totalValueLocked.minus(amountAInDecimals)
-    tokenA.totalValueLockedUSD = tokenA.totalValueLockedUSD.minus(
-      amountAInDecimals.times(priceAUSD),
-    )
+    tokenA.totalValueLockedUSD = tokenA.totalValueLocked.times(priceAUSD)
     tokenB.totalValueLocked = tokenB.totalValueLocked.minus(amountBInDecimals)
-    tokenB.totalValueLockedUSD = tokenB.totalValueLockedUSD.minus(
-      amountBInDecimals.times(priceBUSD),
-    )
+    tokenB.totalValueLockedUSD = tokenB.totalValueLocked.times(priceBUSD)
 
     // update interval
     updatePoolHourData(pool, event)

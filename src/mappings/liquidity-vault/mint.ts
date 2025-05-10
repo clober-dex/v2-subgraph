@@ -52,13 +52,9 @@ export function handleMint(event: Mint): void {
 
     // update token state
     tokenA.totalValueLocked = tokenA.totalValueLocked.plus(amountAInDecimals)
-    tokenA.totalValueLockedUSD = tokenA.totalValueLockedUSD.plus(
-      amountAInDecimals.times(priceAUSD),
-    )
+    tokenA.totalValueLockedUSD = tokenA.totalValueLocked.times(priceAUSD)
     tokenB.totalValueLocked = tokenB.totalValueLocked.plus(amountBInDecimals)
-    tokenB.totalValueLockedUSD = tokenB.totalValueLockedUSD.plus(
-      amountBInDecimals.times(priceBUSD),
-    )
+    tokenB.totalValueLockedUSD = tokenB.totalValueLocked.times(priceBUSD)
 
     // update interval
     updatePoolHourData(pool, event)

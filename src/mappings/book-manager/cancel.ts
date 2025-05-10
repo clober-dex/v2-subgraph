@@ -53,15 +53,7 @@ export function handleCancel(event: Cancel): void {
     const quoteInUSD = getTokenUSDPrice(quote)
 
     const baseAmount = unitToBase(book.unitSize, event.params.unit, priceRaw)
-    const baseAmountDecimal = convertTokenToDecimal(baseAmount, base.decimals)
     const baseInUSD = getTokenUSDPrice(base)
-
-    const amountUSD = calculateValueUSD(
-      quoteAmountDecimal,
-      quoteInUSD,
-      baseAmountDecimal,
-      baseInUSD,
-    )
 
     // update quote data
     quote.totalValueLocked = quote.totalValueLocked.minus(quoteAmountDecimal)
@@ -69,7 +61,7 @@ export function handleCancel(event: Cancel): void {
 
     // book data
     book.totalValueLocked = book.totalValueLocked.minus(quoteAmountDecimal)
-    book.totalValueLockedUSD = book.totalValueLockedUSD.minus(amountUSD)
+    book.totalValueLockedUSD = book.totalValueLocked.times(quoteInUSD)
 
     // open order data
     openOrder.unitAmount = openOrder.unitAmount.minus(event.params.unit)
