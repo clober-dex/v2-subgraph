@@ -11,7 +11,6 @@
 Note: Deployments will fail if there are uncommitted changes in the subgraph. Please commit your changes before deploying.
 
 ## TODO
-- Deploy scripts or GitHub actions to deploy the subgraph
 - Store events for Make, Take, Claim, Cancel, Mint, and Burn in the schema
 - Add an entity to track and sort LP balances per user
 - Merge schema from [clober-analytics-subgraph](https://github.com/clober-dex/clober-analytics-subgraph)  
