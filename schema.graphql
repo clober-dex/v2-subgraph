@@ -139,15 +139,15 @@ type OpenOrder @entity {
   # base per quote
   inversePrice: BigDecimal!
 
-  # initial
+  # mutable values
+  # owner of position where liquidity made to
+  owner: Bytes!
+
+  # order size
   amountUSD: BigDecimal!
   unitAmount: BigInt!
   baseAmount: BigInt!
   quoteAmount: BigInt!
-
-  # mutable values
-  # owner of position where liquidity made to
-  owner: Bytes!
 
   # filled
   filledAmountUSD: BigDecimal!
@@ -168,10 +168,10 @@ type OpenOrder @entity {
   claimableQuoteAmount: BigInt!
 
   # open
-  openAmountUSD: BigDecimal!
-  openUnitAmount: BigInt!
-  openBaseAmount: BigInt!
-  openQuoteAmount: BigInt!
+  cancelableAmountUSD: BigDecimal!
+  cancelableUnitAmount: BigInt!
+  cancelableBaseAmount: BigInt!
+  cancelableQuoteAmount: BigInt!
 }
 
 type Transaction @entity {
@@ -244,7 +244,7 @@ type Pool @entity {
 
   # mutable values
   # oracle price
-  oraclePrice: BigDecimal!
+  oraclePrice: BigInt!
   # total supply of liquidity tokens
   totalSupply: BigInt!
   # total liquidity of tokenA
@@ -336,7 +336,7 @@ type PoolDayData @entity {
   pool: Pool!
 
   # oracle price
-  oraclePrice: BigDecimal!
+  oraclePrice: BigInt!
   # total supply of liquidity tokens
   totalSupply: BigInt!
   # total liquidity of tokenA
@@ -371,7 +371,7 @@ type PoolHourData @entity {
   pool: Pool!
 
   # oracle price
-  oraclePrice: BigDecimal!
+  oraclePrice: BigInt!
   # total supply of liquidity tokens
   totalSupply: BigInt!
   # total liquidity of tokenA

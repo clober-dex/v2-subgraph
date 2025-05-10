@@ -99,10 +99,10 @@ export function handleMake(event: Make): void {
     openOrder.claimableBaseAmount = ZERO_BI
     openOrder.claimableQuoteAmount = ZERO_BI
     // open
-    openOrder.openAmountUSD = amountUSD
-    openOrder.openUnitAmount = event.params.unit
-    openOrder.openBaseAmount = baseAmount
-    openOrder.openQuoteAmount = quoteAmount
+    openOrder.cancelableAmountUSD = amountUSD
+    openOrder.cancelableUnitAmount = event.params.unit
+    openOrder.cancelableBaseAmount = baseAmount
+    openOrder.cancelableQuoteAmount = quoteAmount
 
     // depth data
     const depthID = book.id.toString().concat('-').concat(tick.toString())

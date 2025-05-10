@@ -66,24 +66,27 @@ function fillOpenOrder(
     baseInUSD,
   )
 
-  const remainingOpenUnitAmount =
-    openOrder.openUnitAmount.minus(filledUnitAmount)
-  openOrder.openUnitAmount = remainingOpenUnitAmount
-  openOrder.openBaseAmount = unitToBase(
+  const remainingCancelableUnitAmount =
+    openOrder.cancelableUnitAmount.minus(filledUnitAmount)
+  openOrder.cancelableUnitAmount = remainingCancelableUnitAmount
+  openOrder.cancelableBaseAmount = unitToBase(
     unitSize,
-    remainingOpenUnitAmount,
+    remainingCancelableUnitAmount,
     openOrder.priceRaw,
   )
-  openOrder.openQuoteAmount = unitToQuote(unitSize, remainingOpenUnitAmount)
-  openOrder.openAmountUSD = calculateValueUSD(
-    convertTokenToDecimal(openOrder.openQuoteAmount, quote.decimals),
+  openOrder.cancelableQuoteAmount = unitToQuote(
+    unitSize,
+    remainingCancelableUnitAmount,
+  )
+  openOrder.cancelableAmountUSD = calculateValueUSD(
+    convertTokenToDecimal(openOrder.cancelableQuoteAmount, quote.decimals),
     quoteInUSD,
-    convertTokenToDecimal(openOrder.openBaseAmount, base.decimals),
+    convertTokenToDecimal(openOrder.cancelableBaseAmount, base.decimals),
     baseInUSD,
   )
 
-  if (remainingOpenUnitAmount.lt(ZERO_BI)) {
-    log.error('[TAKE] Negative open unit amount', [])
+  if (remainingCancelableUnitAmount.lt(ZERO_BI)) {
+    log.error('[TAKE] Negative cancelable unit amount: {}', [openOrder.id])
   }
 
   openOrder.save()
@@ -328,7 +331,7 @@ export function handleTake(event: Take): void {
       continue
     }
 
-    const openOrderRemainingUnitAmount = openOrder.openUnitAmount.minus(
+    const openOrderRemainingUnitAmount = openOrder.unitAmount.minus(
       openOrder.filledUnitAmount,
     )
     let filledUnitAmount = ZERO_BI
@@ -350,7 +353,7 @@ export function handleTake(event: Take): void {
       filledUnitAmount,
     )
 
-    if (openOrder.openUnitAmount.equals(openOrder.filledUnitAmount)) {
+    if (openOrder.unitAmount.equals(openOrder.filledUnitAmount)) {
       currentOrderIndex = currentOrderIndex.plus(ONE_BI)
     }
   }

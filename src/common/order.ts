@@ -19,5 +19,5 @@ export function decodeBookIDFromOrderID(orderID: BigInt): string {
 }
 
 export function getPendingUnitAmount(openOrder: OpenOrder): BigInt {
-  return openOrder.openUnitAmount.plus(openOrder.claimableUnitAmount)
+  return openOrder.cancelableUnitAmount.plus(openOrder.claimableUnitAmount)
 }

@@ -72,10 +72,20 @@ export function handleCancel(event: Cancel): void {
     book.totalValueLockedUSD = book.totalValueLockedUSD.minus(amountUSD)
 
     // open order data
-    openOrder.openUnitAmount = openOrder.openUnitAmount.minus(event.params.unit)
-    openOrder.openQuoteAmount = openOrder.openQuoteAmount.minus(quoteAmount)
-    openOrder.openBaseAmount = openOrder.openBaseAmount.minus(baseAmount)
-    openOrder.openAmountUSD = openOrder.openAmountUSD.minus(amountUSD)
+    openOrder.unitAmount = openOrder.unitAmount.minus(event.params.unit)
+    openOrder.quoteAmount = openOrder.quoteAmount.minus(quoteAmount)
+    openOrder.baseAmount = openOrder.baseAmount.minus(baseAmount)
+    openOrder.amountUSD = openOrder.amountUSD.minus(amountUSD)
+
+    openOrder.cancelableUnitAmount = openOrder.cancelableUnitAmount.minus(
+      event.params.unit,
+    )
+    openOrder.cancelableQuoteAmount =
+      openOrder.cancelableQuoteAmount.minus(quoteAmount)
+    openOrder.cancelableBaseAmount =
+      openOrder.cancelableBaseAmount.minus(baseAmount)
+    openOrder.cancelableAmountUSD =
+      openOrder.cancelableAmountUSD.minus(amountUSD)
 
     // depth data
     depth.unitAmount = depth.unitAmount.minus(event.params.unit)
