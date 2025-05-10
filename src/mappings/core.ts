@@ -6,6 +6,7 @@ import { handleCancel } from './book-manager/cancel'
 import { handleClaim } from './book-manager/claim'
 import { handlePoolOpen } from './liquidity-vault/open'
 import { handleMint } from './liquidity-vault/mint'
+import { handleBurn } from './liquidity-vault/burn'
 
 export {
   handleBookOpen,
@@ -16,4 +17,5 @@ export {
   handleClaim,
   handlePoolOpen,
   handleMint,
+  handleBurn,
 }

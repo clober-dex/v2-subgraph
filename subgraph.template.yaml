@@ -65,8 +65,6 @@ dataSources:
       abis:
         - name: Rebalancer
           file: ./abis/Rebalancer.json
-        - name: SimpleOracleStrategy
-          file: ./abis/SimpleOracleStrategy.json
         - name: ERC20
           file: ./abis/ERC20.json
         - name: ERC20SymbolBytes
@@ -83,31 +81,29 @@ dataSources:
         - event: Burn(indexed address,indexed bytes32,uint256,uint256,uint256)
           handler: handleBurn
       file: ./src/mappings/core.ts
-#  - kind: ethereum
-#    name: SimpleOracleStrategy
-#    network: monad-testnet
-#    source:
-#      abi: SimpleOracleStrategy
-#      address: "{{ SimpleOracleStrategy.address }}"
-#      startBlock: {{ SimpleOracleStrategy.startBlock }}
-#    mapping:
-#      kind: ethereum/events
-#      apiVersion: 0.0.7
-#      language: wasm/assemblyscript
-#      entities:
-#        - PoolSnapshot
-#      abis:
-#        - name: Rebalancer
-#          file: ./abis/Rebalancer.json
-#        - name: SimpleOracleStrategy
-#          file: ./abis/SimpleOracleStrategy.json
-#        - name: ERC20
-#          file: ./abis/ERC20.json
-#        - name: ERC20SymbolBytes
-#          file: ./abis/ERC20SymbolBytes.json
-#        - name: ERC20NameBytes
-#          file: ./abis/ERC20NameBytes.json
-#      eventHandlers:
-#        - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
-#          handler: handleUpdatePosition
-#      file: ./src/handlers/pool.ts
+  - kind: ethereum
+    name: SimpleOracleStrategy
+    network: monad-testnet
+    source:
+      abi: SimpleOracleStrategy
+      address: "{{ SimpleOracleStrategy.address }}"
+      startBlock: {{ SimpleOracleStrategy.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - PoolSnapshot
+      abis:
+        - name: SimpleOracleStrategy
+          file: ./abis/SimpleOracleStrategy.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
+          handler: handleUpdatePosition
+      file: ./src/mappings/core.ts
