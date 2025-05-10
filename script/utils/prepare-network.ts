@@ -5,6 +5,7 @@ import * as fsExtra from 'fs-extra'
 
 export enum NETWORK {
   MONAD_TESTNET = 'monad-testnet',
+  RISE_SEPOLIA = 'rise-sepolia',
 }
 
 const CHAIN_CONSTANTS_FILE_NAME = 'chain.ts'

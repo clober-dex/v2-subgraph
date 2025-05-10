@@ -1,0 +1,15 @@
+{
+  "network": "rise-sepolia",
+  "BookManager": {
+    "address": "0xBc6eaFe723723DED3a411b6a1089a63bc5d73568",
+    "startBlock": 7969941
+  },
+  "Rebalancer": {
+    "address": "0x552E53700042e0446C896b1803d9399ba846cF83",
+    "startBlock": 9782965
+  },
+  "SimpleOracleStrategy": {
+    "address": "0xa3CC662732e4ae2a2e0156859B7Fbcd57936723c",
+    "startBlock": 9782984
+  }
+}
