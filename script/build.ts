@@ -1,6 +1,6 @@
 import yargs from 'yargs'
 
-import { build } from './utils/deploy-utils'
+import { build, deploy } from './utils/deploy-utils'
 import {
   validateDeploymentEnvironment,
   validateNetwork,
