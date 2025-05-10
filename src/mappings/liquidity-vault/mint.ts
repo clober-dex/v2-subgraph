@@ -1,6 +1,6 @@
 import { Mint } from '../../../generated/Rebalancer/Rebalancer'
 import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
-import { BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
+import { ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenUSDPrice } from '../../common/pricing'
 import {
@@ -29,9 +29,6 @@ export function handleMint(event: Mint): void {
       tokenB.decimals,
     )
     const priceBUSD = getTokenUSDPrice(tokenB)
-    const amountUSD = amountAInDecimals
-      .times(priceAUSD)
-      .plus(amountBInDecimals.times(priceBUSD))
 
     if (pool.initialTokenAAmount.isZero()) {
       pool.initialTokenAAmount = event.params.amountA
@@ -41,13 +38,6 @@ export function handleMint(event: Mint): void {
     }
     if (pool.initialTotalSupply.isZero()) {
       pool.initialTotalSupply = event.params.lpAmount
-    }
-    if (pool.initialLPPriceUSD.equals(ZERO_BD)) {
-      const lpAmountDecimal = convertTokenToDecimal(
-        event.params.lpAmount,
-        BI_18,
-      ) // assuming LP token has 18 decimals
-      pool.initialLPPriceUSD = amountUSD.div(lpAmountDecimal)
     }
 
     // update pool state
