@@ -53,7 +53,7 @@ dataSources:
       file: ./src/mappings/core.ts
   - kind: ethereum
     name: Rebalancer
-    network: monad-testnet
+    network: {{ network }}
     source:
       abi: Rebalancer
       address: "{{ Rebalancer.address }}"
@@ -81,7 +81,7 @@ dataSources:
       file: ./src/mappings/core.ts
   - kind: ethereum
     name: SimpleOracleStrategy
-    network: monad-testnet
+    network: {{ network }}
     source:
       abi: SimpleOracleStrategy
       address: "{{ SimpleOracleStrategy.address }}"
