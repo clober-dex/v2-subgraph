@@ -99,6 +99,7 @@ export function updatePoolDayData(
   poolDayData.totalSupply = pool.totalSupply
   poolDayData.liquidityA = pool.liquidityA
   poolDayData.liquidityB = pool.liquidityB
+  poolDayData.lpPriceUSD = pool.lpPriceUSD
   poolDayData.priceA = pool.priceA
   poolDayData.priceARaw = pool.priceARaw
   poolDayData.tickA = pool.tickA
@@ -131,11 +132,13 @@ export function updatePoolHourData(
     poolHourData.volumeTokenA = ZERO_BD
     poolHourData.volumeTokenB = ZERO_BD
     poolHourData.volumeUSD = ZERO_BD
+    poolHourData.spreadProfitUSD = ZERO_BD
   }
   poolHourData.oraclePrice = pool.oraclePrice
   poolHourData.totalSupply = pool.totalSupply
   poolHourData.liquidityA = pool.liquidityA
   poolHourData.liquidityB = pool.liquidityB
+  poolHourData.lpPriceUSD = pool.lpPriceUSD
   poolHourData.priceA = pool.priceA
   poolHourData.priceARaw = pool.priceARaw
   poolHourData.tickA = pool.tickA
