@@ -230,7 +230,7 @@ type Pool @entity {
   # initial price of liquidity tokens in USD
   initialLPPriceUSD: BigDecimal!
   # initial mint transaction
-  initialMintTransaction: Transaction!
+  initialMintTransaction: Transaction
   # tokenA
   tokenA: Token!
   # tokenB
