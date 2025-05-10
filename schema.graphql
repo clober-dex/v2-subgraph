@@ -249,6 +249,8 @@ type Pool @entity {
   liquidityA: BigInt!
   # total liquidity of tokenB
   liquidityB: BigInt!
+  # current lp tracker
+  lpPriceUSD: BigDecimal!
   # current priceA tracker
   priceA: BigDecimal!
   priceARaw: BigInt!
@@ -341,6 +343,8 @@ type PoolDayData @entity {
   liquidityA: BigInt!
   # total liquidity of tokenB
   liquidityB: BigInt!
+  # current lp tracker
+  lpPriceUSD: BigDecimal!
   # current priceA tracker
   priceA: BigDecimal!
   priceARaw: BigInt!
@@ -376,6 +380,8 @@ type PoolHourData @entity {
   liquidityA: BigInt!
   # total liquidity of tokenB
   liquidityB: BigInt!
+  # current lp tracker
+  lpPriceUSD: BigDecimal!
   # current priceA tracker
   priceA: BigDecimal!
   priceARaw: BigInt!

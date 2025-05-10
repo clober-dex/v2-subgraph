@@ -32,25 +32,38 @@ export function handleUpdatePosition(event: UpdatePosition): void {
       tokenA.decimals,
     )
 
+    const tokenAUSDPrice = getTokenUSDPrice(tokenA)
+    const tokenBUSDPrice = getTokenUSDPrice(tokenB)
+    const lpAmountDecimal = convertTokenToDecimal(pool.totalSupply, BI_18) // assuming LP token has 18 decimals
     if (
       pool.initialLPPriceUSD.equals(ZERO_BD) &&
-      pool.totalSupply.gt(ZERO_BI) &&
+      lpAmountDecimal.gt(ZERO_BD) &&
       pool.initialTokenAAmount.gt(ZERO_BI) &&
       pool.initialTokenBAmount.gt(ZERO_BI)
     ) {
-      const quotePrice = getTokenUSDPrice(tokenA)
-      const lpAmountDecimal = convertTokenToDecimal(pool.totalSupply, BI_18) // assuming LP token has 18 decimals
-      const tokenAInUSD = convertTokenToDecimal(
+      const amountAInUSD = convertTokenToDecimal(
         pool.initialTokenAAmount,
         tokenA.decimals,
-      ).times(quotePrice)
-      const tokenBInUSD = convertTokenToDecimal(
+      ).times(tokenAUSDPrice)
+      const amountBInUSD = convertTokenToDecimal(
         pool.initialTokenBAmount,
         tokenB.decimals,
-      ).times(pool.priceA)
-      pool.initialLPPriceUSD = tokenAInUSD
-        .plus(tokenBInUSD)
+      ).times(tokenBUSDPrice)
+      pool.initialLPPriceUSD = amountAInUSD
+        .plus(amountBInUSD)
         .div(lpAmountDecimal)
+    }
+
+    if (lpAmountDecimal.gt(ZERO_BD)) {
+      const amountAInUSD = convertTokenToDecimal(
+        pool.liquidityA,
+        tokenA.decimals,
+      ).times(tokenAUSDPrice)
+      const amountBInUSD = convertTokenToDecimal(
+        pool.liquidityB,
+        tokenB.decimals,
+      ).times(tokenBUSDPrice)
+      pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
     }
 
     pool.save()
