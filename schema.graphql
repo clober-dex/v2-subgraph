@@ -219,7 +219,7 @@ type Pool @entity {
   createdAtTimestamp: BigInt!
   # block pool was created at
   createdAtBlockNumber: BigInt!
-  # block pool was created at
+  # transaction pool was created in
   createdAtTransaction: Transaction!
   # amount of tokenA deposited at pool creation
   initialTokenAAmount: BigInt!
@@ -229,6 +229,8 @@ type Pool @entity {
   initialTotalSupply: BigInt!
   # initial price of liquidity tokens in USD
   initialLPPriceUSD: BigDecimal!
+  # initial mint transaction
+  initialMintTransaction: Transaction!
   # tokenA
   tokenA: Token!
   # tokenB

@@ -1,5 +1,9 @@
 import { Mint } from '../../../generated/Rebalancer/Rebalancer'
-import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
+import {
+  getOrCreateTransaction,
+  getPoolOrLog,
+  getTokenOrLog,
+} from '../../common/entity-getters'
 import { ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenUSDPrice } from '../../common/pricing'
@@ -38,6 +42,7 @@ export function handleMint(event: Mint): void {
     }
     if (pool.initialTotalSupply.isZero()) {
       pool.initialTotalSupply = event.params.lpAmount
+      pool.initialMintTransaction = getOrCreateTransaction(event).id
     }
 
     // update pool state

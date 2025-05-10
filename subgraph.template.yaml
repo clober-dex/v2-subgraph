@@ -22,8 +22,11 @@ dataSources:
         - OpenOrder
         - Transaction
         - ChartLog
+        - Pool
         - BookDayData
         - TokenDayData
+        - PoolDayData
+        - PoolHourData
       abis:
         - name: BookManager
           file: ./abis/BookManager.json
@@ -61,6 +64,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Pool
+        - Transaction
         - PoolDayData
         - PoolHourData
         - TokenDayData
