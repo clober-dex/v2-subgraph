@@ -131,7 +131,7 @@ export function handleClaim(event: Claim): void {
       openOrder.claimableQuoteAmount.minus(quoteAmount)
 
     if (book.pool !== null) {
-      const pool = getPoolOrLog(book.pool, 'CLAIM')
+      const pool = getPoolOrLog(book.pool!, 'CLAIM')
       if (pool) {
         const baseInUSD = getTokenUSDPrice(base)
         const quoteInUSD = getTokenUSDPrice(quote)

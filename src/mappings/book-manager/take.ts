@@ -419,7 +419,7 @@ export function handleTake(event: Take): void {
     fillOpenOrder(openOrder, book.unitSize, filledUnitAmount)
 
     if (book.pool !== null) {
-      const pool = getPoolOrLog(book.pool, 'TAKE')
+      const pool = getPoolOrLog(book.pool!, 'TAKE')
       if (pool) {
         updatePool(
           pool,
