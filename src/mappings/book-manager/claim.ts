@@ -1,4 +1,10 @@
-import { store } from '@graphprotocol/graph-ts'
+import {
+  BigDecimal,
+  BigInt,
+  ethereum,
+  log,
+  store,
+} from '@graphprotocol/graph-ts'
 
 import { Claim } from '../../../generated/BookManager/BookManager'
 import {
@@ -8,10 +14,79 @@ import {
 import {
   getBookOrLog,
   getOpenOrderOrLog,
+  getPoolOrLog,
   getTokenOrLog,
 } from '../../common/entity-getters'
 import { unitToBase, unitToQuote } from '../../common/amount'
 import { tickToPrice } from '../../common/tick'
+import { Book, OpenOrder, Pool, Token } from '../../../generated/schema'
+import { TWO_BD, ZERO_BD } from '../../common/constants'
+import { convertTokenToDecimal } from '../../common/utils'
+import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
+import { updatePoolDayData, updatePoolHourData } from '../interval-updates'
+
+function updatePool(
+  pool: Pool,
+  book: Book,
+  base: Token,
+  quote: Token,
+  baseInUSD: BigDecimal,
+  quoteInUSD: BigDecimal,
+  openOrder: OpenOrder,
+  claimedUnitAmount: BigInt,
+  event: ethereum.Event,
+): void {
+  let spread = pool.priceA.minus(pool.priceB)
+  if (spread.lt(BigDecimal.zero())) {
+    spread = ZERO_BD
+  }
+  const baseClaimedAmount = unitToBase(
+    book.unitSize,
+    claimedUnitAmount,
+    openOrder.priceRaw,
+  )
+  const baseClaimedAmountDecimal = convertTokenToDecimal(
+    baseClaimedAmount,
+    base.decimals,
+  )
+
+  const quoteClaimedAmount = unitToQuote(book.unitSize, claimedUnitAmount)
+  const quoteClaimedAmountDecimal = convertTokenToDecimal(
+    quoteClaimedAmount,
+    quote.decimals,
+  )
+  const claimedAmountInUSD = calculateValueUSD(
+    quoteClaimedAmountDecimal,
+    quoteInUSD,
+    baseClaimedAmountDecimal,
+    baseInUSD,
+  )
+
+  if (
+    BigInt.fromString(pool.bookA).equals(BigInt.fromString(openOrder.book)) ||
+    BigInt.fromString(pool.bookB).equals(BigInt.fromString(openOrder.book))
+  ) {
+    const spreadDelta = spread.div(TWO_BD).times(claimedAmountInUSD)
+    pool.spreadProfitUSD = pool.spreadProfitUSD.plus(spreadDelta)
+
+    const poolHourData = updatePoolHourData(pool, event)
+    const poolDayData = updatePoolDayData(pool, event)
+
+    // update intervals
+    poolHourData.spreadProfitUSD =
+      poolHourData.spreadProfitUSD.plus(spreadDelta)
+    poolDayData.spreadProfitUSD = poolDayData.spreadProfitUSD.plus(spreadDelta)
+
+    pool.save()
+    poolHourData.save()
+    poolDayData.save()
+  } else {
+    log.warning('Pool {} does not contain book {}', [
+      pool.id.toString(),
+      openOrder.book.toString(),
+    ])
+  }
+}
 
 export function handleClaim(event: Claim): void {
   if (event.params.unit.isZero()) {
@@ -54,6 +129,25 @@ export function handleClaim(event: Claim): void {
       openOrder.claimableBaseAmount.minus(baseAmount)
     openOrder.claimableQuoteAmount =
       openOrder.claimableQuoteAmount.minus(quoteAmount)
+
+    if (book.pool !== null) {
+      const pool = getPoolOrLog(book.pool, 'CLAIM')
+      if (pool) {
+        const baseInUSD = getTokenUSDPrice(base)
+        const quoteInUSD = getTokenUSDPrice(quote)
+        updatePool(
+          pool,
+          book,
+          base,
+          quote,
+          baseInUSD,
+          quoteInUSD,
+          openOrder,
+          event.params.unit,
+          event,
+        )
+      }
+    }
 
     if (getPendingUnitAmount(openOrder).isZero()) {
       store.remove('OpenOrder', openOrderID)
