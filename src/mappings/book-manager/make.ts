@@ -72,12 +72,12 @@ export function handleMake(event: Make): void {
     openOrder.priceRaw = priceRaw
     openOrder.tick = tick
     openOrder.orderIndex = event.params.orderIndex
-    openOrder.price = formatPrice(priceRaw, base.decimals, quote.decimals)
+    openOrder.price = formatPrice(priceRaw, base.decimals, quote.decimals) // checked
     openOrder.inversePrice = formatInvertedPrice(
       priceRaw,
       base.decimals,
       quote.decimals,
-    )
+    ) // checked
     // initial
     openOrder.amountUSD = amountUSD
     openOrder.unitAmount = event.params.unit
@@ -112,12 +112,12 @@ export function handleMake(event: Make): void {
       depth.baseAmount = baseAmount
       depth.quoteAmount = quoteAmount
       depth.priceRaw = priceRaw
-      depth.price = formatPrice(priceRaw, base.decimals, quote.decimals)
+      depth.price = formatPrice(priceRaw, base.decimals, quote.decimals) // checked
       depth.inversePrice = formatInvertedPrice(
         priceRaw,
         base.decimals,
         quote.decimals,
-      )
+      ) // checked
     } else {
       depth.unitAmount = depth.unitAmount.plus(event.params.unit)
       depth.baseAmount = depth.baseAmount.plus(baseAmount)

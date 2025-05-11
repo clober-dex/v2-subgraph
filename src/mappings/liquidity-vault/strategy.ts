@@ -24,14 +24,14 @@ export function handleUpdatePosition(event: UpdatePosition): void {
 
     pool.tickA = BigInt.fromI32(event.params.tickA)
     pool.priceARaw = tickToPrice(event.params.tickA)
-    pool.priceA = formatPrice(pool.priceARaw, tokenA.decimals, tokenB.decimals)
+    pool.priceA = formatPrice(pool.priceARaw, tokenB.decimals, tokenA.decimals)
 
     pool.tickB = BigInt.fromI32(event.params.tickB)
     pool.priceBRaw = tickToPrice(event.params.tickB)
     pool.priceB = formatInvertedPrice(
       pool.priceBRaw,
-      tokenB.decimals,
       tokenA.decimals,
+      tokenB.decimals,
     )
 
     const tokenAUSDPrice = getTokenUSDPrice(tokenA)
