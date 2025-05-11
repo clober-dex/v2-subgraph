@@ -1,3 +1,5 @@
+import { BigInt } from '@graphprotocol/graph-ts'
+
 import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
 import {
   formatInvertedPrice,
@@ -20,11 +22,11 @@ export function handleUpdatePosition(event: UpdatePosition): void {
   if (tokenA && tokenB) {
     pool.oraclePrice = event.params.oraclePrice
 
-    pool.tickA = event.params.tickA
+    pool.tickA = BigInt.fromI32(event.params.tickA)
     pool.priceARaw = tickToPrice(event.params.tickA)
     pool.priceA = formatPrice(pool.priceARaw, tokenA.decimals, tokenB.decimals)
 
-    pool.tickB = event.params.tickB
+    pool.tickB = BigInt.fromI32(event.params.tickB)
     pool.priceBRaw = tickToPrice(event.params.tickB)
     pool.priceB = formatInvertedPrice(
       pool.priceBRaw,
