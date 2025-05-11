@@ -7,6 +7,7 @@ import { handleClaim } from './book-manager/claim'
 import { handlePoolOpen } from './liquidity-vault/open'
 import { handleMint } from './liquidity-vault/mint'
 import { handleBurn } from './liquidity-vault/burn'
+import { handleUpdatePosition } from './liquidity-vault/strategy'
 
 export {
   handleBookOpen,
@@ -18,4 +19,5 @@ export {
   handlePoolOpen,
   handleMint,
   handleBurn,
+  handleUpdatePosition,
 }
