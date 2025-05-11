@@ -1,9 +1,44 @@
 import { exec as execCallback } from 'child_process'
 import * as util from 'util'
 
-import { prepare } from './prepare-network'
+import * as dotenv from 'dotenv'
+
+import { NETWORK, prepare } from './prepare-network'
 
 const exec = util.promisify(execCallback)
+
+const buildGoldskyDeployCommand = (
+  network: string,
+  gitHashString: string,
+): string => {
+  const subgraphName = `v2-subgraph-${network}/${gitHashString}`
+  return `goldsky subgraph deploy ${subgraphName} --path .`
+}
+
+const buildAlchemyDeployCommand = (
+  network: string,
+  gitHashString: string,
+): string => {
+  dotenv.config()
+  if (!process.env.ALCHEMY_DEPLOY_KEY) {
+    throw new Error('ALCHEMY_DEPLOY_KEY must be set')
+  }
+  const deployKey = process.env.ALCHEMY_DEPLOY_KEY
+  return `graph deploy v2-subgraph-${network} --version-label ${gitHashString} --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key ${deployKey} --ipfs https://ipfs.satsuma.xyz`
+}
+
+const buildDeployCommand = async (network: string): Promise<string> => {
+  const { stdout: gitHash } = await exec('git rev-parse --short HEAD')
+  const gitHashString = gitHash.toString().trim()
+  switch (network) {
+    case NETWORK.MONAD_TESTNET:
+      return buildAlchemyDeployCommand(network, gitHashString)
+    case NETWORK.RISE_SEPOLIA:
+      return buildGoldskyDeployCommand(network, gitHashString)
+    default:
+      throw new Error(`Unsupported network: ${network}`)
+  }
+}
 
 const codegen = async (): Promise<void> => {
   const { stdout, stderr } = await exec(`graph codegen subgraph.yaml`)
@@ -45,10 +80,7 @@ export const deploy = async (network: string): Promise<void> => {
     process.exit(1)
   }
 
-  const { stdout: gitHash } = await exec('git rev-parse --short HEAD')
-  const gitHashString = gitHash.toString().trim()
-  const subgraphName = `v2-subgraph-${network}/${gitHashString}`
-  const command = `goldsky subgraph deploy ${subgraphName} --path .`
+  const command = await buildDeployCommand(network)
 
   try {
     console.log(command)
