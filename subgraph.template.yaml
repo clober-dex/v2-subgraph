@@ -23,8 +23,13 @@ dataSources:
         - Transaction
         - ChartLog
         - Pool
+        - User
         - BookDayData
         - TokenDayData
+        - CloberDayData
+        - TransactionTypeDayData
+        - UserDayData
+        - UserDayVolume
         - PoolDayData
         - PoolHourData
         - Take
@@ -69,6 +74,10 @@ dataSources:
         - PoolDayData
         - PoolHourData
         - TokenDayData
+        - CloberDayData
+        - UserDayData
+        - TransactionTypeDayData
+        - User
       abis:
         - name: Rebalancer
           file: ./abis/Rebalancer.json
@@ -114,6 +123,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - Swap
+        - UserDayVolume
       abis:
         - name: RouterGateway
           file: ./abis/RouterGateway.json
