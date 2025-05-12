@@ -40,6 +40,7 @@ export function handlePoolOpen(event: Open): void {
     pool.volumeTokenB = ZERO_BD
     pool.volumeUSD = ZERO_BD
     pool.spreadProfitUSD = ZERO_BD
+    pool.totalValueLockedUSD = ZERO_BD
 
     // bind book to pool
     bookA.pool = pool.id

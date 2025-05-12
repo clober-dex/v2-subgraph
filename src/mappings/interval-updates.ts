@@ -198,6 +198,7 @@ export function updatePoolDayData(
     poolDayData.volumeTokenB = ZERO_BD
     poolDayData.volumeUSD = ZERO_BD
     poolDayData.spreadProfitUSD = ZERO_BD
+    poolDayData.totalValueLockedUSD = ZERO_BD
   }
   poolDayData.oraclePrice = pool.oraclePrice
   poolDayData.totalSupply = pool.totalSupply
@@ -210,6 +211,7 @@ export function updatePoolDayData(
   poolDayData.priceB = pool.priceB
   poolDayData.priceBRaw = pool.priceBRaw
   poolDayData.tickB = pool.tickB
+  poolDayData.totalValueLockedUSD = pool.totalValueLockedUSD
   poolDayData.save()
 
   return poolDayData as PoolDayData
@@ -237,6 +239,7 @@ export function updatePoolHourData(
     poolHourData.volumeTokenB = ZERO_BD
     poolHourData.volumeUSD = ZERO_BD
     poolHourData.spreadProfitUSD = ZERO_BD
+    poolHourData.totalValueLockedUSD = ZERO_BD
   }
   poolHourData.oraclePrice = pool.oraclePrice
   poolHourData.totalSupply = pool.totalSupply
@@ -249,6 +252,7 @@ export function updatePoolHourData(
   poolHourData.priceB = pool.priceB
   poolHourData.priceBRaw = pool.priceBRaw
   poolHourData.tickB = pool.tickB
+  poolHourData.totalValueLockedUSD = pool.totalValueLockedUSD
   poolHourData.save()
 
   return poolHourData as PoolHourData

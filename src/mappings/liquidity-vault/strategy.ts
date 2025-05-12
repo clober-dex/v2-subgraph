@@ -73,6 +73,7 @@ export function handleUpdatePosition(event: UpdatePosition): void {
         tokenB.decimals,
       ).times(tokenBUSDPrice)
       pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
+      pool.totalValueLockedUSD = pool.lpPriceUSD.times(lpAmountDecimal)
     }
 
     pool.save()

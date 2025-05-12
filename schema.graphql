@@ -270,6 +270,8 @@ type Pool @entity {
   volumeUSD: BigDecimal!
   # all time spread profit in USD
   spreadProfitUSD: BigDecimal!
+  # tvl USD
+  totalValueLockedUSD: BigDecimal!
   # hourly snapshots of pool data
   poolHourData: [PoolHourData!]! @derivedFrom(field: "pool")
   # daily snapshots of pool data
@@ -437,6 +439,8 @@ type PoolDayData @entity {
   volumeUSD: BigDecimal!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
+  # tvl derived in USD at end of period
+  totalValueLockedUSD: BigDecimal!
 }
 
 # hourly stats tracker for pool
@@ -474,6 +478,8 @@ type PoolHourData @entity {
   volumeUSD: BigDecimal!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
+  # tvl derived in USD at end of period
+  totalValueLockedUSD: BigDecimal!
 }
 
 # entity for take event on clober book
