@@ -377,6 +377,8 @@ type TokenDayProtocolFee @entity {
   date: BigInt!
   # pointer to clober day data
   cloberDayData: CloberDayData!
+  # token
+  token: Bytes!
 
   # protocol fees in token units
   protocolFees: BigDecimal!
