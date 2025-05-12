@@ -3,13 +3,57 @@ import { Address, BigDecimal, ethereum } from '@graphprotocol/graph-ts'
 import {
   Book,
   BookDayData,
+  CloberDayData,
   Pool,
   PoolDayData,
   PoolHourData,
   Token,
   TokenDayData,
+  Transaction,
+  TransactionTypeDayData,
 } from '../../generated/schema'
-import { ZERO_BD } from '../common/constants'
+import { ONE_BI, ZERO_BD, ZERO_BI } from '../common/constants'
+import { getOrCreateTransaction } from '../common/entity-getters'
+
+/**
+ * Tracks global aggregate data over daily windows
+ * @param event
+ */
+export function updateCloberDayData(event: ethereum.Event): CloberDayData {
+  const timestamp = event.block.timestamp.toI32()
+  const dayID = timestamp / 86400 // rounded
+  const dayStartTimestamp = dayID * 86400
+  let cloberDayData = CloberDayData.load(dayID.toString())
+  if (cloberDayData === null) {
+    cloberDayData = new CloberDayData(dayID.toString())
+    cloberDayData.date = dayStartTimestamp
+    cloberDayData.txCount = ZERO_BI
+    cloberDayData.walletCount = ZERO_BI
+    cloberDayData.newWalletCount = ZERO_BI
+  }
+
+  const functionSignature = event.transaction.input.toHexString().slice(0, 10)
+  const txDayID = functionSignature.concat('-').concat(dayID.toString())
+  let txTypeDayData = TransactionTypeDayData.load(txDayID)
+  if (txTypeDayData === null) {
+    txTypeDayData = new TransactionTypeDayData(txDayID)
+    txTypeDayData.date = dayStartTimestamp
+    txTypeDayData.cloberDayData = cloberDayData.id
+    txTypeDayData.type = functionSignature
+    txTypeDayData.txCount = ZERO_BI
+  }
+
+  if (Transaction.load(event.transaction.hash.toHexString()) === null) {
+    cloberDayData.txCount = cloberDayData.txCount.plus(ONE_BI)
+    txTypeDayData.txCount = txTypeDayData.txCount.plus(ONE_BI)
+
+    getOrCreateTransaction(event)
+  }
+
+  cloberDayData.save()
+  txTypeDayData.save()
+  return cloberDayData as CloberDayData
+}
 
 export function updateBookDayData(
   book: Book,
@@ -60,6 +104,7 @@ export function updateTokenDayData(
     tokenDayData = new TokenDayData(tokenDayID)
     tokenDayData.date = dayStartTimestamp
     tokenDayData.token = token.id
+    tokenDayData.cloberDayData = dayID.toString()
     // things that dont get initialized always
     tokenDayData.volume = ZERO_BD
     tokenDayData.volumeUSD = ZERO_BD

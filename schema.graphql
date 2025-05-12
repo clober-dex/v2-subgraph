@@ -312,6 +312,8 @@ type TokenDayData @entity {
   date: Int!
   # pointer to token
   token: Token!
+  # pointer to clober day data
+  cloberDayData: CloberDayData!
 
   # volume in token units
   volume: BigDecimal!
@@ -336,7 +338,7 @@ type CloberDayData @entity {
   # timestamp rounded to current day by dividing by 86400
   date: Int!
   # number of daily transactions
-  transactionCount: BigInt!
+  txCount: BigInt!
   # number of daily wallets
   walletCount: BigInt!
   # number of daily new wallets
@@ -349,58 +351,8 @@ type CloberDayData @entity {
   protocolFeesUSD: BigDecimal!
 
   # derived fields
-  tokenVolumes: [TokenDayVolume!]! @derivedFrom(field: "cloberDayData")
-  protocolFees: [TokenDayProtocolFee!]! @derivedFrom(field: "cloberDayData")
-  tvls: [TokenDayTVL!]! @derivedFrom(field: "cloberDayData")
+  tokenDayData: [TokenDayData!]! @derivedFrom(field: "cloberDayData")
   transactionTypes: [TransactionTypeDayData!]! @derivedFrom(field: "cloberDayData")
-}
-
-type TokenDayVolume @entity {
-  # ${timestamp rounded to current day by dividing by 86400}-${token.id}
-  id: ID!
-  # timestamp rounded to current day by dividing by 86400
-  date: Int!
-  # pointer to clober day data
-  cloberDayData: CloberDayData!
-  # token
-  token: Bytes!
-
-  # volume in token units
-  volume: BigDecimal!
-  # volume in derived USD
-  volumeUSD: BigDecimal!
-}
-
-type TokenDayProtocolFee @entity {
-  # ${timestamp rounded to current day by dividing by 86400}-${type}
-  id: ID!
-  # timestamp rounded to current day by dividing by 86400
-  date: Int!
-  # pointer to clober day data
-  cloberDayData: CloberDayData!
-  # token
-  token: Bytes!
-
-  # protocol fees in token units
-  protocolFees: BigDecimal!
-  # protocol fees in USD
-  protocolFeesUSD: BigDecimal!
-}
-
-type TokenDayTVL @entity {
-  # ${timestamp rounded to current day by dividing by 86400}-${type}
-  id: ID!
-  # timestamp rounded to current day by dividing by 86400
-  date: Int!
-  # pointer to clober day data
-  cloberDayData: CloberDayData!
-  # token
-  token: Bytes!
-
-  # tvl in token units
-  totalValueLocked: BigDecimal!
-  # tvl in USD
-  totalValueLockedUSD: BigDecimal!
 }
 
 type TransactionTypeDayData @entity {
@@ -414,8 +366,39 @@ type TransactionTypeDayData @entity {
   type: String!
 
   # tx count
-  transactionCount: BigInt!
+  txCount: BigInt!
 }
+
+## user day data
+#type UserDayData @entity {
+#  # ${wallet}-{timestamp rounded to current day by dividing by 86400}
+#  id: ID!
+#  # timestamp rounded to current day by dividing by 86400
+#  date: Int!
+#  # number of daily transactions
+#  txCount: BigInt!
+#  # wallet address
+#  user: Bytes!
+#
+#  tokenVolumes: [UserTokenDayVolume!]! @derivedFrom(field: "userDayData")
+#}
+#
+#type UserTokenDayVolume @entity {
+#  # ${user}-{timestamp rounded to current day by dividing by 86400}-${token.id}
+#  id: ID!
+#  # timestamp rounded to current day by dividing by 86400
+#  date: Int!
+#  # pointer to user day data
+#  userDayData: UserDayData!
+#  # token
+#  token: Token!
+#
+#  # volume in token units
+#  volume: BigDecimal!
+#  # volume in derived USD
+#  volumeUSD: BigDecimal!
+#}
+
 
 # Data accumulated and condensed into day stats for each pool
 type PoolDayData @entity {
