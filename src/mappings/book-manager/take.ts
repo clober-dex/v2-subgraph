@@ -31,6 +31,7 @@ import {
   updatePoolDayData,
   updatePoolHourData,
   updateTokenDayData,
+  updateTokenVolume,
 } from '../interval-updates'
 import {
   CHART_LOG_INTERVALS,
@@ -411,12 +412,7 @@ export function handleTake(event: Take): void {
   take.origin = event.transaction.from
   take.inputAmount = takenBaseAmount
   take.outputAmount = takenQuoteAmount
-  take.amountUSD = calculateValueUSD(
-    takenQuoteAmountDecimal,
-    quoteInUSD,
-    takenBaseAmountDecimal,
-    baseInUSD,
-  )
+  take.amountUSD = amountTotalUSD
   take.logIndex = event.logIndex
   take.save()
 
@@ -466,6 +462,11 @@ export function handleTake(event: Take): void {
     }
   }
 
+  if (quoteInUSD.gt(ZERO_BD)) {
+    updateTokenVolume(quote, event, takenQuoteAmountDecimal, amountTotalUSD)
+  } else if (baseInUSD.gt(ZERO_BD)) {
+    updateTokenVolume(base, event, takenBaseAmountDecimal, amountTotalUSD)
+  }
   depth.latestTakenOrderIndex = currentOrderIndex
   depth.save()
   book.save()

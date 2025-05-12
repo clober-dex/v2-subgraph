@@ -13,6 +13,7 @@ import {
   TransactionTypeDayData,
   User,
   UserDayData,
+  UserDayVolume,
 } from '../../generated/schema'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../common/constants'
 import {
@@ -37,15 +38,13 @@ export function updateDayData(event: ethereum.Event): void {
     cloberDayData.newWalletCount = ZERO_BI
   }
 
-  const userDayDataId = event.transaction.from
-    .toHexString()
-    .concat('-')
-    .concat(dayID.toString())
+  const user = event.transaction.from.toHexString()
+  const userDayDataId = user.concat('-').concat(dayID.toString())
   let userDayData = UserDayData.load(userDayDataId)
   if (userDayData === null) {
     userDayData = new UserDayData(userDayDataId)
     userDayData.date = dayStartTimestamp
-    userDayData.user = event.transaction.from
+    userDayData.user = Address.fromString(user)
     userDayData.txCount = ZERO_BI
 
     // increment the wallet count on the clober day data
@@ -63,7 +62,7 @@ export function updateDayData(event: ethereum.Event): void {
     txTypeDayData.txCount = ZERO_BI
   }
 
-  if (User.load(event.transaction.from) === null) {
+  if (User.load(Address.fromString(user)) === null) {
     cloberDayData.newWalletCount = cloberDayData.newWalletCount.plus(ONE_BI)
 
     getOrCreateUser(event)
@@ -80,6 +79,39 @@ export function updateDayData(event: ethereum.Event): void {
   cloberDayData.save()
   userDayData.save()
   txTypeDayData.save()
+}
+
+export function updateTokenVolume(
+  token: Token,
+  event: ethereum.Event,
+  volume: BigDecimal,
+  volumeUSD: BigDecimal,
+): UserDayVolume {
+  const timestamp = event.block.timestamp.toI32()
+  const dayID = timestamp / 86400 // rounded
+  const dayStartTimestamp = dayID * 86400
+  const user = event.transaction.from.toHexString()
+  const userDayDataId = user.concat('-').concat(dayID.toString())
+  const userDayVolumeID = user
+    .concat('-')
+    .concat(token.id.toHexString())
+    .concat('-')
+    .concat(dayID.toString())
+  let userDayVolume = UserDayVolume.load(userDayVolumeID)
+  if (userDayVolume === null) {
+    userDayVolume = new UserDayVolume(userDayVolumeID)
+    userDayVolume.date = dayStartTimestamp
+    userDayVolume.user = Address.fromString(user)
+    userDayVolume.userDayData = userDayDataId
+    userDayVolume.token = token.id
+    userDayVolume.volume = ZERO_BD
+    userDayVolume.volumeUSD = ZERO_BD
+  }
+  userDayVolume.volume = userDayVolume.volume.plus(volume)
+  userDayVolume.volumeUSD = userDayVolume.volumeUSD.plus(volumeUSD)
+  userDayVolume.save()
+
+  return userDayVolume as UserDayVolume
 }
 
 export function updateBookDayData(
