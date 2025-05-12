@@ -27,6 +27,7 @@ dataSources:
         - TokenDayData
         - PoolDayData
         - PoolHourData
+        - Take
       abis:
         - name: BookManager
           file: ./abis/BookManager.json
@@ -99,3 +100,32 @@ dataSources:
         - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
           handler: handleUpdatePosition
       file: ./src/mappings/core.ts
+  {{#hasRouterGateway}}
+  - kind: ethereum
+    name: RouterGateway
+    network: {{ network }}
+    source:
+      abi: RouterGateway
+      address: "{{ RouterGateway.address }}"
+      startBlock: {{ RouterGateway.startBlock }}
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - Swap
+      abis:
+        - name: RouterGateway
+          file: ./abis/RouterGateway.json
+        - name: ERC20
+          file: ./abis/ERC20.json
+        - name: ERC20SymbolBytes
+          file: ./abis/ERC20SymbolBytes.json
+        - name: ERC20NameBytes
+          file: ./abis/ERC20NameBytes.json
+      eventHandlers:
+        - event: Swap(indexed address,indexed address,indexed
+            address,uint256,uint256,address,bytes4)
+          handler: handleSwap
+      file: ./src/mappings/router-gateway/swap.ts
+  {{/hasRouterGateway}}

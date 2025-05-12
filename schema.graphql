@@ -326,6 +326,24 @@ type TokenDayData @entity {
   protocolFeesUSD: BigDecimal!
 }
 
+# Data accumulated and condensed into day stats for all of Clober
+type CloberDayData @entity {
+  # timestamp rounded to current day by dividing by 86400
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: Int!
+  # fees in USD
+  protocolFeesUSD: BigDecimal!
+  # number of daily transactions
+  txCount: BigInt!
+  # number of daily wallets
+  walletCount: BigInt!
+  # number of daily new wallets
+  newWalletCount: BigInt!
+  # tvl in terms of USD
+  totalValueLockedUSD: BigDecimal!
+}
+
 # Data accumulated and condensed into day stats for each pool
 type PoolDayData @entity {
   # `${poolKey}-{periodStartUnix}`
@@ -398,4 +416,46 @@ type PoolHourData @entity {
   volumeUSD: BigDecimal!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
+}
+
+type Take @entity {
+  # {txHash}-{logIndex}
+  id: ID!
+  # pointer to transaction
+  transaction: Transaction!
+  # timestamp of transaction
+  timestamp: BigInt!
+  # allow indexing by tokens
+  inputToken: Token!
+  # allow indexing by tokens
+  outputToken: Token!
+  # txn origin
+  origin: Bytes! # the EOA that initiated the txn
+  # amount In
+  inputAmount: BigInt!
+  # amount Out
+  outputAmount: BigInt!
+  # index within the txn
+  logIndex: BigInt
+}
+
+type Swap @entity {
+  # {txHash}-{logIndex}
+  id: ID!
+  # pointer to transaction
+  transaction: Transaction!
+  # timestamp of transaction
+  timestamp: BigInt!
+  # allow indexing by tokens
+  inputToken: Token!
+  # allow indexing by tokens
+  outputToken: Token!
+  # txn origin
+  origin: Bytes! # the EOA that initiated the txn
+  # amount In
+  inputAmount: BigInt!
+  # amount Out
+  outputAmount: BigInt!
+  # index within the txn
+  logIndex: BigInt
 }

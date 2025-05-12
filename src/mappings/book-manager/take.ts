@@ -1,14 +1,15 @@
 import { BigDecimal, BigInt, ethereum, log } from '@graphprotocol/graph-ts'
 
 import { Take } from '../../../generated/BookManager/BookManager'
-import { unitToBase, unitToQuote } from '../../common/amount'
 import {
+  Take as TakeEntity,
   Book,
   ChartLog,
   OpenOrder,
   Pool,
   Token,
 } from '../../../generated/schema'
+import { unitToBase, unitToQuote } from '../../common/amount'
 import { encodeOrderID } from '../../common/order'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import {
@@ -393,6 +394,22 @@ export function handleTake(event: Take): void {
     base,
     quote,
   )
+
+  const take = new TakeEntity(
+    event.transaction.hash
+      .toHexString()
+      .concat('-')
+      .concat(event.logIndex.toString()),
+  )
+  take.transaction = event.transaction.hash.toHexString()
+  take.timestamp = event.block.timestamp
+  take.inputToken = book.base
+  take.outputToken = book.quote
+  take.origin = event.transaction.from
+  take.inputAmount = takenBaseAmount
+  take.outputAmount = takenQuoteAmount
+  take.logIndex = event.logIndex
+  take.save()
 
   let currentOrderIndex = depth.latestTakenOrderIndex
   let remainingTakenUnitAmount = takenUnitAmount
