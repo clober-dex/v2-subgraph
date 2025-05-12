@@ -24,6 +24,8 @@ import {
 } from '../../common/entity-getters'
 
 export function handleMake(event: Make): void {
+  updateDayData(event)
+
   const book = getBookOrLog(event.params.bookId.toString(), 'MAKE')
   if (book === null) {
     return
@@ -128,7 +130,6 @@ export function handleMake(event: Make): void {
       depth.quoteAmount = depth.quoteAmount.plus(quoteAmount)
     }
 
-    updateDayData(event)
     updateBookDayData(book, event)
     updateTokenDayData(quote, quoteInUSD, event)
 

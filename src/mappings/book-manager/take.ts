@@ -2,11 +2,11 @@ import { BigDecimal, BigInt, ethereum, log } from '@graphprotocol/graph-ts'
 
 import { Take } from '../../../generated/BookManager/BookManager'
 import {
-  Take as TakeEntity,
   Book,
   ChartLog,
   OpenOrder,
   Pool,
+  Take as TakeEntity,
   Token,
 } from '../../../generated/schema'
 import { unitToBase, unitToQuote } from '../../common/amount'
@@ -260,6 +260,8 @@ function updatePool(
 }
 
 export function handleTake(event: Take): void {
+  updateDayData(event)
+
   if (event.params.unit.isZero()) {
     return
   }

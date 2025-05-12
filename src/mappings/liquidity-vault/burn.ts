@@ -11,6 +11,8 @@ import {
 } from '../interval-updates'
 
 export function handleBurn(event: Burn): void {
+  updateDayData(event)
+
   const pool = getPoolOrLog(event.params.key, 'BURN')
   if (!pool || event.params.lpAmount.equals(ZERO_BI)) {
     return
@@ -60,7 +62,6 @@ export function handleBurn(event: Burn): void {
     tokenB.totalValueLockedUSD = tokenB.totalValueLocked.times(priceBUSD)
 
     // update interval
-    updateDayData(event)
     updatePoolHourData(pool, event)
     updatePoolDayData(pool, event)
     updateTokenDayData(tokenA, priceAUSD, event)

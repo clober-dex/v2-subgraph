@@ -23,7 +23,11 @@ import { Book, OpenOrder, Pool, Token } from '../../../generated/schema'
 import { TWO_BD, ZERO_BD } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
-import { updatePoolDayData, updatePoolHourData } from '../interval-updates'
+import {
+  updateDayData,
+  updatePoolDayData,
+  updatePoolHourData,
+} from '../interval-updates'
 
 function updatePool(
   pool: Pool,
@@ -89,6 +93,8 @@ function updatePool(
 }
 
 export function handleClaim(event: Claim): void {
+  updateDayData(event)
+
   if (event.params.unit.isZero()) {
     return
   }
