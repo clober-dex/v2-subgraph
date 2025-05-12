@@ -427,6 +427,7 @@ type PoolHourData @entity {
   spreadProfitUSD: BigDecimal!
 }
 
+# entity for take event on clober book
 type Take @entity {
   # {txHash}-{logIndex}
   id: ID!
@@ -450,6 +451,7 @@ type Take @entity {
   logIndex: BigInt
 }
 
+# entity for swap event on clober meta aggregator
 type Swap @entity {
   # {txHash}-{logIndex}
   id: ID!
