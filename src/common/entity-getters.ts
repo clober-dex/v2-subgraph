@@ -7,7 +7,19 @@ import {
   Pool,
   Token,
   Transaction,
+  User,
 } from '../../generated/schema'
+
+export function getOrCreateUser(event: ethereum.Event): User {
+  let user = User.load(event.transaction.from)
+  if (user === null) {
+    user = new User(event.transaction.from)
+    user.firstSeenTimestamp = event.block.timestamp
+    user.firstSeenBlockNumber = event.block.number
+  }
+  user.save()
+  return user as User
+}
 
 export function getOrCreateTransaction(event: ethereum.Event): Transaction {
   let transaction = Transaction.load(event.transaction.hash.toHexString())

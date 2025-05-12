@@ -17,7 +17,7 @@ import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
 import {
   updateBookDayData,
-  updateCloberDayData,
+  updateDayData,
   updateTokenDayData,
 } from '../interval-updates'
 
@@ -91,7 +91,7 @@ export function handleCancel(event: Cancel): void {
     depth.quoteAmount = depth.quoteAmount.minus(quoteAmount)
     depth.baseAmount = depth.baseAmount.minus(baseAmount)
 
-    updateCloberDayData(event)
+    updateDayData(event)
     updateBookDayData(book, event)
     updateTokenDayData(quote, quoteInUSD, event)
 

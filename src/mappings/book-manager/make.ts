@@ -14,7 +14,7 @@ import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
 import { encodeOrderID } from '../../common/order'
 import {
   updateBookDayData,
-  updateCloberDayData,
+  updateDayData,
   updateTokenDayData,
 } from '../interval-updates'
 import {
@@ -128,7 +128,7 @@ export function handleMake(event: Make): void {
       depth.quoteAmount = depth.quoteAmount.plus(quoteAmount)
     }
 
-    updateCloberDayData(event)
+    updateDayData(event)
     updateBookDayData(book, event)
     updateTokenDayData(quote, quoteInUSD, event)
 

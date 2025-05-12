@@ -11,15 +11,20 @@ import {
   TokenDayData,
   Transaction,
   TransactionTypeDayData,
+  User,
+  UserDayData,
 } from '../../generated/schema'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../common/constants'
-import { getOrCreateTransaction } from '../common/entity-getters'
+import {
+  getOrCreateTransaction,
+  getOrCreateUser,
+} from '../common/entity-getters'
 
 /**
  * Tracks global aggregate data over daily windows
  * @param event
  */
-export function updateCloberDayData(event: ethereum.Event): CloberDayData {
+export function updateDayData(event: ethereum.Event): CloberDayData {
   const timestamp = event.block.timestamp.toI32()
   const dayID = timestamp / 86400 // rounded
   const dayStartTimestamp = dayID * 86400
@@ -30,6 +35,20 @@ export function updateCloberDayData(event: ethereum.Event): CloberDayData {
     cloberDayData.txCount = ZERO_BI
     cloberDayData.walletCount = ZERO_BI
     cloberDayData.newWalletCount = ZERO_BI
+  }
+
+  const userDayDataId = event.transaction.from
+    .toHexString()
+    .concat('-')
+    .concat(dayID.toString())
+  let userDayData = UserDayData.load(userDayDataId)
+  if (userDayData === null) {
+    userDayData = new UserDayData(userDayDataId)
+    userDayData.date = dayStartTimestamp
+    userDayData.user = event.transaction.from
+    userDayData.txCount = ZERO_BI
+
+    cloberDayData.walletCount = cloberDayData.walletCount.plus(ONE_BI)
   }
 
   const functionSignature = event.transaction.input.toHexString().slice(0, 10)
@@ -43,6 +62,12 @@ export function updateCloberDayData(event: ethereum.Event): CloberDayData {
     txTypeDayData.txCount = ZERO_BI
   }
 
+  if (User.load(event.transaction.from) === null) {
+    cloberDayData.newWalletCount = cloberDayData.newWalletCount.plus(ONE_BI)
+
+    getOrCreateUser(event)
+  }
+
   if (Transaction.load(event.transaction.hash.toHexString()) === null) {
     cloberDayData.txCount = cloberDayData.txCount.plus(ONE_BI)
     txTypeDayData.txCount = txTypeDayData.txCount.plus(ONE_BI)
@@ -51,6 +76,7 @@ export function updateCloberDayData(event: ethereum.Event): CloberDayData {
   }
 
   cloberDayData.save()
+  userDayData.save()
   txTypeDayData.save()
   return cloberDayData as CloberDayData
 }

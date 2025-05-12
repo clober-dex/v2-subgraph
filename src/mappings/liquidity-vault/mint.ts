@@ -8,7 +8,7 @@ import { ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenUSDPrice } from '../../common/pricing'
 import {
-  updateCloberDayData,
+  updateDayData,
   updatePoolDayData,
   updatePoolHourData,
   updateTokenDayData,
@@ -58,7 +58,7 @@ export function handleMint(event: Mint): void {
     tokenB.totalValueLockedUSD = tokenB.totalValueLocked.times(priceBUSD)
 
     // update interval
-    updateCloberDayData(event)
+    updateDayData(event)
     updatePoolHourData(pool, event)
     updatePoolDayData(pool, event)
     updateTokenDayData(tokenA, priceAUSD, event)
