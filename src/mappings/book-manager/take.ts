@@ -405,6 +405,7 @@ export function handleTake(event: Take): void {
   take.timestamp = event.block.timestamp
   take.inputToken = book.base
   take.outputToken = book.quote
+  take.book = book.id
   take.origin = event.transaction.from
   take.inputAmount = takenBaseAmount
   take.outputAmount = takenQuoteAmount

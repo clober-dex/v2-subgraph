@@ -425,6 +425,8 @@ type Take @entity {
   transaction: Transaction!
   # timestamp of transaction
   timestamp: BigInt!
+  # book
+  book: Book!
   # allow indexing by tokens
   inputToken: Token!
   # allow indexing by tokens
