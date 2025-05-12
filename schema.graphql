@@ -336,7 +336,7 @@ type CloberDayData @entity {
   # timestamp rounded to current day by dividing by 86400
   date: Int!
   # number of daily transactions
-  txCount: BigInt!
+  transactionCount: BigInt!
   # number of daily wallets
   walletCount: BigInt!
   # number of daily new wallets
