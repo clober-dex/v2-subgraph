@@ -86,6 +86,7 @@ type Book @entity {
   # derived fields
   depths: [Depth!]! @derivedFrom(field: "book")
   openOrders: [OpenOrder!]! @derivedFrom(field: "book")
+  takes: [Take!]! @derivedFrom(field: "book")
 }
 
 type Depth @entity {
@@ -186,6 +187,8 @@ type Transaction @entity {
   to: Bytes
   # txn value
   value: BigInt!
+  # derived values
+  takes: [Take!]! @derivedFrom(field: "transaction")
 }
 
 type ChartLog @entity {
@@ -332,8 +335,6 @@ type CloberDayData @entity {
   id: ID!
   # timestamp rounded to current day by dividing by 86400
   date: Int!
-  # fees in USD
-  protocolFeesUSD: BigDecimal!
   # number of daily transactions
   txCount: BigInt!
   # number of daily wallets
@@ -342,6 +343,14 @@ type CloberDayData @entity {
   newWalletCount: BigInt!
   # tvl in terms of USD
   totalValueLockedUSD: BigDecimal!
+  # volume in USD
+  volumeUSD: BigDecimal!
+  # fees in USD
+  protocolFeesUSD: BigDecimal!
+
+  # derived fields
+  tokenVolumes: [CloberTokenDayVolume!]! @derivedFrom(field: "cloberDayData")
+  transactionTypes: [CloberTransactionTypeDayData!]! @derivedFrom(field: "cloberDayData")
 }
 
 # Data accumulated and condensed into day stats for each pool
