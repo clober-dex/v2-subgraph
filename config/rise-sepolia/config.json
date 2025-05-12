@@ -11,5 +11,6 @@
   "SimpleOracleStrategy": {
     "address": "0xa3CC662732e4ae2a2e0156859B7Fbcd57936723c",
     "startBlock": 9782984
-  }
+  },
+  "hasRouterGateway": false
 }
