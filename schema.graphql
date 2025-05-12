@@ -359,7 +359,7 @@ type TokenDayVolume @entity {
   # ${timestamp rounded to current day by dividing by 86400}-${token.id}
   id: ID!
   # timestamp rounded to current day by dividing by 86400
-  date: BigInt!
+  date: Int!
   # pointer to clober day data
   cloberDayData: CloberDayData!
   # token
@@ -375,7 +375,7 @@ type TokenDayProtocolFee @entity {
   # ${timestamp rounded to current day by dividing by 86400}-${type}
   id: ID!
   # timestamp rounded to current day by dividing by 86400
-  date: BigInt!
+  date: Int!
   # pointer to clober day data
   cloberDayData: CloberDayData!
   # token
@@ -391,7 +391,7 @@ type TokenDayTVL @entity {
   # ${timestamp rounded to current day by dividing by 86400}-${type}
   id: ID!
   # timestamp rounded to current day by dividing by 86400
-  date: BigInt!
+  date: Int!
   # pointer to clober day data
   cloberDayData: CloberDayData!
   # token
@@ -407,7 +407,7 @@ type TransactionTypeDayData @entity {
   # ${timestamp rounded to current day by dividing by 86400}-${type}
   id: ID!
   # timestamp rounded to current day by dividing by 86400
-  date: BigInt!
+  date: Int!
   # pointer to clober day data
   cloberDayData: CloberDayData!
   # type of transaction
