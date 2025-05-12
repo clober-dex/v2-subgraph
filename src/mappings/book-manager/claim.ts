@@ -36,7 +36,7 @@ function updatePool(
   claimedUnitAmount: BigInt,
   event: ethereum.Event,
 ): void {
-  let spread = pool.priceA.minus(pool.priceB)
+  let spread = pool.priceB.minus(pool.priceA)
   if (spread.lt(BigDecimal.zero())) {
     spread = ZERO_BD
   }
