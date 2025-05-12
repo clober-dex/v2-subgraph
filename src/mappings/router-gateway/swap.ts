@@ -9,7 +9,7 @@ import { ZERO_BD, ZERO_BI } from '../../common/constants'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
 import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenOrLog } from '../../common/entity-getters'
-import { updateTokenVolume } from '../interval-updates'
+import { updateUserDayVolume } from '../interval-updates'
 
 const TAKE_EVENT_TOPIC =
   '0xc4c20b9c4a5ada3b01b7a391a08dd81a1be01dd8ef63170dd9da44ecee3db11b'
@@ -79,9 +79,14 @@ export function handleSwap(event: Swap): void {
     )
 
     if (priceIn.gt(ZERO_BD)) {
-      updateTokenVolume(inputToken, event, inputAmountDecimal, swap.amountUSD)
+      updateUserDayVolume(inputToken, event, inputAmountDecimal, swap.amountUSD)
     } else if (priceOut.gt(ZERO_BD)) {
-      updateTokenVolume(outputToken, event, outputAmountDecimal, swap.amountUSD)
+      updateUserDayVolume(
+        outputToken,
+        event,
+        outputAmountDecimal,
+        swap.amountUSD,
+      )
     }
   } else {
     swap.amountUSD = ZERO_BD

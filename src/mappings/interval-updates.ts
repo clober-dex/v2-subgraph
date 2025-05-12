@@ -1,4 +1,4 @@
-import { Address, BigDecimal, ethereum } from '@graphprotocol/graph-ts'
+import { Address, BigDecimal, Bytes, ethereum } from '@graphprotocol/graph-ts'
 
 import {
   Book,
@@ -81,7 +81,7 @@ export function updateDayData(event: ethereum.Event): void {
   txTypeDayData.save()
 }
 
-export function updateTokenVolume(
+export function updateUserDayVolume(
   token: Token,
   event: ethereum.Event,
   volume: BigDecimal,
