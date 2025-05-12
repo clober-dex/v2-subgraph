@@ -53,12 +53,28 @@ export function handleSwap(event: Swap): void {
   swap.origin = event.transaction.from
   swap.inputAmount = event.params.amountIn.minus(bookTakenIn)
   swap.outputAmount = event.params.amountOut.minus(bookTakenOut)
-  if (inputToken && outputToken) {
+  if (
+    inputToken &&
+    outputToken &&
+    swap.inputAmount.ge(ZERO_BI) &&
+    swap.outputAmount.ge(ZERO_BI)
+  ) {
+    const inputAmountDecimal = convertTokenToDecimal(
+      swap.inputAmount,
+      inputToken.decimals,
+    )
+    const outputAmountDecimal = convertTokenToDecimal(
+      swap.outputAmount,
+      outputToken.decimals,
+    )
+    const priceIn = getTokenUSDPrice(inputToken)
+    const priceOut = getTokenUSDPrice(outputToken)
+
     swap.amountUSD = calculateValueUSD(
-      convertTokenToDecimal(swap.inputAmount, inputToken.decimals),
-      getTokenUSDPrice(inputToken),
-      convertTokenToDecimal(swap.outputAmount, outputToken.decimals),
-      getTokenUSDPrice(outputToken),
+      inputAmountDecimal,
+      priceIn,
+      outputAmountDecimal,
+      priceOut,
     )
   } else {
     swap.amountUSD = ZERO_BD
