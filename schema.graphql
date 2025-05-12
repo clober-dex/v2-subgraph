@@ -343,12 +343,6 @@ type CloberDayData @entity {
   walletCount: BigInt!
   # number of daily new wallets
   newWalletCount: BigInt!
-  # tvl in terms of USD
-  totalValueLockedUSD: BigDecimal!
-  # volume in USD
-  volumeUSD: BigDecimal!
-  # fees in USD
-  protocolFeesUSD: BigDecimal!
 
   # derived fields
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "cloberDayData")
@@ -356,7 +350,7 @@ type CloberDayData @entity {
 }
 
 type TransactionTypeDayData @entity {
-  # ${timestamp rounded to current day by dividing by 86400}-${type}
+  # ${type}-${timestamp rounded to current day by dividing by 86400}
   id: ID!
   # timestamp rounded to current day by dividing by 86400
   date: Int!

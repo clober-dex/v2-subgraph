@@ -15,7 +15,11 @@ import { tickToPrice } from '../../common/tick'
 import { unitToBase, unitToQuote } from '../../common/amount'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
-import { updateBookDayData, updateTokenDayData } from '../interval-updates'
+import {
+  updateBookDayData,
+  updateCloberDayData,
+  updateTokenDayData,
+} from '../interval-updates'
 
 export function handleCancel(event: Cancel): void {
   if (event.params.unit.isZero()) {
@@ -87,6 +91,7 @@ export function handleCancel(event: Cancel): void {
     depth.quoteAmount = depth.quoteAmount.minus(quoteAmount)
     depth.baseAmount = depth.baseAmount.minus(baseAmount)
 
+    updateCloberDayData(event)
     updateBookDayData(book, event)
     updateTokenDayData(quote, quoteInUSD, event)
 

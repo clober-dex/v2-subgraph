@@ -12,7 +12,11 @@ import { ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
 import { encodeOrderID } from '../../common/order'
-import { updateBookDayData, updateTokenDayData } from '../interval-updates'
+import {
+  updateBookDayData,
+  updateCloberDayData,
+  updateTokenDayData,
+} from '../interval-updates'
 import {
   getBookOrLog,
   getOrCreateTransaction,
@@ -124,6 +128,7 @@ export function handleMake(event: Make): void {
       depth.quoteAmount = depth.quoteAmount.plus(quoteAmount)
     }
 
+    updateCloberDayData(event)
     updateBookDayData(book, event)
     updateTokenDayData(quote, quoteInUSD, event)
 

@@ -27,6 +27,7 @@ import {
 } from '../../common/tick'
 import {
   updateBookDayData,
+  updateCloberDayData,
   updatePoolDayData,
   updatePoolHourData,
   updateTokenDayData,
@@ -357,6 +358,7 @@ export function handleTake(event: Take): void {
   // note: do not update base.totalValueLocked
 
   // interval data
+  updateCloberDayData(event)
   const bookDayData = updateBookDayData(book, event)
   const quoteDayData = updateTokenDayData(quote, quoteInUSD, event)
   const baseDayData = updateTokenDayData(base, baseInUSD, event)
