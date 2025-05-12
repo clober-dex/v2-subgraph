@@ -48,6 +48,7 @@ export function updateDayData(event: ethereum.Event): CloberDayData {
     userDayData.user = event.transaction.from
     userDayData.txCount = ZERO_BI
 
+    // increment the wallet count on the clober day data
     cloberDayData.walletCount = cloberDayData.walletCount.plus(ONE_BI)
   }
 
@@ -69,6 +70,7 @@ export function updateDayData(event: ethereum.Event): CloberDayData {
   }
 
   if (Transaction.load(event.transaction.hash.toHexString()) === null) {
+    userDayData.txCount = userDayData.txCount.plus(ONE_BI)
     cloberDayData.txCount = cloberDayData.txCount.plus(ONE_BI)
     txTypeDayData.txCount = txTypeDayData.txCount.plus(ONE_BI)
 
