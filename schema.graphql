@@ -349,8 +349,53 @@ type CloberDayData @entity {
   protocolFeesUSD: BigDecimal!
 
   # derived fields
-  tokenVolumes: [CloberTokenDayVolume!]! @derivedFrom(field: "cloberDayData")
-  transactionTypes: [CloberTransactionTypeDayData!]! @derivedFrom(field: "cloberDayData")
+  tokenVolumes: [TokenDayVolume!]! @derivedFrom(field: "cloberDayData")
+  protocolFees: [TokenDayProtocolFee!]! @derivedFrom(field: "cloberDayData")
+  transactionTypes: [TransactionTypeDayData!]! @derivedFrom(field: "cloberDayData")
+}
+
+type TokenDayVolume @entity {
+  # ${timestamp rounded to current day by dividing by 86400}-${token.id}
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: BigInt!
+  # pointer to clober day data
+  cloberDayData: CloberDayData!
+  # token
+  token: Bytes!
+
+  # volume in token units
+  volume: BigDecimal!
+  # volume in derived USD
+  volumeUSD: BigDecimal!
+}
+
+type TokenDayProtocolFee @entity {
+  # ${timestamp rounded to current day by dividing by 86400}-${type}
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: BigInt!
+  # pointer to clober day data
+  cloberDayData: CloberDayData!
+
+  # protocol fees in token units
+  protocolFees: BigDecimal!
+  # protocol fees in USD
+  protocolFeesUSD: BigDecimal!
+}
+
+type TransactionTypeDayData @entity {
+  # ${timestamp rounded to current day by dividing by 86400}-${type}
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: BigInt!
+  # pointer to clober day data
+  cloberDayData: CloberDayData!
+  # type of transaction
+  type: String!
+
+  # tx count
+  transactionCount: BigInt!
 }
 
 # Data accumulated and condensed into day stats for each pool
