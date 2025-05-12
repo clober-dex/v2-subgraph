@@ -4,7 +4,7 @@ import {
   getPoolOrLog,
   getTokenOrLog,
 } from '../../common/entity-getters'
-import { ZERO_BI } from '../../common/constants'
+import { BI_18, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenUSDPrice } from '../../common/pricing'
 import {
@@ -50,6 +50,21 @@ export function handleMint(event: Mint): void {
     pool.totalSupply = pool.totalSupply.plus(event.params.lpAmount)
     pool.liquidityA = pool.liquidityA.plus(event.params.amountA)
     pool.liquidityB = pool.liquidityB.plus(event.params.amountB)
+
+    const lpAmountDecimal = convertTokenToDecimal(
+      pool.totalSupply,
+      BI_18, // assuming LP token has 18 decimals
+    )
+    const amountAInUSD = convertTokenToDecimal(
+      pool.liquidityA,
+      tokenA.decimals,
+    ).times(priceAUSD)
+    const amountBInUSD = convertTokenToDecimal(
+      pool.liquidityB,
+      tokenB.decimals,
+    ).times(priceBUSD)
+    pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
+    pool.totalValueLockedUSD = lpAmountDecimal.times(pool.lpPriceUSD)
 
     // update token state
     tokenA.totalValueLocked = tokenA.totalValueLocked.plus(amountAInDecimals)
