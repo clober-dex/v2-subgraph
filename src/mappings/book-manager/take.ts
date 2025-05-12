@@ -361,7 +361,6 @@ export function handleTake(event: Take): void {
   // note: do not update base.totalValueLocked
 
   // interval data
-  updateDayData(event)
   const bookDayData = updateBookDayData(book, event)
   const quoteDayData = updateTokenDayData(quote, quoteInUSD, event)
   const baseDayData = updateTokenDayData(base, baseInUSD, event)
