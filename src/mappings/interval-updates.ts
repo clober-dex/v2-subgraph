@@ -24,7 +24,7 @@ import {
  * Tracks global aggregate data over daily windows
  * @param event
  */
-export function updateDayData(event: ethereum.Event): CloberDayData {
+export function updateDayData(event: ethereum.Event): void {
   const timestamp = event.block.timestamp.toI32()
   const dayID = timestamp / 86400 // rounded
   const dayStartTimestamp = dayID * 86400
@@ -80,7 +80,6 @@ export function updateDayData(event: ethereum.Event): CloberDayData {
   cloberDayData.save()
   userDayData.save()
   txTypeDayData.save()
-  return cloberDayData as CloberDayData
 }
 
 export function updateBookDayData(
