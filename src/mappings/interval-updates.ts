@@ -1,4 +1,4 @@
-import { Address, BigDecimal, Bytes, ethereum } from '@graphprotocol/graph-ts'
+import { Address, BigDecimal, ethereum } from '@graphprotocol/graph-ts'
 
 import {
   Book,
