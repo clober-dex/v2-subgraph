@@ -3,6 +3,8 @@ import * as process from 'process'
 
 import * as fsExtra from 'fs-extra'
 
+import { Argv } from './argv'
+
 export enum NETWORK {
   MONAD_TESTNET = 'monad-testnet',
   RISE_SEPOLIA = 'rise-sepolia',
@@ -20,8 +22,10 @@ export function validateDeploymentEnvironment(tag: string): void {
   }
 }
 
-export function validateNetwork(network: string): void {
-  if (!network) {
+export function validateNetwork(argv: Argv): {
+  doDeploy: boolean
+} {
+  if (!argv.network) {
     console.error('no network parameter passed')
     process.exit(-1)
   }
@@ -29,7 +33,7 @@ export function validateNetwork(network: string): void {
   if (
     !Object.values(NETWORK)
       .map((n) => n.toString())
-      .includes(network)
+      .includes(argv.network)
   ) {
     console.error(
       'invalid network parameter passed, pass either: ',
@@ -37,6 +41,21 @@ export function validateNetwork(network: string): void {
     )
     process.exit(-1)
   }
+
+  if (argv.goldsky || argv.alchemy) {
+    switch (argv.network) {
+      case NETWORK.MONAD_TESTNET:
+        break
+      case NETWORK.RISE_SEPOLIA:
+        if (argv.alchemy) {
+          console.error(`Alchemy deploy is not supported for ${argv.network}`)
+          process.exit(-1)
+        }
+        break
+    }
+    return { doDeploy: true }
+  }
+  return { doDeploy: false }
 }
 
 export async function prepare(network: string): Promise<void> {

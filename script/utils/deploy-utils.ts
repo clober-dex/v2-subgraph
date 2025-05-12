@@ -4,13 +4,23 @@ import * as util from 'util'
 import * as dotenv from 'dotenv'
 
 import { NETWORK, prepare } from './prepare-network'
+import { Argv } from './argv'
 
 const exec = util.promisify(execCallback)
 
-const buildGoldskyDeployCommand = (
+const buildGoldskyDeployCommand = async (
   network: string,
   gitHashString: string,
-): string => {
+): Promise<string> => {
+  try {
+    await exec('goldsky --version')
+  } catch (e) {
+    console.log(
+      'Error: Goldsky CLI is not installed. Please install it and try again.',
+    )
+    process.exit(1)
+  }
+
   const subgraphName = `v2-subgraph-${network}/${gitHashString}`
   return `goldsky subgraph deploy ${subgraphName} --path .`
 }
@@ -61,7 +71,7 @@ export const build = async (network: string): Promise<void> => {
   console.log(stderr)
 }
 
-export const deploy = async (network: string): Promise<void> => {
+export const deploy = async (argv: Argv): Promise<void> => {
   try {
     await exec('git diff-index --quiet HEAD -- && git diff --quiet || (exit 1)')
   } catch (e) {
@@ -71,16 +81,14 @@ export const deploy = async (network: string): Promise<void> => {
     process.exit(1)
   }
 
-  try {
-    await exec('goldsky --version')
-  } catch (e) {
-    console.log(
-      'Error: Goldsky CLI is not installed. Please install it and try again.',
-    )
-    process.exit(1)
+  const { stdout: gitHash } = await exec('git rev-parse --short HEAD')
+  const gitHashString = gitHash.toString().trim()
+  let command = ''
+  if (argv?.goldsky) {
+    command = await buildGoldskyDeployCommand(argv.network, gitHashString)
+  } else if (argv?.alchemy) {
+    command = buildAlchemyDeployCommand(argv.network, gitHashString)
   }
-
-  const command = await buildDeployCommand(network)
 
   try {
     console.log(command)

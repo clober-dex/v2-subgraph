@@ -14,17 +14,21 @@ async function main(): Promise<void> {
       type: 'string',
       demandOption: true,
     })
-    .option('deploy', {
-      alias: 'd',
-      description: 'Deploy the subgraph',
+    .option('goldsky', {
+      description: 'Deploy the subgraph to Goldsky',
+      type: 'boolean',
+      default: false,
+    })
+    .option('alchemy', {
+      description: 'Deploy the subgraph to Alchemy',
       type: 'boolean',
       default: false,
     })
     .help().argv
-  validateNetwork(argv.network)
+  const { doDeploy } = validateNetwork(argv)
   await build(argv.network)
-  if (argv.d || argv.deploy) {
-    await deploy(argv.network)
+  if (doDeploy) {
+    await deploy(argv)
   }
 }
 
