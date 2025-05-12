@@ -3,7 +3,7 @@ import * as util from 'util'
 
 import * as dotenv from 'dotenv'
 
-import { NETWORK, prepare } from './prepare-network'
+import { prepare } from './prepare-network'
 import { Argv } from './argv'
 
 const exec = util.promisify(execCallback)
@@ -35,19 +35,6 @@ const buildAlchemyDeployCommand = (
   }
   const deployKey = process.env.ALCHEMY_DEPLOY_KEY
   return `graph deploy v2-subgraph-${network} --version-label ${gitHashString} --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key ${deployKey} --ipfs https://ipfs.satsuma.xyz`
-}
-
-const buildDeployCommand = async (network: string): Promise<string> => {
-  const { stdout: gitHash } = await exec('git rev-parse --short HEAD')
-  const gitHashString = gitHash.toString().trim()
-  switch (network) {
-    case NETWORK.MONAD_TESTNET:
-      return buildAlchemyDeployCommand(network, gitHashString)
-    case NETWORK.RISE_SEPOLIA:
-      return buildGoldskyDeployCommand(network, gitHashString)
-    default:
-      throw new Error(`Unsupported network: ${network}`)
-  }
 }
 
 const codegen = async (): Promise<void> => {
