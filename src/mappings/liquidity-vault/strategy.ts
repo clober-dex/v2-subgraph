@@ -36,10 +36,13 @@ export function handleUpdatePosition(event: UpdatePosition): void {
 
     const tokenAUSDPrice = getTokenUSDPrice(tokenA)
     const tokenBUSDPrice = getTokenUSDPrice(tokenB)
-    const lpAmountDecimal = convertTokenToDecimal(pool.totalSupply, BI_18) // assuming LP token has 18 decimals
+    const initialLpAmountDecimal = convertTokenToDecimal(
+      pool.initialTotalSupply,
+      BI_18, // assuming LP token has 18 decimals
+    )
     if (
       pool.initialLPPriceUSD.equals(ZERO_BD) &&
-      lpAmountDecimal.gt(ZERO_BD) &&
+      initialLpAmountDecimal.gt(ZERO_BD) &&
       pool.initialTokenAAmount.gt(ZERO_BI) &&
       pool.initialTokenBAmount.gt(ZERO_BI)
     ) {
@@ -53,9 +56,13 @@ export function handleUpdatePosition(event: UpdatePosition): void {
       ).times(tokenBUSDPrice)
       pool.initialLPPriceUSD = amountAInUSD
         .plus(amountBInUSD)
-        .div(lpAmountDecimal)
+        .div(initialLpAmountDecimal)
     }
 
+    const lpAmountDecimal = convertTokenToDecimal(
+      pool.totalSupply,
+      BI_18, // assuming LP token has 18 decimals
+    )
     if (lpAmountDecimal.gt(ZERO_BD)) {
       const amountAInUSD = convertTokenToDecimal(
         pool.liquidityA,
