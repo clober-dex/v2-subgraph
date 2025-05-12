@@ -351,6 +351,7 @@ type CloberDayData @entity {
   # derived fields
   tokenVolumes: [TokenDayVolume!]! @derivedFrom(field: "cloberDayData")
   protocolFees: [TokenDayProtocolFee!]! @derivedFrom(field: "cloberDayData")
+  tvls: [TokenDayTVL!]! @derivedFrom(field: "cloberDayData")
   transactionTypes: [TransactionTypeDayData!]! @derivedFrom(field: "cloberDayData")
 }
 
@@ -384,6 +385,22 @@ type TokenDayProtocolFee @entity {
   protocolFees: BigDecimal!
   # protocol fees in USD
   protocolFeesUSD: BigDecimal!
+}
+
+type TokenDayTVL @entity {
+  # ${timestamp rounded to current day by dividing by 86400}-${type}
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: BigInt!
+  # pointer to clober day data
+  cloberDayData: CloberDayData!
+  # token
+  token: Bytes!
+
+  # tvl in token units
+  totalValueLocked: BigDecimal!
+  # tvl in USD
+  totalValueLockedUSD: BigDecimal!
 }
 
 type TransactionTypeDayData @entity {
