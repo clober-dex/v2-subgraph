@@ -488,6 +488,8 @@ type Take @entity {
   inputAmount: BigInt!
   # amount Out
   outputAmount: BigInt!
+  # amount In USD
+  amountUSD: BigDecimal!
   # index within the txn
   logIndex: BigInt
 }
@@ -510,6 +512,8 @@ type Swap @entity {
   inputAmount: BigInt!
   # amount Out
   outputAmount: BigInt!
+  # amount In USD
+  amountUSD: BigDecimal!
   # index within the txn
   logIndex: BigInt
 }

@@ -411,6 +411,12 @@ export function handleTake(event: Take): void {
   take.origin = event.transaction.from
   take.inputAmount = takenBaseAmount
   take.outputAmount = takenQuoteAmount
+  take.amountUSD = calculateValueUSD(
+    takenQuoteAmountDecimal,
+    quoteInUSD,
+    takenBaseAmountDecimal,
+    baseInUSD,
+  )
   take.logIndex = event.logIndex
   take.save()
 
