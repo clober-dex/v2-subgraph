@@ -54,6 +54,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0x0e1c9362cdea1d556e5ff89140107126baaf6b09'),
+    symbol: 'aprMON',
+    name: 'aprMON',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0x0efed4d9fb7863ccc7bb392847c08dcd00fe9be2'),
     symbol: 'muBOND',
     name: 'muBOND',
