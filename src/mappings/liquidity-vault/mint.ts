@@ -6,13 +6,13 @@ import {
 } from '../../common/entity-getters'
 import { BI_18, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
-import { getTokenUSDPrice } from '../../common/pricing'
 import {
   updateDayData,
   updatePoolDayData,
   updatePoolHourData,
   updateTokenDayData,
 } from '../interval-updates'
+import { getTokenUSDPriceFlat } from '../../common/pricing'
 
 export function handleMint(event: Mint): void {
   updateDayData(event)
@@ -30,12 +30,12 @@ export function handleMint(event: Mint): void {
       event.params.amountA,
       tokenA.decimals,
     )
-    const priceAUSD = getTokenUSDPrice(tokenA)
+    const priceAUSD = getTokenUSDPriceFlat(tokenA)
     const amountBInDecimals = convertTokenToDecimal(
       event.params.amountB,
       tokenB.decimals,
     )
-    const priceBUSD = getTokenUSDPrice(tokenB)
+    const priceBUSD = getTokenUSDPriceFlat(tokenB)
 
     if (pool.initialTokenAAmount.isZero()) {
       pool.initialTokenAAmount = event.params.amountA

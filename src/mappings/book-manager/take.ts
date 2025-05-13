@@ -19,7 +19,7 @@ import {
   getTokenOrLog,
 } from '../../common/entity-getters'
 import { convertTokenToDecimal } from '../../common/utils'
-import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
+import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import {
   formatInvertedPrice,
   formatPrice,
@@ -309,8 +309,8 @@ export function handleTake(event: Take): void {
   // book data
   book.price = formatPrice(priceRaw, base.decimals, quote.decimals) // this should be first, checked
 
-  const quoteInUSD = getTokenUSDPrice(quote)
-  const baseInUSD = getTokenUSDPrice(base)
+  const quoteInUSD = getTokenUSDPriceFlat(quote)
+  const baseInUSD = getTokenUSDPriceFlat(base)
   const amountTotalUSD = calculateValueUSD(
     takenQuoteAmountDecimal,
     quoteInUSD,

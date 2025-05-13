@@ -10,6 +10,7 @@ import {
   STABLE_COINS,
 } from './chain'
 
+// @dev: too slow to use in the main loop
 export function getTokenUSDPrice(
   token: Token,
   visited: string[] = [],
@@ -85,6 +86,64 @@ export function getTokenUSDPrice(
   // if (bestPrice.equals(ZERO_BD)) {
   //   log.warning('No price found for token {}', [tokenID])
   // }
+
+  return bestPrice
+}
+
+export function getTokenUSDPriceFlat(token: Token): BigDecimal {
+  const tokenID = token.id.toHexString()
+
+  if (STABLE_COINS.includes(tokenID)) {
+    return ONE_BD
+  }
+
+  if (tokenID == REFERENCE_TOKEN || tokenID == ADDRESS_ZERO) {
+    const nativeBidBook = Book.load(NATIVE_TOKEN_BOOK_ID.toString())
+    return nativeBidBook !== null ? nativeBidBook.price : ZERO_BD
+  }
+
+  let bestPrice = ZERO_BD
+  let largestLiquidity = ZERO_BD
+  const books = token.books.load()
+
+  if (books !== null) {
+    for (let i = 0; i < books.length; i++) {
+      const book = books[i]
+      if (book === null) {
+        continue
+      }
+
+      const quoteToken = Token.load(book.quote)
+      if (quoteToken === null) {
+        continue
+      }
+
+      const quoteTokenID = quoteToken.id.toHexString()
+
+      if (
+        STABLE_COINS.includes(quoteTokenID) ||
+        quoteTokenID == REFERENCE_TOKEN ||
+        quoteTokenID == ADDRESS_ZERO
+      ) {
+        const quoteUSD = STABLE_COINS.includes(quoteTokenID)
+          ? ONE_BD
+          : ((): BigDecimal => {
+              const native = Book.load(NATIVE_TOKEN_BOOK_ID.toString())
+              return native !== null ? native.price : ZERO_BD
+            })()
+
+        const usdLocked = book.totalValueLocked.times(quoteUSD)
+
+        if (
+          usdLocked.gt(MINIMUM_USD_LOCKED) &&
+          usdLocked.gt(largestLiquidity)
+        ) {
+          largestLiquidity = usdLocked
+          bestPrice = book.price.times(quoteUSD)
+        }
+      }
+    }
+  }
 
   return bestPrice
 }

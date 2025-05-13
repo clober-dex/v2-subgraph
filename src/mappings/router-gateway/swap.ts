@@ -6,7 +6,7 @@ import {
   Take as TakeEntity,
 } from '../../../generated/schema'
 import { ZERO_BD, ZERO_BI } from '../../common/constants'
-import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
+import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import { convertTokenToDecimal } from '../../common/utils'
 import { getTokenOrLog } from '../../common/entity-getters'
 import { updateDayData, updateUserDayVolume } from '../interval-updates'
@@ -70,8 +70,8 @@ export function handleSwap(event: Swap): void {
       swap.outputAmount,
       outputToken.decimals,
     )
-    const priceIn = getTokenUSDPrice(inputToken)
-    const priceOut = getTokenUSDPrice(outputToken)
+    const priceIn = getTokenUSDPriceFlat(inputToken)
+    const priceOut = getTokenUSDPriceFlat(outputToken)
 
     swap.amountUSD = calculateValueUSD(
       inputAmountDecimal,

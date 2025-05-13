@@ -2,13 +2,13 @@ import { Burn } from '../../../generated/Rebalancer/Rebalancer'
 import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
 import { BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
-import { getTokenUSDPrice } from '../../common/pricing'
 import {
   updateDayData,
   updatePoolDayData,
   updatePoolHourData,
   updateTokenDayData,
 } from '../interval-updates'
+import { getTokenUSDPriceFlat } from '../../common/pricing'
 
 export function handleBurn(event: Burn): void {
   updateDayData(event)
@@ -26,12 +26,12 @@ export function handleBurn(event: Burn): void {
       event.params.amountA,
       tokenA.decimals,
     )
-    const priceAUSD = getTokenUSDPrice(tokenA)
+    const priceAUSD = getTokenUSDPriceFlat(tokenA)
     const amountBInDecimals = convertTokenToDecimal(
       event.params.amountB,
       tokenB.decimals,
     )
-    const priceBUSD = getTokenUSDPrice(tokenB)
+    const priceBUSD = getTokenUSDPriceFlat(tokenB)
 
     // update pool state
     pool.totalSupply = pool.totalSupply.minus(event.params.lpAmount)

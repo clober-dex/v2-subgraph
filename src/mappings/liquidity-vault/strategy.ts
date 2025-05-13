@@ -8,8 +8,8 @@ import {
 } from '../../common/tick'
 import { BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
-import { getTokenUSDPrice } from '../../common/pricing'
 import { UpdatePosition } from '../../../generated/SimpleOracleStrategy/SimpleOracleStrategy'
+import { getTokenUSDPriceFlat } from '../../common/pricing'
 
 export function handleUpdatePosition(event: UpdatePosition): void {
   const pool = getPoolOrLog(event.params.key, 'UPDATE_POSITION')
@@ -34,8 +34,8 @@ export function handleUpdatePosition(event: UpdatePosition): void {
       tokenB.decimals,
     )
 
-    const tokenAUSDPrice = getTokenUSDPrice(tokenA)
-    const tokenBUSDPrice = getTokenUSDPrice(tokenB)
+    const tokenAUSDPrice = getTokenUSDPriceFlat(tokenA)
+    const tokenBUSDPrice = getTokenUSDPriceFlat(tokenB)
     const initialLpAmountDecimal = convertTokenToDecimal(
       pool.initialTotalSupply,
       BI_18, // assuming LP token has 18 decimals

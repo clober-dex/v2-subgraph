@@ -22,7 +22,7 @@ import { tickToPrice } from '../../common/tick'
 import { Book, OpenOrder, Pool, Token } from '../../../generated/schema'
 import { TWO_BD, ZERO_BD } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
-import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
+import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import {
   updateDayData,
   updatePoolDayData,
@@ -139,8 +139,8 @@ export function handleClaim(event: Claim): void {
     if (book.pool !== null) {
       const pool = getPoolOrLog(book.pool!, 'CLAIM')
       if (pool) {
-        const baseInUSD = getTokenUSDPrice(base)
-        const quoteInUSD = getTokenUSDPrice(quote)
+        const baseInUSD = getTokenUSDPriceFlat(base)
+        const quoteInUSD = getTokenUSDPriceFlat(quote)
         updatePool(
           pool,
           book,

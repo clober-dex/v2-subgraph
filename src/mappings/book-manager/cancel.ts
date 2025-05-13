@@ -14,7 +14,7 @@ import {
 import { tickToPrice } from '../../common/tick'
 import { unitToBase, unitToQuote } from '../../common/amount'
 import { convertTokenToDecimal } from '../../common/utils'
-import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
+import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import {
   updateBookDayData,
   updateDayData,
@@ -56,10 +56,10 @@ export function handleCancel(event: Cancel): void {
       quoteAmount,
       quote.decimals,
     )
-    const quoteInUSD = getTokenUSDPrice(quote)
+    const quoteInUSD = getTokenUSDPriceFlat(quote)
 
     const baseAmount = unitToBase(book.unitSize, event.params.unit, priceRaw)
-    const baseInUSD = getTokenUSDPrice(base)
+    const baseInUSD = getTokenUSDPriceFlat(base)
 
     // update quote data
     quote.totalValueLocked = quote.totalValueLocked.minus(quoteAmountDecimal)

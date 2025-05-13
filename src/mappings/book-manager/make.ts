@@ -10,7 +10,7 @@ import {
 } from '../../common/tick'
 import { ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
-import { calculateValueUSD, getTokenUSDPrice } from '../../common/pricing'
+import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import { encodeOrderID } from '../../common/order'
 import {
   updateBookDayData,
@@ -43,11 +43,11 @@ export function handleMake(event: Make): void {
       quoteAmount,
       quote.decimals,
     )
-    const quoteInUSD = getTokenUSDPrice(quote)
+    const quoteInUSD = getTokenUSDPriceFlat(quote)
 
     const baseAmount = unitToBase(book.unitSize, event.params.unit, priceRaw)
     const baseAmountDecimal = convertTokenToDecimal(baseAmount, base.decimals)
-    const baseInUSD = getTokenUSDPrice(base)
+    const baseInUSD = getTokenUSDPriceFlat(base)
 
     const amountUSD = calculateValueUSD(
       quoteAmountDecimal,
