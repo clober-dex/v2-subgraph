@@ -4,11 +4,11 @@ import { Swap } from '../../../generated/RouterGateway/RouterGateway'
 import {
   Swap as SwapEntity,
   Take as TakeEntity,
+  Token,
 } from '../../../generated/schema'
 import { ZERO_BD, ZERO_BI } from '../../common/constants'
 import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import { convertTokenToDecimal } from '../../common/utils'
-import { getTokenOrLog } from '../../common/entity-getters'
 import { updateDayData, updateUserDayVolume } from '../interval-updates'
 
 const TAKE_EVENT_TOPIC =
@@ -40,8 +40,8 @@ export function handleSwap(event: Swap): void {
     }
   }
 
-  const inputToken = getTokenOrLog(event.params.inToken, 'SWAP')
-  const outputToken = getTokenOrLog(event.params.outToken, 'SWAP')
+  const inputToken = Token.load(event.params.inToken)
+  const outputToken = Token.load(event.params.outToken)
 
   const swap = new SwapEntity(
     event.transaction.hash
@@ -91,6 +91,10 @@ export function handleSwap(event: Swap): void {
       )
     }
   } else {
+    log.warning(
+      'Swap USD skipped: inputToken or outputToken missing or invalid amounts. tx: {}',
+      [event.transaction.hash.toHexString()],
+    )
     swap.amountUSD = ZERO_BD
   }
   swap.logIndex = event.logIndex

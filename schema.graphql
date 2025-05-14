@@ -517,9 +517,9 @@ type Swap @entity {
   # timestamp of transaction
   timestamp: BigInt!
   # allow indexing by tokens
-  inputToken: Token!
+  inputToken: Bytes!
   # allow indexing by tokens
-  outputToken: Token!
+  outputToken: Bytes!
   # txn origin
   origin: Bytes! # the EOA that initiated the txn
   # amount In
