@@ -169,11 +169,24 @@ export function updateTokenDayData(
     tokenDayData.volumeUSD = ZERO_BD
     tokenDayData.protocolFees = ZERO_BD
     tokenDayData.protocolFeesUSD = ZERO_BD
+    tokenDayData.open = tokenPrice
+    tokenDayData.high = tokenPrice
+    tokenDayData.low = tokenPrice
+    tokenDayData.close = tokenPrice
+  }
+
+  if (tokenPrice.gt(tokenDayData.high)) {
+    tokenDayData.high = tokenPrice
+  }
+
+  if (tokenPrice.lt(tokenDayData.low)) {
+    tokenDayData.low = tokenPrice
   }
 
   tokenDayData.totalValueLocked = token.totalValueLocked
   tokenDayData.totalValueLockedUSD = token.totalValueLockedUSD
   tokenDayData.priceUSD = tokenPrice
+  tokenDayData.close = tokenPrice
   tokenDayData.save()
 
   return tokenDayData as TokenDayData

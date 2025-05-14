@@ -47,6 +47,7 @@ export function handleBookOpen(event: Open): void {
     quote.bookCount = ZERO_BI
     quote.totalValueLocked = ZERO_BD
     quote.totalValueLockedUSD = ZERO_BD
+    quote.priceUSD = ZERO_BD
   }
   quote.bookCount = quote.bookCount.plus(ONE_BI)
 
@@ -71,6 +72,7 @@ export function handleBookOpen(event: Open): void {
     base.bookCount = ZERO_BI
     base.totalValueLocked = ZERO_BD
     base.totalValueLockedUSD = ZERO_BD
+    base.priceUSD = ZERO_BD
   }
   base.bookCount = base.bookCount.plus(ONE_BI)
 

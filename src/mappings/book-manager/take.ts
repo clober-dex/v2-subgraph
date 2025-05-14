@@ -350,6 +350,7 @@ export function handleTake(event: Take): void {
   depth.baseAmount = depth.baseAmount.minus(takenBaseAmount)
 
   // quote token data
+  quote.priceUSD = quoteInUSD
   quote.volume = quote.volume.plus(takenQuoteAmountDecimal)
   quote.volumeUSD = quote.volumeUSD.plus(amountTotalUSD)
   quote.protocolFees = quote.protocolFees.plus(protocolFeesQuote)
@@ -358,6 +359,7 @@ export function handleTake(event: Take): void {
   quote.totalValueLockedUSD = quote.totalValueLocked.times(quoteInUSD)
 
   // base token data
+  base.priceUSD = baseInUSD
   base.volume = base.volume.plus(takenBaseAmountDecimal)
   base.volumeUSD = base.volumeUSD.plus(amountTotalUSD)
   base.protocolFees = base.protocolFees.plus(protocolFeesBase)

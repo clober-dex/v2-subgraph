@@ -10,6 +10,8 @@ type Token @entity {
   decimals: BigInt!
 
   # mutable values
+  # current price
+  priceUSD: BigDecimal!
   # volume in token units
   volume: BigDecimal!
   # volume in derived USD
@@ -341,6 +343,14 @@ type TokenDayData @entity {
   protocolFees: BigDecimal!
   # protocolFees in USD
   protocolFeesUSD: BigDecimal!
+  # opening price USD
+  open: BigDecimal!
+  # high price USD
+  high: BigDecimal!
+  # low price USD
+  low: BigDecimal!
+  # close price USD
+  close: BigDecimal!
 }
 
 # Data accumulated and condensed into day stats for all of Clober
