@@ -134,9 +134,21 @@ export function updateBookDayData(
     bookDayData.protocolFeesQuote = ZERO_BD
     bookDayData.protocolFeesBase = ZERO_BD
     bookDayData.protocolFeesUSD = ZERO_BD
+    bookDayData.open = book.price
+    bookDayData.high = book.price
+    bookDayData.low = book.price
+    bookDayData.close = book.price
+  }
+
+  if (book.price.gt(bookDayData.high)) {
+    bookDayData.high = book.price
+  }
+  if (book.price.lt(bookDayData.low)) {
+    bookDayData.low = book.price
   }
 
   bookDayData.price = book.price
+  bookDayData.close = book.price
   bookDayData.inversePrice = book.inversePrice
   bookDayData.totalValueLocked = book.totalValueLocked
   bookDayData.totalValueLockedUSD = book.totalValueLockedUSD

@@ -317,6 +317,14 @@ type BookDayData @entity {
   totalValueLocked: BigDecimal!
   # tvl derived in USD at end of period
   totalValueLockedUSD: BigDecimal!
+  # opening price (=quote per base)
+  open: BigDecimal!
+  # high price (=quote per base)
+  high: BigDecimal!
+  # low price (=quote per base)
+  low: BigDecimal!
+  # close price (=quote per base)
+  close: BigDecimal!
 }
 
 type TokenDayData @entity {
