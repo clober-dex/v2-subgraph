@@ -112,6 +112,8 @@ function updateChart(
     if (chartLog === null) {
       chartLog = new ChartLog(chartLogID)
       chartLog.marketCode = marketCode
+      chartLog.base = base.id
+      chartLog.quote = quote.id
       chartLog.intervalType = intervalType
       chartLog.timestamp = BigInt.fromI64(timestampForAcc)
       chartLog.open = book.price
@@ -148,6 +150,8 @@ function updateChart(
     if (invertedChartLog === null) {
       invertedChartLog = new ChartLog(invertedChartLogID)
       invertedChartLog.marketCode = invertedMarketCode
+      invertedChartLog.base = quote.id
+      invertedChartLog.quote = base.id
       invertedChartLog.intervalType = intervalType
       invertedChartLog.timestamp = BigInt.fromI64(timestampForAcc)
       invertedChartLog.open = book.inversePrice
