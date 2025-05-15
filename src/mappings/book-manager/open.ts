@@ -101,6 +101,8 @@ export function handleBookOpen(event: Open): void {
   book.protocolFeesUSD = ZERO_BD
   book.totalValueLocked = ZERO_BD
   book.totalValueLockedUSD = ZERO_BD
+  book.lastTakenBlockNumber = ZERO_BI
+  book.lastTakenTimestamp = ZERO_BI
   book.save()
   quote.save()
   base.save()

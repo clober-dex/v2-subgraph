@@ -343,6 +343,8 @@ export function handleTake(event: Take): void {
   book.protocolFeesUSD = book.protocolFeesUSD.plus(protocolFeesTotalUSD)
   book.totalValueLocked = book.totalValueLocked.minus(takenQuoteAmountDecimal)
   book.totalValueLockedUSD = book.totalValueLocked.times(quoteInUSD)
+  book.lastTakenTimestamp = event.block.timestamp
+  book.lastTakenBlockNumber = event.block.number
 
   // depth data
   depth.unitAmount = depth.unitAmount.minus(takenUnitAmount)

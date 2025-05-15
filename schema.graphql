@@ -85,6 +85,10 @@ type Book @entity {
   totalValueLocked: BigDecimal!
   # tvl USD
   totalValueLockedUSD: BigDecimal!
+  # last taken timestamp
+  lastTakenTimestamp: BigInt!
+  # last taken block number
+  lastTakenBlockNumber: BigInt!
   # derived fields
   depths: [Depth!]! @derivedFrom(field: "book")
   openOrders: [OpenOrder!]! @derivedFrom(field: "book")
