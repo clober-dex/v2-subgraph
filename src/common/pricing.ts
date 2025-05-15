@@ -136,7 +136,8 @@ export function getTokenUSDPriceFlat(token: Token): BigDecimal {
 
         if (
           usdLocked.gt(MINIMUM_USD_LOCKED) &&
-          usdLocked.gt(largestLiquidity)
+          usdLocked.gt(largestLiquidity) &&
+          book.price.times(quoteUSD).gt(ZERO_BD)
         ) {
           largestLiquidity = usdLocked
           bestPrice = book.price.times(quoteUSD)
