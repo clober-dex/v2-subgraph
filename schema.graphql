@@ -198,9 +198,9 @@ type Transaction @entity {
 }
 
 type ChartLog @entity {
-  # `${baseToken}/${quoteToken}-${intervalType}-${timestamp}`
+  # `${baseToken}-${quoteToken}-${intervalType}-${timestamp}`
   id: ID!
-  # `${baseToken}/${quoteToken}`
+  # `${baseToken}-${quoteToken}`
   base: Token!
   quote: Token!
   marketCode: String!
