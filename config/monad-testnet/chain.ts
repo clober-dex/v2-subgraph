@@ -24,7 +24,7 @@ export const STABLE_COINS: string[] = [
   '0x88b8e2161dedc77ef4ab7585569d2415a1c1055d', // USDT
 ]
 
-export const MINIMUM_USD_LOCKED = BigDecimal.fromString('100')
+export const MINIMUM_USD_LOCKED = BigDecimal.fromString('0')
 
 export const REFERENCE_TOKEN = '0x760afe86e5de5fa0ee542fc7b7b713e1c5425701'
 

@@ -22,7 +22,7 @@ export const STABLE_COINS: string[] = [
   '0xa985e387ddf21b87c1fe8a0025d827674040221e', // Clober USDC
 ]
 
-export const MINIMUM_USD_LOCKED = BigDecimal.fromString('100')
+export const MINIMUM_USD_LOCKED = BigDecimal.fromString('0')
 
 export const REFERENCE_TOKEN = '0x4200000000000000000000000000000000000006'
 
