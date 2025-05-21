@@ -14,11 +14,15 @@ const RATE_MASK = BigInt.fromI32(8388607)
 const MAX_FEE_RATE = BigInt.fromI32(500000)
 
 // @ts-ignore
-function getFeeRate(feePolicy: i32): BigDecimal {
+export function getFeeRate(feePolicy: i32): BigDecimal {
   const feeBigInt = BigInt.fromI32(feePolicy)
     .bitAnd(RATE_MASK)
     .minus(MAX_FEE_RATE)
   return BigDecimal.fromString(feeBigInt.toString()).div(FEE_PRECISION)
+}
+
+export function getUsesFeeInQuote(feePolicy: i32): boolean {
+  return BigInt.fromI32(feePolicy).rightShift(23).gt(ZERO_BI)
 }
 
 export function handleBookOpen(event: Open): void {
@@ -83,10 +87,10 @@ export function handleBookOpen(event: Open): void {
   book.unitSize = event.params.unitSize
   book.makerPolicy = BigInt.fromI32(event.params.makerPolicy)
   book.makerFee = getFeeRate(event.params.makerPolicy)
-  book.isMakerFeeInQuote = book.makerPolicy.rightShift(23).gt(ZERO_BI)
+  book.isMakerFeeInQuote = getUsesFeeInQuote(event.params.makerPolicy)
   book.takerPolicy = BigInt.fromI32(event.params.takerPolicy)
   book.takerFee = getFeeRate(event.params.takerPolicy)
-  book.isTakerFeeInQuote = book.takerPolicy.rightShift(23).gt(ZERO_BI)
+  book.isTakerFeeInQuote = getUsesFeeInQuote(event.params.takerPolicy)
   book.hooks = event.params.hooks
 
   book.priceRaw = ZERO_BI
