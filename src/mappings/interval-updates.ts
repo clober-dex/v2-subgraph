@@ -222,6 +222,10 @@ export function updatePoolDayData(
     poolDayData.volumeTokenA = ZERO_BD
     poolDayData.volumeTokenB = ZERO_BD
     poolDayData.volumeUSD = ZERO_BD
+    poolDayData.protocolFeesTokenA = ZERO_BD
+    poolDayData.protocolFeesTokenB = ZERO_BD
+    poolDayData.protocolFeesAUSD = ZERO_BD
+    poolDayData.protocolFeesBUSD = ZERO_BD
     poolDayData.spreadProfitUSD = ZERO_BD
     poolDayData.totalValueLockedUSD = ZERO_BD
   }
@@ -263,6 +267,10 @@ export function updatePoolHourData(
     poolHourData.volumeTokenA = ZERO_BD
     poolHourData.volumeTokenB = ZERO_BD
     poolHourData.volumeUSD = ZERO_BD
+    poolHourData.protocolFeesTokenA = ZERO_BD
+    poolHourData.protocolFeesTokenB = ZERO_BD
+    poolHourData.protocolFeesAUSD = ZERO_BD
+    poolHourData.protocolFeesBUSD = ZERO_BD
     poolHourData.spreadProfitUSD = ZERO_BD
     poolHourData.totalValueLockedUSD = ZERO_BD
   }

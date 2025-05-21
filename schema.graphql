@@ -276,6 +276,14 @@ type Pool @entity {
   volumeTokenB: BigDecimal!
   # all time USD swapped
   volumeUSD: BigDecimal!
+  # protocolFees in tokenA units
+  protocolFeesTokenA: BigDecimal!
+  # protocolFees in tokenB units
+  protocolFeesTokenB: BigDecimal!
+  # protocolFees in tokenA USD
+  protocolFeesAUSD: BigDecimal!
+  # protocolFees in tokenB USD
+  protocolFeesBUSD: BigDecimal!
   # all time spread profit in USD
   spreadProfitUSD: BigDecimal!
   # tvl USD
@@ -379,7 +387,7 @@ type CloberDayData @entity {
   newWalletCount: BigInt!
 
   # derived fields
-  tokenDayDatas: [TokenDayData!]! @derivedFrom(field: "cloberDayData")
+  tokenDayData: [TokenDayData!]! @derivedFrom(field: "cloberDayData")
   transactionTypes: [TransactionTypeDayData!]! @derivedFrom(field: "cloberDayData")
 }
 
@@ -461,6 +469,14 @@ type PoolDayData @entity {
   volumeTokenB: BigDecimal!
   # USD swapped
   volumeUSD: BigDecimal!
+  # protocolFees in tokenA units
+  protocolFeesTokenA: BigDecimal!
+  # protocolFees in tokenB units
+  protocolFeesTokenB: BigDecimal!
+  # protocolFees in tokenA USD
+  protocolFeesAUSD: BigDecimal!
+  # protocolFees in tokenB USD
+  protocolFeesBUSD: BigDecimal!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
   # tvl derived in USD at end of period
@@ -500,6 +516,14 @@ type PoolHourData @entity {
   volumeTokenB: BigDecimal!
   # USD swapped
   volumeUSD: BigDecimal!
+  # protocolFees in tokenA units
+  protocolFeesTokenA: BigDecimal!
+  # protocolFees in tokenB units
+  protocolFeesTokenB: BigDecimal!
+  # protocolFees in tokenA USD
+  protocolFeesAUSD: BigDecimal!
+  # protocolFees in tokenB USD
+  protocolFeesBUSD: BigDecimal!
   # spread profit in USD
   spreadProfitUSD: BigDecimal!
   # tvl derived in USD at end of period
