@@ -67,6 +67,9 @@ export function handleBurn(event: Burn): void {
       ).times(priceBUSD)
       pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
       pool.totalValueLockedUSD = lpAmountDecimal.times(pool.lpPriceUSD)
+    } else {
+      pool.lpPriceUSD = ZERO_BD
+      pool.totalValueLockedUSD = ZERO_BD
     }
 
     // update token state
