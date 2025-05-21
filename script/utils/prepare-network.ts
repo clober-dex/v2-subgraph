@@ -9,6 +9,7 @@ export enum NETWORK {
   MONAD_TESTNET = 'monad-testnet',
   RISE_SEPOLIA = 'rise-sepolia',
   ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
+  BERACHAIN_MAINNET = 'berachain-mainnet',
 }
 
 const CHAIN_CONSTANTS_FILE_NAME = 'chain.ts'
@@ -48,6 +49,8 @@ export function validateNetwork(argv: Argv): {
       case NETWORK.MONAD_TESTNET:
         break
       case NETWORK.ARBITRUM_SEPOLIA:
+        break
+      case NETWORK.BERACHAIN_MAINNET:
         break
       case NETWORK.RISE_SEPOLIA:
         if (argv.alchemy) {
