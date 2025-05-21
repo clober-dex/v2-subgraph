@@ -1,4 +1,3 @@
-import { Mint } from '../../../generated/Rebalancer/Rebalancer'
 import {
   getOrCreateTransaction,
   getPoolOrLog,
@@ -13,6 +12,7 @@ import {
   updateTokenDayData,
 } from '../interval-updates'
 import { getTokenUSDPriceFlat } from '../../common/pricing'
+import { Mint } from '../../../generated/LiquidityVault/LiquidityVault'
 
 export function handleMint(event: Mint): void {
   updateDayData(event)

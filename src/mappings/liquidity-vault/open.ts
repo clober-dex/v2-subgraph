@@ -1,4 +1,4 @@
-import { Open } from '../../../generated/Rebalancer/Rebalancer'
+import { Open } from '../../../generated/LiquidityVault/LiquidityVault'
 import {
   getBookOrLog,
   getOrCreateTransaction,

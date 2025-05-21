@@ -53,7 +53,7 @@ export const build = async (network: string): Promise<void> => {
   )
   await codegen()
 
-  const { stdout, stderr } = await exec(`graph build --network ${network}`)
+  const { stdout, stderr } = await exec(`graph build`)
   console.log(stdout)
   console.log(stderr)
 }

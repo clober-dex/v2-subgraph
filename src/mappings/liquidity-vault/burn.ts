@@ -1,4 +1,3 @@
-import { Burn } from '../../../generated/Rebalancer/Rebalancer'
 import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
 import { BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
@@ -9,6 +8,7 @@ import {
   updateTokenDayData,
 } from '../interval-updates'
 import { getTokenUSDPriceFlat } from '../../common/pricing'
+import { Burn } from '../../../generated/LiquidityVault/LiquidityVault'
 
 export function handleBurn(event: Burn): void {
   updateDayData(event)

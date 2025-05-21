@@ -58,12 +58,12 @@ dataSources:
           handler: handleTransfer
       file: ./src/mappings/core.ts
   - kind: ethereum
-    name: Rebalancer
+    name: LiquidityVault
     network: {{ network }}
     source:
-      abi: Rebalancer
-      address: "{{ Rebalancer.address }}"
-      startBlock: {{ Rebalancer.startBlock }}
+      abi: LiquidityVault
+      address: "{{ LiquidityVault.address }}"
+      startBlock: {{ LiquidityVault.startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -79,14 +79,14 @@ dataSources:
         - TransactionTypeDayData
         - User
       abis:
-        - name: Rebalancer
-          file: ./abis/Rebalancer.json
+        - name: LiquidityVault
+          file: ./abis/LiquidityVault.json
       eventHandlers:
         - event: Open(indexed bytes32,indexed uint192,indexed uint192,bytes32,address)
           handler: handlePoolOpen
         - event: Mint(indexed address,indexed bytes32,uint256,uint256,uint256)
           handler: handleMint
-        - event: Burn(indexed address,indexed bytes32,uint256,uint256,uint256)
+        - event: Burn(indexed address,indexed bytes32,uint256,uint256,uint256,uint256,uint256)
           handler: handleBurn
       file: ./src/mappings/core.ts
   - kind: ethereum

@@ -4,7 +4,7 @@
     "address": "0xAA9575d63dFC224b9583fC303dB3188C08d5C85A",
     "startBlock": 87385460
   },
-  "Rebalancer": {
+  "LiquidityVault": {
     "address": "0x30b4e9215322B5d0c290249126bCf96C2Ca8e948",
     "startBlock": 91355350
   },
