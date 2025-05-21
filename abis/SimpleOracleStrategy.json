@@ -1,891 +1,738 @@
 [
   {
-    "inputs": [
+    "type":"function",
+    "name":"bookManager",
+    "inputs":[
+
+    ],
+    "outputs":[
       {
-        "internalType": "contract IOracle",
-        "name": "referenceOracle_",
-        "type": "address"
+        "name":"",
+        "type":"address",
+        "internalType":"contract IBookManager"
+      }
+    ],
+    "stateMutability":"view"
+  },
+  {
+    "type":"function",
+    "name":"burnHook",
+    "inputs":[
+      {
+        "name":"sender",
+        "type":"address",
+        "internalType":"address"
       },
       {
-        "internalType": "contract IRebalancer",
-        "name": "rebalancer_",
-        "type": "address"
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
       },
       {
-        "internalType": "contract IBookManager",
-        "name": "bookManager_",
-        "type": "address"
+        "name":"burnAmount",
+        "type":"uint256",
+        "internalType":"uint256"
       },
       {
-        "internalType": "address",
-        "name": "initialOwner",
-        "type": "address"
+        "name":"lastTotalSupply",
+        "type":"uint256",
+        "internalType":"uint256"
       }
     ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    "outputs":[
+
+    ],
+    "stateMutability":"nonpayable"
   },
   {
-    "inputs": [],
-    "name": "ExceedsThreshold",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidAccess",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidConfig",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidOraclePrice",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidPrice",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidTick",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "InvalidValue",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "NotOperator",
-    "type": "error"
-  },
-  {
-    "inputs": [
+    "type":"function",
+    "name":"computeOrders",
+    "inputs":[
       {
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
       }
     ],
-    "name": "OwnableInvalidOwner",
-    "type": "error"
-  },
-  {
-    "inputs": [
+    "outputs":[
       {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "OwnableUnauthorizedAccount",
-    "type": "error"
-  },
-  {
-    "inputs": [],
-    "name": "Paused",
-    "type": "error"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint8",
-        "name": "bits",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint256",
-        "name": "value",
-        "type": "uint256"
-      }
-    ],
-    "name": "SafeCastOverflowedUintDowncast",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferStarted",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "Pause",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "status",
-        "type": "bool"
-      }
-    ],
-    "name": "SetOperator",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "Unpause",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      },
-      {
-        "components": [
+        "name":"ordersA",
+        "type":"tuple[]",
+        "internalType":"struct IStrategy.Order[]",
+        "components":[
           {
-            "internalType": "uint24",
-            "name": "referenceThreshold",
-            "type": "uint24"
+            "name":"tick",
+            "type":"int24",
+            "internalType":"Tick"
           },
           {
-            "internalType": "uint24",
-            "name": "rebalanceThreshold",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "rateA",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "rateB",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "minRateA",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "minRateB",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "priceThresholdA",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "priceThresholdB",
-            "type": "uint24"
+            "name":"rawAmount",
+            "type":"uint64",
+            "internalType":"uint64"
           }
-        ],
-        "indexed": false,
-        "internalType": "struct ISimpleOracleStrategy.Config",
-        "name": "config",
-        "type": "tuple"
-      }
-    ],
-    "name": "UpdateConfig",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
+        ]
       },
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "oraclePrice",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "Tick",
-        "name": "tickA",
-        "type": "int24"
-      },
-      {
-        "indexed": false,
-        "internalType": "Tick",
-        "name": "tickB",
-        "type": "int24"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "rate",
-        "type": "uint256"
-      }
-    ],
-    "name": "UpdatePosition",
-    "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "LAST_RAW_AMOUNT_MASK",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "RATE_PRECISION",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "acceptOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "bookManager",
-    "outputs": [
-      {
-        "internalType": "contract IBookManager",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "burnAmount",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "lastTotalSupply",
-        "type": "uint256"
-      }
-    ],
-    "name": "burnHook",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "computeOrders",
-    "outputs": [
-      {
-        "components": [
+        "name":"ordersB",
+        "type":"tuple[]",
+        "internalType":"struct IStrategy.Order[]",
+        "components":[
           {
-            "internalType": "Tick",
-            "name": "tick",
-            "type": "int24"
+            "name":"tick",
+            "type":"int24",
+            "internalType":"Tick"
           },
           {
-            "internalType": "uint64",
-            "name": "rawAmount",
-            "type": "uint64"
+            "name":"rawAmount",
+            "type":"uint64",
+            "internalType":"uint64"
           }
-        ],
-        "internalType": "struct IStrategy.Order[]",
-        "name": "ordersA",
-        "type": "tuple[]"
-      },
+        ]
+      }
+    ],
+    "stateMutability":"view"
+  },
+  {
+    "type":"function",
+    "name":"getConfig",
+    "inputs":[
       {
-        "components": [
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      }
+    ],
+    "outputs":[
+      {
+        "name":"",
+        "type":"tuple",
+        "internalType":"struct ISimpleOracleStrategy.Config",
+        "components":[
           {
-            "internalType": "Tick",
-            "name": "tick",
-            "type": "int24"
+            "name":"referenceThreshold",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint64",
-            "name": "rawAmount",
-            "type": "uint64"
+            "name":"rebalanceThreshold",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"rateA",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"rateB",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"minRateA",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"minRateB",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"priceThresholdA",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"priceThresholdB",
+            "type":"uint24",
+            "internalType":"uint24"
           }
-        ],
-        "internalType": "struct IStrategy.Order[]",
-        "name": "ordersB",
-        "type": "tuple[]"
+        ]
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "stateMutability":"view"
   },
   {
-    "inputs": [
+    "type":"function",
+    "name":"getLastAmount",
+    "inputs":[
       {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
       }
     ],
-    "name": "getConfig",
-    "outputs": [
+    "outputs":[
       {
-        "components": [
+        "name":"",
+        "type":"uint256",
+        "internalType":"uint256"
+      },
+      {
+        "name":"",
+        "type":"uint256",
+        "internalType":"uint256"
+      }
+    ],
+    "stateMutability":"view"
+  },
+  {
+    "type":"function",
+    "name":"getPosition",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      }
+    ],
+    "outputs":[
+      {
+        "name":"",
+        "type":"tuple",
+        "internalType":"struct ISimpleOracleStrategy.Position",
+        "components":[
           {
-            "internalType": "uint24",
-            "name": "referenceThreshold",
-            "type": "uint24"
+            "name":"paused",
+            "type":"bool",
+            "internalType":"bool"
           },
           {
-            "internalType": "uint24",
-            "name": "rebalanceThreshold",
-            "type": "uint24"
+            "name":"oraclePrice",
+            "type":"uint176",
+            "internalType":"uint176"
           },
           {
-            "internalType": "uint24",
-            "name": "rateA",
-            "type": "uint24"
+            "name":"rate",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint24",
-            "name": "rateB",
-            "type": "uint24"
+            "name":"tickA",
+            "type":"int24",
+            "internalType":"Tick"
           },
           {
-            "internalType": "uint24",
-            "name": "minRateA",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "minRateB",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "priceThresholdA",
-            "type": "uint24"
-          },
-          {
-            "internalType": "uint24",
-            "name": "priceThresholdB",
-            "type": "uint24"
+            "name":"tickB",
+            "type":"int24",
+            "internalType":"Tick"
           }
-        ],
-        "internalType": "struct ISimpleOracleStrategy.Config",
-        "name": "",
-        "type": "tuple"
+        ]
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "stateMutability":"view"
   },
   {
-    "inputs": [
+    "type":"function",
+    "name":"isOperator",
+    "inputs":[
       {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
+        "name":"operator",
+        "type":"address",
+        "internalType":"address"
       }
     ],
-    "name": "getLastRawAmount",
-    "outputs": [
+    "outputs":[
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "name":"",
+        "type":"bool",
+        "internalType":"bool"
+      }
+    ],
+    "stateMutability":"view"
+  },
+  {
+    "type":"function",
+    "name":"isOraclePriceValid",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      }
+    ],
+    "outputs":[
+      {
+        "name":"",
+        "type":"bool",
+        "internalType":"bool"
+      }
+    ],
+    "stateMutability":"view"
+  },
+  {
+    "type":"function",
+    "name":"isPaused",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      }
+    ],
+    "outputs":[
+      {
+        "name":"",
+        "type":"bool",
+        "internalType":"bool"
+      }
+    ],
+    "stateMutability":"view"
+  },
+  {
+    "type":"function",
+    "name":"mintHook",
+    "inputs":[
+      {
+        "name":"sender",
+        "type":"address",
+        "internalType":"address"
       },
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      },
+      {
+        "name":"mintAmount",
+        "type":"uint256",
+        "internalType":"uint256"
+      },
+      {
+        "name":"lastTotalSupply",
+        "type":"uint256",
+        "internalType":"uint256"
       }
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "outputs":[
+
+    ],
+    "stateMutability":"nonpayable"
   },
   {
-    "inputs": [
+    "type":"function",
+    "name":"pause",
+    "inputs":[
       {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
       }
     ],
-    "name": "getPosition",
-    "outputs": [
+    "outputs":[
+
+    ],
+    "stateMutability":"nonpayable"
+  },
+  {
+    "type":"function",
+    "name":"rebalanceHook",
+    "inputs":[
       {
-        "components": [
+        "name":"sender",
+        "type":"address",
+        "internalType":"address"
+      },
+      {
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      },
+      {
+        "name":"liquidityA",
+        "type":"tuple[]",
+        "internalType":"struct IStrategy.Order[]",
+        "components":[
           {
-            "internalType": "bool",
-            "name": "paused",
-            "type": "bool"
+            "name":"tick",
+            "type":"int24",
+            "internalType":"Tick"
           },
           {
-            "internalType": "uint128",
-            "name": "oraclePrice",
-            "type": "uint128"
-          },
-          {
-            "internalType": "uint24",
-            "name": "rate",
-            "type": "uint24"
-          },
-          {
-            "internalType": "Tick",
-            "name": "tickA",
-            "type": "int24"
-          },
-          {
-            "internalType": "Tick",
-            "name": "tickB",
-            "type": "int24"
+            "name":"rawAmount",
+            "type":"uint64",
+            "internalType":"uint64"
           }
-        ],
-        "internalType": "struct ISimpleOracleStrategy.Position",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "isOperator",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "isOraclePriceValid",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "isPaused",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
+        ]
       },
       {
-        "internalType": "bytes32",
-        "name": "",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "mintHook",
-    "outputs": [],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "pause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "pendingOwner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      },
-      {
-        "components": [
+        "name":"liquidityB",
+        "type":"tuple[]",
+        "internalType":"struct IStrategy.Order[]",
+        "components":[
           {
-            "internalType": "Tick",
-            "name": "tick",
-            "type": "int24"
+            "name":"tick",
+            "type":"int24",
+            "internalType":"Tick"
           },
           {
-            "internalType": "uint64",
-            "name": "rawAmount",
-            "type": "uint64"
+            "name":"rawAmount",
+            "type":"uint64",
+            "internalType":"uint64"
           }
-        ],
-        "internalType": "struct IStrategy.Order[]",
-        "name": "liquidityA",
-        "type": "tuple[]"
+        ]
       },
       {
-        "components": [
+        "name":"amountA",
+        "type":"uint256",
+        "internalType":"uint256"
+      },
+      {
+        "name":"amountB",
+        "type":"uint256",
+        "internalType":"uint256"
+      }
+    ],
+    "outputs":[
+
+    ],
+    "stateMutability":"nonpayable"
+  },
+  {
+    "type":"function",
+    "name":"referenceOracle",
+    "inputs":[
+
+    ],
+    "outputs":[
+      {
+        "name":"",
+        "type":"address",
+        "internalType":"contract IOracle"
+      }
+    ],
+    "stateMutability":"view"
+  },
+  {
+    "type":"function",
+    "name":"setConfig",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      },
+      {
+        "name":"config",
+        "type":"tuple",
+        "internalType":"struct ISimpleOracleStrategy.Config",
+        "components":[
           {
-            "internalType": "Tick",
-            "name": "tick",
-            "type": "int24"
+            "name":"referenceThreshold",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint64",
-            "name": "rawAmount",
-            "type": "uint64"
+            "name":"rebalanceThreshold",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"rateA",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"rateB",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"minRateA",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"minRateB",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"priceThresholdA",
+            "type":"uint24",
+            "internalType":"uint24"
+          },
+          {
+            "name":"priceThresholdB",
+            "type":"uint24",
+            "internalType":"uint24"
           }
-        ],
-        "internalType": "struct IStrategy.Order[]",
-        "name": "liquidityB",
-        "type": "tuple[]"
+        ]
       }
     ],
-    "name": "rebalanceHook",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "rebalancer",
-    "outputs": [
-      {
-        "internalType": "contract IRebalancer",
-        "name": "",
-        "type": "address"
-      }
+    "outputs":[
+
     ],
-    "stateMutability": "view",
-    "type": "function"
+    "stateMutability":"nonpayable"
   },
   {
-    "inputs": [],
-    "name": "referenceOracle",
-    "outputs": [
+    "type":"function",
+    "name":"setOperator",
+    "inputs":[
       {
-        "internalType": "contract IOracle",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
+        "name":"operator",
+        "type":"address",
+        "internalType":"address"
       },
       {
-        "components": [
+        "name":"status",
+        "type":"bool",
+        "internalType":"bool"
+      }
+    ],
+    "outputs":[
+
+    ],
+    "stateMutability":"nonpayable"
+  },
+  {
+    "type":"function",
+    "name":"unpause",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      }
+    ],
+    "outputs":[
+
+    ],
+    "stateMutability":"nonpayable"
+  },
+  {
+    "type":"function",
+    "name":"updatePosition",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "internalType":"bytes32"
+      },
+      {
+        "name":"oraclePrice",
+        "type":"uint256",
+        "internalType":"uint256"
+      },
+      {
+        "name":"tickA",
+        "type":"int24",
+        "internalType":"Tick"
+      },
+      {
+        "name":"tickB",
+        "type":"int24",
+        "internalType":"Tick"
+      },
+      {
+        "name":"rate",
+        "type":"uint24",
+        "internalType":"uint24"
+      }
+    ],
+    "outputs":[
+
+    ],
+    "stateMutability":"nonpayable"
+  },
+  {
+    "type":"event",
+    "name":"Pause",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "indexed":true,
+        "internalType":"bytes32"
+      }
+    ],
+    "anonymous":false
+  },
+  {
+    "type":"event",
+    "name":"SetOperator",
+    "inputs":[
+      {
+        "name":"operator",
+        "type":"address",
+        "indexed":true,
+        "internalType":"address"
+      },
+      {
+        "name":"status",
+        "type":"bool",
+        "indexed":false,
+        "internalType":"bool"
+      }
+    ],
+    "anonymous":false
+  },
+  {
+    "type":"event",
+    "name":"Unpause",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "indexed":true,
+        "internalType":"bytes32"
+      }
+    ],
+    "anonymous":false
+  },
+  {
+    "type":"event",
+    "name":"UpdateConfig",
+    "inputs":[
+      {
+        "name":"key",
+        "type":"bytes32",
+        "indexed":true,
+        "internalType":"bytes32"
+      },
+      {
+        "name":"config",
+        "type":"tuple",
+        "indexed":false,
+        "internalType":"struct ISimpleOracleStrategy.Config",
+        "components":[
           {
-            "internalType": "uint24",
-            "name": "referenceThreshold",
-            "type": "uint24"
+            "name":"referenceThreshold",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint24",
-            "name": "rebalanceThreshold",
-            "type": "uint24"
+            "name":"rebalanceThreshold",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint24",
-            "name": "rateA",
-            "type": "uint24"
+            "name":"rateA",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint24",
-            "name": "rateB",
-            "type": "uint24"
+            "name":"rateB",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint24",
-            "name": "minRateA",
-            "type": "uint24"
+            "name":"minRateA",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint24",
-            "name": "minRateB",
-            "type": "uint24"
+            "name":"minRateB",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint24",
-            "name": "priceThresholdA",
-            "type": "uint24"
+            "name":"priceThresholdA",
+            "type":"uint24",
+            "internalType":"uint24"
           },
           {
-            "internalType": "uint24",
-            "name": "priceThresholdB",
-            "type": "uint24"
+            "name":"priceThresholdB",
+            "type":"uint24",
+            "internalType":"uint24"
           }
-        ],
-        "internalType": "struct ISimpleOracleStrategy.Config",
-        "name": "config",
-        "type": "tuple"
+        ]
       }
     ],
-    "name": "setConfig",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "anonymous":false
   },
   {
-    "inputs": [
+    "type":"event",
+    "name":"UpdatePosition",
+    "inputs":[
       {
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
+        "name":"key",
+        "type":"bytes32",
+        "indexed":true,
+        "internalType":"bytes32"
       },
       {
-        "internalType": "bool",
-        "name": "status",
-        "type": "bool"
+        "name":"oraclePrice",
+        "type":"uint256",
+        "indexed":false,
+        "internalType":"uint256"
+      },
+      {
+        "name":"tickA",
+        "type":"int24",
+        "indexed":false,
+        "internalType":"Tick"
+      },
+      {
+        "name":"tickB",
+        "type":"int24",
+        "indexed":false,
+        "internalType":"Tick"
+      },
+      {
+        "name":"rate",
+        "type":"uint256",
+        "indexed":false,
+        "internalType":"uint256"
       }
     ],
-    "name": "setOperator",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "anonymous":false
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type":"error",
+    "name":"ExceedsThreshold",
+    "inputs":[
+
+    ]
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      }
-    ],
-    "name": "unpause",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type":"error",
+    "name":"InvalidAccess",
+    "inputs":[
+
+    ]
   },
   {
-    "inputs": [
-      {
-        "internalType": "bytes32",
-        "name": "key",
-        "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "oraclePrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "Tick",
-        "name": "tickA",
-        "type": "int24"
-      },
-      {
-        "internalType": "Tick",
-        "name": "tickB",
-        "type": "int24"
-      },
-      {
-        "internalType": "uint24",
-        "name": "rate",
-        "type": "uint24"
-      }
-    ],
-    "name": "updatePosition",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type":"error",
+    "name":"InvalidConfig",
+    "inputs":[
+
+    ]
+  },
+  {
+    "type":"error",
+    "name":"InvalidOraclePrice",
+    "inputs":[
+
+    ]
+  },
+  {
+    "type":"error",
+    "name":"InvalidPrice",
+    "inputs":[
+
+    ]
+  },
+  {
+    "type":"error",
+    "name":"InvalidValue",
+    "inputs":[
+
+    ]
+  },
+  {
+    "type":"error",
+    "name":"NotOperator",
+    "inputs":[
+
+    ]
+  },
+  {
+    "type":"error",
+    "name":"Paused",
+    "inputs":[
+
+    ]
   }
 ]
