@@ -1,4 +1,4 @@
-type Token @entity {
+type Token @entity(immutable: false) {
   # immutable values
   # token address
   id: Bytes!
@@ -31,7 +31,7 @@ type Token @entity {
   books: [Book!]! @derivedFrom(field: "base")
 }
 
-type Book @entity {
+type Book @entity(immutable: false) {
   # immutable values
   # book id
   id: ID!
@@ -95,7 +95,7 @@ type Book @entity {
   takes: [Take!]! @derivedFrom(field: "book")
 }
 
-type Depth @entity {
+type Depth @entity(immutable: false) {
   # immutable values
   # `${bookId}-${tick}`
   id: ID!
@@ -119,7 +119,7 @@ type Depth @entity {
   latestTakenOrderIndex: BigInt!
 }
 
-type OpenOrder @entity {
+type OpenOrder @entity(immutable: false) {
   # immutable values
   # orderId
   id: ID!
@@ -177,7 +177,7 @@ type OpenOrder @entity {
   cancelableQuoteAmount: BigInt!
 }
 
-type Transaction @entity {
+type Transaction @entity(immutable: true) {
   # txn hash
   id: ID!
   # block txn was included in
@@ -197,7 +197,7 @@ type Transaction @entity {
   takes: [Take!]! @derivedFrom(field: "transaction")
 }
 
-type ChartLog @entity {
+type ChartLog @entity(immutable: false) {
   # `${baseToken}-${quoteToken}-${intervalType}-${timestamp}`
   id: ID!
   # `${baseToken}-${quoteToken}`
@@ -218,7 +218,7 @@ type ChartLog @entity {
   askBookBaseVolume: BigDecimal!
 }
 
-type Pool @entity {
+type Pool @entity(immutable: false) {
   # immutable values
   # pool key
   id: Bytes!
@@ -294,7 +294,7 @@ type Pool @entity {
   poolDayData: [PoolDayData!]! @derivedFrom(field: "pool")
 }
 
-type User @entity {
+type User @entity(immutable: false) {
   # wallet address (only eoa)
   id: Bytes!
   # user discovery metadata
@@ -307,7 +307,7 @@ type User @entity {
   userDayData: [UserDayData!]! @derivedFrom(field: "user")
 }
 
-type BookDayData @entity {
+type BookDayData @entity(immutable: false) {
   # `${bookId}-{periodStartUnix}`
   id: ID!
   # timestamp rounded to current day by dividing by 86400
@@ -344,7 +344,7 @@ type BookDayData @entity {
   close: BigDecimal!
 }
 
-type TokenDayData @entity {
+type TokenDayData @entity(immutable: false) {
   # token address concatendated with date
   id: ID!
   # timestamp rounded to current day by dividing by 86400
@@ -379,7 +379,7 @@ type TokenDayData @entity {
 }
 
 # Data accumulated and condensed into day stats for all of Clober
-type CloberDayData @entity {
+type CloberDayData @entity(immutable: false) {
   # timestamp rounded to current day by dividing by 86400
   id: ID!
   # timestamp rounded to current day by dividing by 86400
@@ -396,7 +396,7 @@ type CloberDayData @entity {
   transactionTypes: [TransactionTypeDayData!]! @derivedFrom(field: "cloberDayData")
 }
 
-type TransactionTypeDayData @entity {
+type TransactionTypeDayData @entity(immutable: false) {
   # ${type}-${timestamp rounded to current day by dividing by 86400}
   id: ID!
   # timestamp rounded to current day by dividing by 86400
@@ -410,7 +410,7 @@ type TransactionTypeDayData @entity {
   txCount: BigInt!
 }
 
-type UserDayData @entity {
+type UserDayData @entity(immutable: false) {
   # ${wallet}-{timestamp rounded to current day by dividing by 86400}
   id: ID!
   # timestamp rounded to current day by dividing by 86400
@@ -424,7 +424,7 @@ type UserDayData @entity {
   volumes: [UserDayVolume!]! @derivedFrom(field: "userDayData")
 }
 
-type UserDayVolume @entity {
+type UserDayVolume @entity(immutable: false) {
   # ${wallet}-${token.id}-${timestamp rounded to current day by dividing by 86400}
   id: ID!
   # timestamp rounded to current day by dividing by 86400
@@ -442,7 +442,7 @@ type UserDayVolume @entity {
 }
 
 # Data accumulated and condensed into day stats for each pool
-type PoolDayData @entity {
+type PoolDayData @entity(immutable: false) {
   # `${poolKey}-{periodStartUnix}`
   id: ID!
   # timestamp rounded to current day by dividing by 86400
@@ -489,7 +489,7 @@ type PoolDayData @entity {
 }
 
 # hourly stats tracker for pool
-type PoolHourData @entity {
+type PoolHourData @entity(immutable: false) {
   # ${poolKey}-{periodStartUnix}
   id: ID!
   # unix timestamp for start of hour
@@ -536,7 +536,7 @@ type PoolHourData @entity {
 }
 
 # entity for take event on clober book
-type Take @entity {
+type Take @entity(immutable: true) {
   # {txHash}-{logIndex}
   id: ID!
   # pointer to transaction
@@ -562,7 +562,7 @@ type Take @entity {
 }
 
 # entity for swap event on clober meta aggregator
-type Swap @entity {
+type Swap @entity(immutable: true) {
   # {txHash}-{logIndex}
   id: ID!
   # pointer to transaction
