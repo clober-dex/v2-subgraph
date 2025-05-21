@@ -24,9 +24,11 @@ import { TWO_BD, ZERO_BD } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import {
+  updateBookDayData,
   updateDayData,
   updatePoolDayData,
   updatePoolHourData,
+  updateTokenDayData,
 } from '../interval-updates'
 
 function updatePool(
@@ -136,11 +138,12 @@ export function handleClaim(event: Claim): void {
     openOrder.claimableQuoteAmount =
       openOrder.claimableQuoteAmount.minus(quoteAmount)
 
+    const baseInUSD = getTokenUSDPriceFlat(base)
+    const quoteInUSD = getTokenUSDPriceFlat(quote)
+
     if (book.pool !== null) {
       const pool = getPoolOrLog(book.pool!, 'CLAIM')
       if (pool) {
-        const baseInUSD = getTokenUSDPriceFlat(base)
-        const quoteInUSD = getTokenUSDPriceFlat(quote)
         updatePool(
           pool,
           book,
@@ -153,6 +156,67 @@ export function handleClaim(event: Claim): void {
           event,
         )
       }
+    }
+
+    if (book.makerFee.gt(ZERO_BD)) {
+      // interval data
+      const bookDayData = updateBookDayData(book, event)
+      const quoteDayData = updateTokenDayData(quote, quoteInUSD, event)
+      const baseDayData = updateTokenDayData(base, baseInUSD, event)
+
+      if (book.isMakerFeeInQuote) {
+        const protocolFeesQuote = convertTokenToDecimal(
+          quoteAmount,
+          quote.decimals,
+        ).times(book.makerFee)
+        const protocolFeesInUSD = protocolFeesQuote.times(quoteInUSD)
+
+        book.protocolFeesQuote = book.protocolFeesQuote.plus(protocolFeesQuote)
+        book.protocolFeesUSD = book.protocolFeesUSD.plus(protocolFeesInUSD)
+
+        quote.protocolFees = quote.protocolFees.plus(protocolFeesQuote)
+        quote.protocolFeesUSD = quote.protocolFeesUSD.plus(protocolFeesInUSD)
+
+        bookDayData.protocolFeesQuote =
+          bookDayData.protocolFeesQuote.plus(protocolFeesQuote)
+        bookDayData.protocolFeesUSD =
+          bookDayData.protocolFeesUSD.plus(protocolFeesInUSD)
+
+        quoteDayData.protocolFees =
+          quoteDayData.protocolFees.plus(protocolFeesQuote)
+        quoteDayData.protocolFeesUSD =
+          quoteDayData.protocolFeesUSD.plus(protocolFeesInUSD)
+      } else {
+        const protocolFeesBase = convertTokenToDecimal(
+          baseAmount,
+          base.decimals,
+        ).times(book.makerFee)
+        const protocolFeesInUSD = protocolFeesBase.times(baseInUSD)
+
+        book.protocolFeesBase = book.protocolFeesBase.plus(protocolFeesBase)
+        book.protocolFeesUSD = book.protocolFeesUSD.plus(protocolFeesInUSD)
+
+        base.protocolFees = base.protocolFees.plus(protocolFeesBase)
+        base.protocolFeesUSD = base.protocolFeesUSD.plus(protocolFeesInUSD)
+
+        bookDayData.protocolFeesBase =
+          bookDayData.protocolFeesBase.plus(protocolFeesBase)
+        bookDayData.protocolFeesUSD =
+          bookDayData.protocolFeesUSD.plus(protocolFeesInUSD)
+
+        baseDayData.protocolFees =
+          baseDayData.protocolFees.plus(protocolFeesBase)
+        baseDayData.protocolFeesUSD =
+          baseDayData.protocolFeesUSD.plus(protocolFeesInUSD)
+      }
+
+      // save
+      book.save()
+      quote.save()
+      base.save()
+      bookDayData.save()
+      quoteDayData.save()
+      baseDayData.save()
     }
 
     if (getPendingUnitAmount(openOrder).isZero()) {
