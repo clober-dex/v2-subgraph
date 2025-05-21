@@ -11,7 +11,7 @@
     "build-token-info": "cross-env ts-node ./script/build-token-info"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.89.0",
+    "@graphprotocol/graph-cli": "0.97.1",
     "@graphprotocol/graph-ts": "0.35.1"
   },
   "devDependencies": {
