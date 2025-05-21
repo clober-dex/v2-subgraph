@@ -1,4 +1,10 @@
-import { Address, BigDecimal, ethereum } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigDecimal,
+  Bytes,
+  ethereum,
+  BigInt,
+} from '@graphprotocol/graph-ts'
 
 import {
   Book,
@@ -15,11 +21,19 @@ import {
   UserDayData,
   UserDayVolume,
 } from '../../generated/schema'
-import { ONE_BI, ZERO_BD, ZERO_BI } from '../common/constants'
+import {
+  ADDRESS_ZERO,
+  BI_18,
+  ONE_BI,
+  ZERO_BD,
+  ZERO_BI,
+} from '../common/constants'
 import {
   getOrCreateTransaction,
   getOrCreateUser,
 } from '../common/entity-getters'
+import { REFERENCE_TOKEN } from '../common/chain'
+import { convertTokenToDecimal } from '../common/utils'
 
 /**
  * Tracks global aggregate data over daily windows
@@ -79,6 +93,32 @@ export function updateDayData(event: ethereum.Event): void {
   cloberDayData.save()
   userDayData.save()
   txTypeDayData.save()
+}
+
+export function updateUserNativeVolume(
+  event: ethereum.Event,
+  inputToken: Bytes,
+  outputToken: Bytes,
+  inputAmount: BigInt,
+  outputAmount: BigInt,
+): void {
+  const isInputNative = inputToken.toHexString() == ADDRESS_ZERO
+  const isOutputNative = outputToken.toHexString() == ADDRESS_ZERO
+  const isInputReference = inputToken.toHexString() == REFERENCE_TOKEN
+  const isOutputReference = outputToken.toHexString() == REFERENCE_TOKEN
+  const isWrapOrUnwrap =
+    (isInputNative && isOutputReference) || (isOutputNative && isInputReference)
+  const isNativeTx = isInputNative || isOutputNative
+
+  if (!isNativeTx || isWrapOrUnwrap) {
+    return
+  }
+  const nativeAmount = isInputNative
+    ? convertTokenToDecimal(inputAmount, BI_18)
+    : convertTokenToDecimal(outputAmount, BI_18)
+  const user = getOrCreateUser(event)
+  user.nativeVolume = user.nativeVolume.plus(nativeAmount)
+  user.save()
 }
 
 export function updateUserDayVolume(

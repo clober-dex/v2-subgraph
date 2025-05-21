@@ -32,6 +32,7 @@ import {
   updatePoolHourData,
   updateTokenDayData,
   updateUserDayVolume,
+  updateUserNativeVolume,
 } from '../interval-updates'
 import {
   CHART_LOG_INTERVALS,
@@ -476,6 +477,13 @@ export function handleTake(event: Take): void {
   } else if (baseInUSD.gt(ZERO_BD)) {
     updateUserDayVolume(base, event, takenBaseAmountDecimal, amountTotalUSD)
   }
+  updateUserNativeVolume(
+    event,
+    take.inputToken,
+    take.outputToken,
+    take.inputAmount,
+    take.outputAmount,
+  )
   depth.latestTakenOrderIndex = currentOrderIndex
   depth.save()
   book.save()

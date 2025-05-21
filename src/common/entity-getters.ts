@@ -10,12 +10,15 @@ import {
   User,
 } from '../../generated/schema'
 
+import { ZERO_BD } from './constants'
+
 export function getOrCreateUser(event: ethereum.Event): User {
   let user = User.load(event.transaction.from)
   if (user === null) {
     user = new User(event.transaction.from)
     user.firstSeenTimestamp = event.block.timestamp
     user.firstSeenBlockNumber = event.block.number
+    user.nativeVolume = ZERO_BD
   }
   user.save()
   return user as User

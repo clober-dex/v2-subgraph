@@ -300,6 +300,11 @@ type User @entity {
   # user discovery metadata
   firstSeenTimestamp: BigInt!
   firstSeenBlockNumber: BigInt!
+  # volume in native token units
+  nativeVolume: BigDecimal!
+
+  # derived fields
+  userDayData: [UserDayData!]! @derivedFrom(field: "user")
 }
 
 type BookDayData @entity {
@@ -413,7 +418,7 @@ type UserDayData @entity {
   # number of daily transactions
   txCount: BigInt!
   # wallet address
-  user: Bytes!
+  user: User!
 
   # derived fields
   volumes: [UserDayVolume!]! @derivedFrom(field: "userDayData")

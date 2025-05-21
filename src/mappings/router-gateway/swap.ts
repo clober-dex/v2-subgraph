@@ -9,7 +9,11 @@ import {
 import { ZERO_BD, ZERO_BI } from '../../common/constants'
 import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import { convertTokenToDecimal } from '../../common/utils'
-import { updateDayData, updateUserDayVolume } from '../interval-updates'
+import {
+  updateDayData,
+  updateUserDayVolume,
+  updateUserNativeVolume,
+} from '../interval-updates'
 
 const TAKE_EVENT_TOPIC =
   '0xc4c20b9c4a5ada3b01b7a391a08dd81a1be01dd8ef63170dd9da44ecee3db11b'
@@ -99,6 +103,14 @@ export function handleSwap(event: Swap): void {
   }
   swap.logIndex = event.logIndex
   swap.save()
+
+  updateUserNativeVolume(
+    event,
+    swap.inputToken,
+    swap.outputToken,
+    swap.inputAmount,
+    swap.outputAmount,
+  )
 
   if (swap.inputAmount.lt(ZERO_BI)) {
     log.error('Swap input amount is negative: {}', [swap.id.toString()])
