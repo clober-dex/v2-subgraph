@@ -30,6 +30,7 @@
     "matchstick-as": "0.5.0",
     "mustache": "^3.1.0",
     "prettier": "^3.0.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.1.6",
     "yargs": "17.7.2"
   }
