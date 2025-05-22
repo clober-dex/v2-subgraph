@@ -9,7 +9,6 @@ import {
   updateDayData,
   updatePoolDayData,
   updatePoolHourData,
-  updateTokenDayData,
 } from '../interval-updates'
 import { getTokenUSDPriceFlat } from '../../common/pricing'
 import { Mint } from '../../../generated/LiquidityVault/LiquidityVault'
@@ -26,15 +25,7 @@ export function handleMint(event: Mint): void {
   const tokenB = getTokenOrLog(pool.tokenB, 'MINT')
 
   if (tokenA && tokenB) {
-    const amountAInDecimals = convertTokenToDecimal(
-      event.params.amountA,
-      tokenA.decimals,
-    )
     const priceAUSD = getTokenUSDPriceFlat(tokenA)
-    const amountBInDecimals = convertTokenToDecimal(
-      event.params.amountB,
-      tokenB.decimals,
-    )
     const priceBUSD = getTokenUSDPriceFlat(tokenB)
 
     if (pool.initialTokenAAmount.isZero()) {
@@ -68,20 +59,16 @@ export function handleMint(event: Mint): void {
     pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
     pool.totalValueLockedUSD = lpAmountDecimal.times(pool.lpPriceUSD)
 
-    // update token state
-    tokenA.totalValueLocked = tokenA.totalValueLocked.plus(amountAInDecimals)
-    tokenA.totalValueLockedUSD = tokenA.totalValueLocked.times(priceAUSD)
-    tokenB.totalValueLocked = tokenB.totalValueLocked.plus(amountBInDecimals)
-    tokenB.totalValueLockedUSD = tokenB.totalValueLocked.times(priceBUSD)
+    // @dev: To calculate the protocol's TVL, we need token.totalValueLocked + pool.totalValueLockedUSD
+    // tokenA.totalValueLocked = tokenA.totalValueLocked.plus(amountAInDecimals)
+    // tokenA.totalValueLockedUSD = tokenA.totalValueLocked.times(priceAUSD)
+    // tokenB.totalValueLocked = tokenB.totalValueLocked.plus(amountBInDecimals)
+    // tokenB.totalValueLockedUSD = tokenB.totalValueLocked.times(priceBUSD)
 
     // update interval
     updatePoolHourData(pool, event)
     updatePoolDayData(pool, event)
-    updateTokenDayData(tokenA, priceAUSD, event)
-    updateTokenDayData(tokenB, priceBUSD, event)
 
     pool.save()
-    tokenA.save()
-    tokenB.save()
   }
 }

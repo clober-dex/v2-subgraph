@@ -22,20 +22,12 @@ export function handleBurn(event: Burn): void {
   const tokenB = getTokenOrLog(pool.tokenB, 'BURN')
 
   if (tokenA && tokenB) {
-    const amountAInDecimals = convertTokenToDecimal(
-      event.params.amountA,
-      tokenA.decimals,
-    )
     const feeAInDecimals = convertTokenToDecimal(
       event.params.feeA,
       tokenA.decimals,
     )
     const priceAUSD = getTokenUSDPriceFlat(tokenA)
     const feeAInUSD = priceAUSD.times(feeAInDecimals)
-    const amountBInDecimals = convertTokenToDecimal(
-      event.params.amountB,
-      tokenB.decimals,
-    )
     const feeBInDecimals = convertTokenToDecimal(
       event.params.feeB,
       tokenB.decimals,
@@ -72,11 +64,12 @@ export function handleBurn(event: Burn): void {
       pool.totalValueLockedUSD = ZERO_BD
     }
 
-    // update token state
-    tokenA.totalValueLocked = tokenA.totalValueLocked.minus(amountAInDecimals)
-    tokenA.totalValueLockedUSD = tokenA.totalValueLocked.times(priceAUSD)
-    tokenB.totalValueLocked = tokenB.totalValueLocked.minus(amountBInDecimals)
-    tokenB.totalValueLockedUSD = tokenB.totalValueLocked.times(priceBUSD)
+    // @dev: To calculate the protocol's TVL, we need token.totalValueLocked + pool.totalValueLockedUSD
+    // since, reducing totalValueLocked twice (cancel -> burn)
+    // tokenA.totalValueLocked = tokenA.totalValueLocked.minus(amountAInDecimals)
+    // tokenA.totalValueLockedUSD = tokenA.totalValueLocked.times(priceAUSD)
+    // tokenB.totalValueLocked = tokenB.totalValueLocked.minus(amountBInDecimals)
+    // tokenB.totalValueLockedUSD = tokenB.totalValueLocked.times(priceBUSD)
 
     // update interval
     const poolHourData = updatePoolHourData(pool, event)
@@ -113,7 +106,5 @@ export function handleBurn(event: Burn): void {
     tokenADayData.save()
     tokenBDayData.save()
     pool.save()
-    tokenA.save()
-    tokenB.save()
   }
 }
