@@ -1,5 +1,7 @@
 import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 
+export const LIQUIDITY_VAULT = '0x6d8fa3025b6d6604309Ca257563CcA358c0CF1AA'
+
 export class TokenDefinition {
   address: Address
   symbol: string
