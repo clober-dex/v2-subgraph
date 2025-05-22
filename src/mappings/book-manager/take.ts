@@ -1,4 +1,10 @@
-import { BigDecimal, BigInt, ethereum, log } from '@graphprotocol/graph-ts'
+import {
+  Address,
+  BigDecimal,
+  BigInt,
+  ethereum,
+  log,
+} from '@graphprotocol/graph-ts'
 
 import { Take } from '../../../generated/BookManager/BookManager'
 import {
@@ -39,6 +45,7 @@ import {
   encodeChartLogID,
   encodeMarketCode,
 } from '../../common/chart'
+import { LIQUIDITY_VAULT } from '../../common/chain'
 
 function fillOpenOrder(
   openOrder: OpenOrder,
@@ -211,7 +218,8 @@ function updatePool(
   const poolHourData = updatePoolHourData(pool, event)
   const poolDayData = updatePoolDayData(pool, event)
 
-  if (pool.tokenA.equals(book.base)) {
+  if (Address.fromBytes(pool.tokenA).equals(Address.fromBytes(book.base))) {
+    // ask book
     pool.liquidityA = pool.liquidityA.plus(filledBaseAmount)
     pool.liquidityB = pool.liquidityB.minus(filledQuoteAmount)
 
@@ -234,7 +242,10 @@ function updatePool(
       filledQuoteAmountDecimal,
     )
     poolDayData.volumeUSD = poolDayData.volumeUSD.plus(filledUSDAmount)
-  } else {
+  } else if (
+    Address.fromBytes(pool.tokenB).equals(Address.fromBytes(book.base))
+  ) {
+    // bid book
     pool.liquidityA = pool.liquidityA.minus(filledQuoteAmount)
     pool.liquidityB = pool.liquidityB.plus(filledBaseAmount)
 
@@ -257,6 +268,13 @@ function updatePool(
       filledBaseAmountDecimal,
     )
     poolDayData.volumeUSD = poolDayData.volumeUSD.plus(filledUSDAmount)
+  } else {
+    log.error('[TAKE] Pool token mismatch: {} {} vs {} {}', [
+      pool.tokenA.toHexString(),
+      pool.tokenB.toHexString(),
+      book.base.toHexString(),
+      book.quote.toHexString(),
+    ])
   }
 
   pool.save()
@@ -450,7 +468,12 @@ export function handleTake(event: Take): void {
 
     fillOpenOrder(openOrder, book.unitSize, filledUnitAmount)
 
-    if (book.pool !== null) {
+    if (
+      book.pool !== null &&
+      Address.fromBytes(openOrder.owner).equals(
+        Address.fromString(LIQUIDITY_VAULT),
+      )
+    ) {
       const pool = getPoolOrLog(book.pool!, 'TAKE')
       if (pool) {
         updatePool(

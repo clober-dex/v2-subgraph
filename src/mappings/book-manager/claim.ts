@@ -1,4 +1,5 @@
 import {
+  Address,
   BigDecimal,
   BigInt,
   ethereum,
@@ -30,6 +31,7 @@ import {
   updatePoolHourData,
   updateTokenDayData,
 } from '../interval-updates'
+import { LIQUIDITY_VAULT } from '../../common/chain'
 
 function updatePool(
   pool: Pool,
@@ -141,7 +143,12 @@ export function handleClaim(event: Claim): void {
     const baseInUSD = getTokenUSDPriceFlat(base)
     const quoteInUSD = getTokenUSDPriceFlat(quote)
 
-    if (book.pool !== null) {
+    if (
+      book.pool !== null &&
+      Address.fromBytes(openOrder.owner).equals(
+        Address.fromString(LIQUIDITY_VAULT),
+      )
+    ) {
       const pool = getPoolOrLog(book.pool!, 'CLAIM')
       if (pool) {
         updatePool(
