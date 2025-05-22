@@ -1,6 +1,6 @@
 import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts'
 
-export const LIQUIDITY_VAULT = '0x552E53700042e0446C896b1803d9399ba846cF83'
+export const LIQUIDITY_VAULT = '0x552e53700042e0446c896b1803d9399ba846cf83'
 
 export class TokenDefinition {
   address: Address
