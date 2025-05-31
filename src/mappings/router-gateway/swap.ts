@@ -14,6 +14,7 @@ import {
   updateUserDayVolume,
   updateUserNativeVolume,
 } from '../interval-updates'
+import { SKIP_TAKE_AND_SWAP, SKIP_USER_ANALYTICS } from '../../common/chain'
 
 const TAKE_EVENT_TOPIC =
   '0xc4c20b9c4a5ada3b01b7a391a08dd81a1be01dd8ef63170dd9da44ecee3db11b'
@@ -84,14 +85,28 @@ export function handleSwap(event: Swap): void {
       priceOut,
     )
 
-    if (priceIn.gt(ZERO_BD)) {
-      updateUserDayVolume(inputToken, event, inputAmountDecimal, swap.amountUSD)
-    } else if (priceOut.gt(ZERO_BD)) {
-      updateUserDayVolume(
-        outputToken,
+    if (!SKIP_USER_ANALYTICS) {
+      if (priceIn.gt(ZERO_BD)) {
+        updateUserDayVolume(
+          inputToken,
+          event,
+          inputAmountDecimal,
+          swap.amountUSD,
+        )
+      } else if (priceOut.gt(ZERO_BD)) {
+        updateUserDayVolume(
+          outputToken,
+          event,
+          outputAmountDecimal,
+          swap.amountUSD,
+        )
+      }
+      updateUserNativeVolume(
         event,
-        outputAmountDecimal,
-        swap.amountUSD,
+        swap.inputToken,
+        swap.outputToken,
+        swap.inputAmount,
+        swap.outputAmount,
       )
     }
   } else {
@@ -102,15 +117,9 @@ export function handleSwap(event: Swap): void {
     swap.amountUSD = ZERO_BD
   }
   swap.logIndex = event.logIndex
-  swap.save()
-
-  updateUserNativeVolume(
-    event,
-    swap.inputToken,
-    swap.outputToken,
-    swap.inputAmount,
-    swap.outputAmount,
-  )
+  if (!SKIP_TAKE_AND_SWAP) {
+    swap.save()
+  }
 
   if (swap.inputAmount.lt(ZERO_BI)) {
     log.error('Swap input amount is negative: {}', [swap.id.toString()])

@@ -1,5 +1,7 @@
 import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts'
-
+export const SKIP_TAKE_AND_SWAP = true
+export const SKIP_TX_ANALYTICS = true
+export const SKIP_USER_ANALYTICS = true
 export const LIQUIDITY_VAULT = '0x552e53700042e0446c896b1803d9399ba846cf83'
 
 export class TokenDefinition {

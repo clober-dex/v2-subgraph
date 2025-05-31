@@ -32,7 +32,11 @@ import {
   getOrCreateTransaction,
   getOrCreateUser,
 } from '../common/entity-getters'
-import { REFERENCE_TOKEN } from '../common/chain'
+import {
+  REFERENCE_TOKEN,
+  SKIP_USER_ANALYTICS,
+  SKIP_TX_ANALYTICS,
+} from '../common/chain'
 import { convertTokenToDecimal } from '../common/utils'
 
 /**
@@ -76,13 +80,16 @@ export function updateDayData(event: ethereum.Event): void {
     txTypeDayData.txCount = ZERO_BI
   }
 
-  if (User.load(Address.fromString(user)) === null) {
+  if (!SKIP_USER_ANALYTICS && User.load(Address.fromString(user)) === null) {
     cloberDayData.newWalletCount = cloberDayData.newWalletCount.plus(ONE_BI)
 
     getOrCreateUser(event)
   }
 
-  if (Transaction.load(event.transaction.hash.toHexString()) === null) {
+  if (
+    !SKIP_TX_ANALYTICS &&
+    Transaction.load(event.transaction.hash.toHexString()) === null
+  ) {
     userDayData.txCount = userDayData.txCount.plus(ONE_BI)
     cloberDayData.txCount = cloberDayData.txCount.plus(ONE_BI)
     txTypeDayData.txCount = txTypeDayData.txCount.plus(ONE_BI)
@@ -91,8 +98,12 @@ export function updateDayData(event: ethereum.Event): void {
   }
 
   cloberDayData.save()
-  userDayData.save()
-  txTypeDayData.save()
+  if (!SKIP_USER_ANALYTICS) {
+    userDayData.save()
+  }
+  if (!SKIP_TX_ANALYTICS) {
+    txTypeDayData.save()
+  }
 }
 
 export function updateUserNativeVolume(
