@@ -113,6 +113,9 @@ export function updateUserNativeVolume(
   inputAmount: BigInt,
   outputAmount: BigInt,
 ): void {
+  if (SKIP_USER_ANALYTICS) {
+    return
+  }
   const isInputNative = inputToken.toHexString() == ADDRESS_ZERO
   const isOutputNative = outputToken.toHexString() == ADDRESS_ZERO
   const isInputReference = inputToken.toHexString() == REFERENCE_TOKEN
@@ -138,6 +141,9 @@ export function updateUserDayVolume(
   volume: BigDecimal,
   volumeUSD: BigDecimal,
 ): UserDayVolume {
+  if (SKIP_USER_ANALYTICS) {
+    return
+  }
   const timestamp = event.block.timestamp.toI32()
   const dayID = timestamp / 86400 // rounded
   const dayStartTimestamp = dayID * 86400

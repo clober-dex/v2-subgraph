@@ -85,30 +85,23 @@ export function handleSwap(event: Swap): void {
       priceOut,
     )
 
-    if (!SKIP_USER_ANALYTICS) {
-      if (priceIn.gt(ZERO_BD)) {
-        updateUserDayVolume(
-          inputToken,
-          event,
-          inputAmountDecimal,
-          swap.amountUSD,
-        )
-      } else if (priceOut.gt(ZERO_BD)) {
-        updateUserDayVolume(
-          outputToken,
-          event,
-          outputAmountDecimal,
-          swap.amountUSD,
-        )
-      }
-      updateUserNativeVolume(
+    if (priceIn.gt(ZERO_BD)) {
+      updateUserDayVolume(inputToken, event, inputAmountDecimal, swap.amountUSD)
+    } else if (priceOut.gt(ZERO_BD)) {
+      updateUserDayVolume(
+        outputToken,
         event,
-        swap.inputToken,
-        swap.outputToken,
-        swap.inputAmount,
-        swap.outputAmount,
+        outputAmountDecimal,
+        swap.amountUSD,
       )
     }
+    updateUserNativeVolume(
+      event,
+      swap.inputToken,
+      swap.outputToken,
+      swap.inputAmount,
+      swap.outputAmount,
+    )
   } else {
     log.warning(
       'Swap USD skipped: inputToken or outputToken missing or invalid amounts. tx: {}',

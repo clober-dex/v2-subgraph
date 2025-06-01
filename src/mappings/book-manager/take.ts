@@ -45,11 +45,7 @@ import {
   encodeChartLogID,
   encodeMarketCode,
 } from '../../common/chart'
-import {
-  LIQUIDITY_VAULT,
-  SKIP_TAKE_AND_SWAP,
-  SKIP_USER_ANALYTICS,
-} from '../../common/chain'
+import { LIQUIDITY_VAULT, SKIP_TAKE_AND_SWAP } from '../../common/chain'
 
 function fillOpenOrder(
   openOrder: OpenOrder,
@@ -501,20 +497,18 @@ export function handleTake(event: Take): void {
     }
   }
 
-  if (!SKIP_USER_ANALYTICS) {
-    if (quoteInUSD.gt(ZERO_BD)) {
-      updateUserDayVolume(quote, event, takenQuoteAmountDecimal, amountTotalUSD)
-    } else if (baseInUSD.gt(ZERO_BD)) {
-      updateUserDayVolume(base, event, takenBaseAmountDecimal, amountTotalUSD)
-    }
-    updateUserNativeVolume(
-      event,
-      take.inputToken,
-      take.outputToken,
-      take.inputAmount,
-      take.outputAmount,
-    )
+  if (quoteInUSD.gt(ZERO_BD)) {
+    updateUserDayVolume(quote, event, takenQuoteAmountDecimal, amountTotalUSD)
+  } else if (baseInUSD.gt(ZERO_BD)) {
+    updateUserDayVolume(base, event, takenBaseAmountDecimal, amountTotalUSD)
   }
+  updateUserNativeVolume(
+    event,
+    take.inputToken,
+    take.outputToken,
+    take.inputAmount,
+    take.outputAmount,
+  )
   depth.latestTakenOrderIndex = currentOrderIndex
   depth.save()
   book.save()
