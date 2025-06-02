@@ -3,6 +3,7 @@
 To add a new network to the Clober V2 Subgraph, follow these steps:
 1. create a new directory in the `config/networks` folder with the name of the network (e.g., `arbitrum`, `optimism`, etc.). 
    The chain name follows the format [goldsky supported chain names](https://docs.goldsky.com/chains/supported-networks)
+
 2. create `chain.ts` and `config.json` files in the new directory.
    - `chain.ts` should export an object with the following properties:
      - `SKIP_TAKE_AND_SWAP`: A boolean indicating whether to skip the Take and Swap events (default is `false`). we recommend setting this to `true` if your subgraph cost is high.
@@ -27,3 +28,5 @@ To add a new network to the Clober V2 Subgraph, follow these steps:
    - `config.json` should contain any additional configuration needed for the network.
      - `network`: The name of the network (e.g., "arbitrum", "optimism", etc.). It should match the directory name.
      - `hasRouterGateway`: A boolean indicating whether the network has a router gateway (default is `false`). If this is set to `true`, the subgraph will include the router gateway events.
+
+3. To use deploy script, add the network to the `deploy.ts` file in the `scripts` directory. Add a new entry in the `script/utils/prepare-network.ts` file in `NETWORK` enumeration.

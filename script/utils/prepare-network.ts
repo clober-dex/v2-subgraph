@@ -46,12 +46,6 @@ export function validateNetwork(argv: Argv): {
 
   if (argv.goldsky || argv.alchemy) {
     switch (argv.network) {
-      case NETWORK.MONAD_TESTNET:
-        break
-      case NETWORK.ARBITRUM_SEPOLIA:
-        break
-      case NETWORK.BERACHAIN_MAINNET:
-        break
       case NETWORK.RISE_SEPOLIA:
         if (argv.alchemy) {
           console.error(`Alchemy deploy is not supported for ${argv.network}`)
