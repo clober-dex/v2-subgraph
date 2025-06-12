@@ -14,7 +14,7 @@ import {
   updateUserDayVolume,
   updateUserNativeVolume,
 } from '../interval-updates'
-import { SKIP_TAKE_AND_SWAP, SKIP_USER_ANALYTICS } from '../../common/chain'
+import { SKIP_TAKE_AND_SWAP } from '../../common/chain'
 
 const TAKE_EVENT_TOPIC =
   '0xc4c20b9c4a5ada3b01b7a391a08dd81a1be01dd8ef63170dd9da44ecee3db11b'
@@ -28,7 +28,7 @@ export function handleSwap(event: Swap): void {
 
   let bookTakenIn = ZERO_BI
   let bookTakenOut = ZERO_BI
-  for (let i = 1; i <= precedingTakeLogs.length; i++) {
+  for (let i = 0; i < precedingTakeLogs.length; i++) {
     const log = precedingTakeLogs[i]
     const takeID = event.transaction.hash
       .toHexString()
