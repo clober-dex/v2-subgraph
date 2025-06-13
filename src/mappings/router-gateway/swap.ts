@@ -110,14 +110,11 @@ export function handleSwap(event: Swap): void {
     swap.amountUSD = ZERO_BD
   }
   swap.logIndex = event.logIndex
-  if (!SKIP_TAKE_AND_SWAP) {
+  if (
+    !SKIP_TAKE_AND_SWAP &&
+    swap.inputAmount.gt(ZERO_BI) &&
+    swap.outputAmount.gt(ZERO_BI)
+  ) {
     swap.save()
-  }
-
-  if (swap.inputAmount.lt(ZERO_BI)) {
-    log.error('Swap input amount is negative: {}', [swap.id.toString()])
-  }
-  if (swap.outputAmount.lt(ZERO_BI)) {
-    log.error('Swap output amount is negative: {}', [swap.id.toString()])
   }
 }
