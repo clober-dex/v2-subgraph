@@ -11,6 +11,7 @@ import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import { convertTokenToDecimal } from '../../common/utils'
 import {
   updateDayData,
+  updateTokenDayData,
   updateUserDayVolume,
   updateUserNativeVolume,
 } from '../interval-updates'
@@ -87,6 +88,11 @@ export function handleSwap(event: Swap): void {
 
     if (priceIn.gt(ZERO_BD)) {
       updateUserDayVolume(inputToken, event, inputAmountDecimal, swap.amountUSD)
+      const inputTokenDayData = updateTokenDayData(inputToken, priceIn, event)
+      inputTokenDayData.volume = inputAmountDecimal
+      inputTokenDayData.volumeUSD = swap.amountUSD
+      // exclude the protocol fee from the volume
+      inputTokenDayData.save()
     } else if (priceOut.gt(ZERO_BD)) {
       updateUserDayVolume(
         outputToken,
@@ -94,6 +100,15 @@ export function handleSwap(event: Swap): void {
         outputAmountDecimal,
         swap.amountUSD,
       )
+      const outputTokenDayData = updateTokenDayData(
+        outputToken,
+        priceOut,
+        event,
+      )
+      outputTokenDayData.volume = outputAmountDecimal
+      outputTokenDayData.volumeUSD = swap.amountUSD
+      // exclude the protocol fee from the volume
+      outputTokenDayData.save()
     }
     updateUserNativeVolume(
       event,
