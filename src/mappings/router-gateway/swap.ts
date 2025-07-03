@@ -89,8 +89,11 @@ export function handleSwap(event: Swap): void {
     if (priceIn.gt(ZERO_BD)) {
       updateUserDayVolume(inputToken, event, inputAmountDecimal, swap.amountUSD)
       const inputTokenDayData = updateTokenDayData(inputToken, priceIn, event)
-      inputTokenDayData.volume = inputAmountDecimal
-      inputTokenDayData.volumeUSD = swap.amountUSD
+      inputTokenDayData.volume =
+        inputTokenDayData.volume.plus(inputAmountDecimal)
+      inputTokenDayData.volumeUSD = inputTokenDayData.volumeUSD.plus(
+        swap.amountUSD,
+      )
       // exclude the protocol fee from the volume
       inputTokenDayData.save()
     } else if (priceOut.gt(ZERO_BD)) {
@@ -105,8 +108,11 @@ export function handleSwap(event: Swap): void {
         priceOut,
         event,
       )
-      outputTokenDayData.volume = outputAmountDecimal
-      outputTokenDayData.volumeUSD = swap.amountUSD
+      outputTokenDayData.volume =
+        outputTokenDayData.volume.plus(outputAmountDecimal)
+      outputTokenDayData.volumeUSD = outputTokenDayData.volumeUSD.plus(
+        swap.amountUSD,
+      )
       // exclude the protocol fee from the volume
       outputTokenDayData.save()
     }
