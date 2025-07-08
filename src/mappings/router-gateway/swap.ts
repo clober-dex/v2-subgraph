@@ -2,11 +2,12 @@ import { Bytes, ethereum, log } from '@graphprotocol/graph-ts'
 
 import { Swap } from '../../../generated/RouterGateway/RouterGateway'
 import {
+  RouterDayData,
   Swap as SwapEntity,
   Take as TakeEntity,
   Token,
 } from '../../../generated/schema'
-import { ZERO_BD, ZERO_BI } from '../../common/constants'
+import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import { convertTokenToDecimal } from '../../common/utils'
 import {
@@ -148,5 +149,21 @@ export function handleSwap(event: Swap): void {
     swap.outputAmount.gt(ZERO_BI)
   ) {
     swap.save()
+
+    const dayID = swap.timestamp.toI32() / 86400 // rounded
+    const routerDayID = swap.router
+      .toHexString()
+      .concat('-')
+      .concat(dayID.toString())
+    let routerDayData = RouterDayData.load(routerDayID)
+    if (routerDayData === null) {
+      routerDayData = new RouterDayData(routerDayID)
+      routerDayData.date = dayID
+      routerDayData.cloberDayData = dayID.toString()
+      routerDayData.router = swap.router
+      routerDayData.txCount = ZERO_BI
+    }
+    routerDayData.txCount = routerDayData.txCount.plus(ONE_BI)
+    routerDayData.save()
   }
 }

@@ -394,6 +394,7 @@ type CloberDayData @entity(immutable: false) {
   # derived fields
   tokenDayData: [TokenDayData!]! @derivedFrom(field: "cloberDayData")
   transactionTypes: [TransactionTypeDayData!]! @derivedFrom(field: "cloberDayData")
+  routerDayData: [RouterDayData!]! @derivedFrom(field: "cloberDayData")
 }
 
 type TransactionTypeDayData @entity(immutable: false) {
@@ -405,6 +406,20 @@ type TransactionTypeDayData @entity(immutable: false) {
   cloberDayData: CloberDayData!
   # type of transaction
   type: String!
+
+  # tx count
+  txCount: BigInt!
+}
+
+type RouterDayData @entity(immutable: false) {
+  # ${router}-${timestamp rounded to current day by dividing by 86400}
+  id: ID!
+  # timestamp rounded to current day by dividing by 86400
+  date: Int!
+  # pointer to clober day data
+  cloberDayData: CloberDayData!
+  # router of swap
+  router: Bytes!
 
   # tx count
   txCount: BigInt!
