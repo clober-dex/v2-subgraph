@@ -1,4 +1,4 @@
-import { ethereum, log } from '@graphprotocol/graph-ts'
+import { Bytes, ethereum, log } from '@graphprotocol/graph-ts'
 
 import { Swap } from '../../../generated/RouterGateway/RouterGateway'
 import {
@@ -85,6 +85,17 @@ export function handleSwap(event: Swap): void {
       outputAmountDecimal,
       priceOut,
     )
+    const inputArgs = event.transaction.input.slice(4)
+    const decoded = ethereum.decode(
+      '(address,address,uint256,uint256,address,bytes)',
+      Bytes.fromUint8Array(inputArgs),
+    )
+    if (decoded) {
+      const tuple = decoded.toTuple()
+      if (tuple.length >= 5) {
+        swap.router = tuple[4].toAddress()
+      }
+    }
 
     if (priceIn.gt(ZERO_BD)) {
       updateUserDayVolume(inputToken, event, inputAmountDecimal, swap.amountUSD)
