@@ -1,25 +1,23 @@
 import { Bytes, ethereum, log } from '@graphprotocol/graph-ts'
 
-import {
-  FeeCollected,
-  Swap,
-} from '../../../generated/RouterGateway/RouterGateway'
+import { FeeCollected, Swap } from '../../generated/RouterGateway/RouterGateway'
 import {
   RouterDayData,
   Swap as SwapEntity,
   Take as TakeEntity,
   Token,
-} from '../../../generated/schema'
-import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
-import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
-import { convertTokenToDecimal } from '../../common/utils'
+} from '../../generated/schema'
+import { ONE_BI, ZERO_BD, ZERO_BI } from '../common/constants'
+import { calculateValueUSD, getTokenUSDPriceFlat } from '../common/pricing'
+import { convertTokenToDecimal } from '../common/utils'
+import { SKIP_TAKE_AND_SWAP } from '../common/chain'
+
 import {
   updateDayData,
   updateTokenDayData,
   updateUserDayVolume,
   updateUserNativeVolume,
-} from '../interval-updates'
-import { SKIP_TAKE_AND_SWAP } from '../../common/chain'
+} from './interval-updates'
 
 const TAKE_EVENT_TOPIC =
   '0xc4c20b9c4a5ada3b01b7a391a08dd81a1be01dd8ef63170dd9da44ecee3db11b'
@@ -181,7 +179,7 @@ export function handleFeeCollected(event: FeeCollected): void {
       .concat(event.logIndex.minus(ONE_BI).toString()),
   )
   if (swap) {
-    const token = Token.load(event.params.token)
+    const token = Token.load(event.params.token)!
     const price = getTokenUSDPriceFlat(token)
     const feeAmountDecimal = convertTokenToDecimal(
       event.params.amount,

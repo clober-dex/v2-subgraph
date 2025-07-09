@@ -140,5 +140,5 @@ dataSources:
           receipt: true
         - event: FeeCollected(indexed address,indexed address,uint256)
           handler: handleFeeCollected
-      file: ./src/mappings/router-gateway/swap.ts
+      file: ./src/mappings/router-gateway.ts
   {{/hasRouterGateway}}
