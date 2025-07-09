@@ -600,4 +600,6 @@ type Swap @entity(immutable: true) {
   logIndex: BigInt
   # router address
   router: Bytes!
+  # fee in ouputToken wei
+  fee: BigInt!
 }

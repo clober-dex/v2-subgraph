@@ -1,6 +1,9 @@
 import { Bytes, ethereum, log } from '@graphprotocol/graph-ts'
 
-import { Swap } from '../../../generated/RouterGateway/RouterGateway'
+import {
+  FeeCollected,
+  Swap,
+} from '../../../generated/RouterGateway/RouterGateway'
 import {
   RouterDayData,
   Swap as SwapEntity,
@@ -64,6 +67,7 @@ export function handleSwap(event: Swap): void {
   swap.inputAmount = event.params.amountIn.minus(bookTakenIn)
   swap.outputAmount = event.params.amountOut.minus(bookTakenOut)
   swap.router = event.params.router
+  swap.fee = ZERO_BI
   if (
     inputToken &&
     outputToken &&
@@ -166,5 +170,36 @@ export function handleSwap(event: Swap): void {
     }
     routerDayData.txCount = routerDayData.txCount.plus(ONE_BI)
     routerDayData.save()
+  }
+}
+
+export function handleFeeCollected(event: FeeCollected): void {
+  const swap = SwapEntity.load(
+    event.transaction.hash
+      .toHexString()
+      .concat('-')
+      .concat(event.logIndex.minus(ONE_BI).toString()),
+  )
+  if (swap) {
+    const token = Token.load(event.params.token)
+    const price = getTokenUSDPriceFlat(token)
+    const feeAmountDecimal = convertTokenToDecimal(
+      event.params.amount,
+      token.decimals,
+    )
+    const tokenDayData = updateTokenDayData(token, price, event)
+    tokenDayData.protocolFees = tokenDayData.protocolFees.plus(feeAmountDecimal)
+    tokenDayData.protocolFeesUSD = tokenDayData.protocolFeesUSD.plus(
+      feeAmountDecimal.times(price),
+    )
+
+    swap.fee = event.params.amount
+
+    swap.save()
+    tokenDayData.save()
+  } else {
+    log.error('Swap not found for FeeCollected event: {}', [
+      event.transaction.hash.toHexString(),
+    ])
   }
 }
