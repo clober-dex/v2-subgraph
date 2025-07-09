@@ -63,6 +63,7 @@ export function handleSwap(event: Swap): void {
   swap.origin = event.transaction.from
   swap.inputAmount = event.params.amountIn.minus(bookTakenIn)
   swap.outputAmount = event.params.amountOut.minus(bookTakenOut)
+  swap.router = event.params.router
   if (
     inputToken &&
     outputToken &&
@@ -150,24 +151,20 @@ export function handleSwap(event: Swap): void {
   ) {
     swap.save()
 
-    // old function interface cant not decode the router address
-    if (swap.router !== null) {
-      const router = swap.router!
-      const dayID = swap.timestamp.toI32() / 86400 // rounded
-      const routerDayID = router
-        .toHexString()
-        .concat('-')
-        .concat(dayID.toString())
-      let routerDayData = RouterDayData.load(routerDayID)
-      if (routerDayData === null) {
-        routerDayData = new RouterDayData(routerDayID)
-        routerDayData.date = dayID
-        routerDayData.cloberDayData = dayID.toString()
-        routerDayData.router = router
-        routerDayData.txCount = ZERO_BI
-      }
-      routerDayData.txCount = routerDayData.txCount.plus(ONE_BI)
-      routerDayData.save()
+    const dayID = swap.timestamp.toI32() / 86400 // rounded
+    const routerDayID = swap.router
+      .toHexString()
+      .concat('-')
+      .concat(dayID.toString())
+    let routerDayData = RouterDayData.load(routerDayID)
+    if (routerDayData === null) {
+      routerDayData = new RouterDayData(routerDayID)
+      routerDayData.date = dayID
+      routerDayData.cloberDayData = dayID.toString()
+      routerDayData.router = swap.router
+      routerDayData.txCount = ZERO_BI
     }
+    routerDayData.txCount = routerDayData.txCount.plus(ONE_BI)
+    routerDayData.save()
   }
 }

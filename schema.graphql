@@ -599,5 +599,5 @@ type Swap @entity(immutable: true) {
   # index within the txn
   logIndex: BigInt
   # router address
-  router: Bytes
+  router: Bytes!
 }
