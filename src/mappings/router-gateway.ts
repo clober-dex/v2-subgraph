@@ -165,8 +165,8 @@ export function handleFeeCollected(event: FeeCollected): void {
       .concat('-')
       .concat(event.logIndex.minus(ONE_BI).toString()),
   )
-  if (swap) {
-    const token = Token.load(event.params.token)!
+  const token = Token.load(event.params.token)
+  if (swap && token) {
     const price = getTokenUSDPriceFlat(token)
     const feeAmountDecimal = convertTokenToDecimal(
       event.params.amount,
@@ -182,9 +182,5 @@ export function handleFeeCollected(event: FeeCollected): void {
 
     swap.save()
     tokenDayData.save()
-  } else {
-    log.error('Swap not found for FeeCollected event: {}', [
-      event.transaction.hash.toHexString(),
-    ])
   }
 }
