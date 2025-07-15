@@ -1,10 +1,9 @@
-import { ethereum, log } from '@graphprotocol/graph-ts'
+import { log } from '@graphprotocol/graph-ts'
 
 import { FeeCollected, Swap } from '../../generated/RouterGateway/RouterGateway'
 import {
   RouterDayData,
   Swap as SwapEntity,
-  Take as TakeEntity,
   Token,
 } from '../../generated/schema'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../common/constants'
@@ -19,34 +18,8 @@ import {
   updateUserNativeVolume,
 } from './interval-updates'
 
-const TAKE_EVENT_TOPIC =
-  '0xc4c20b9c4a5ada3b01b7a391a08dd81a1be01dd8ef63170dd9da44ecee3db11b'
-
 export function handleSwap(event: Swap): void {
   updateDayData(event)
-
-  const precedingTakeLogs = (
-    event.receipt as ethereum.TransactionReceipt
-  ).logs.filter((log) => log.topics[0].toHexString() == TAKE_EVENT_TOPIC)
-
-  let bookTakenIn = ZERO_BI
-  let bookTakenOut = ZERO_BI
-  for (let i = 0; i < precedingTakeLogs.length; i++) {
-    const log = precedingTakeLogs[i]
-    const takeID = event.transaction.hash
-      .toHexString()
-      .concat('-')
-      .concat(log.logIndex.toString())
-    const take = TakeEntity.load(takeID)
-    if (
-      take &&
-      event.params.inToken.equals(take.inputToken) &&
-      event.params.outToken.equals(take.outputToken)
-    ) {
-      bookTakenIn = bookTakenIn.plus(take.inputAmount)
-      bookTakenOut = bookTakenOut.plus(take.outputAmount)
-    }
-  }
 
   const inputToken = Token.load(event.params.inToken)
   const outputToken = Token.load(event.params.outToken)
@@ -62,8 +35,8 @@ export function handleSwap(event: Swap): void {
   swap.inputToken = event.params.inToken
   swap.outputToken = event.params.outToken
   swap.origin = event.transaction.from
-  swap.inputAmount = event.params.amountIn.minus(bookTakenIn)
-  swap.outputAmount = event.params.amountOut.minus(bookTakenOut)
+  swap.inputAmount = event.params.amountIn
+  swap.outputAmount = event.params.amountOut
   swap.router = event.params.router
   swap.fee = ZERO_BI
   if (
