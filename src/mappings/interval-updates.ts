@@ -140,7 +140,7 @@ export function updateUserDayVolume(
   event: ethereum.Event,
   volume: BigDecimal,
   volumeUSD: BigDecimal,
-): UserDayVolume {
+): void {
   if (SKIP_USER_ANALYTICS) {
     return
   }
@@ -167,8 +167,6 @@ export function updateUserDayVolume(
   userDayVolume.volume = userDayVolume.volume.plus(volume)
   userDayVolume.volumeUSD = userDayVolume.volumeUSD.plus(volumeUSD)
   userDayVolume.save()
-
-  return userDayVolume as UserDayVolume
 }
 
 export function updateBookDayData(
