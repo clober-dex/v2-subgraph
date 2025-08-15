@@ -453,7 +453,10 @@ export function handleTake(event: Take): void {
     const openOrder = OpenOrder.load(orderID.toString())
     if (openOrder === null) {
       currentOrderIndex = currentOrderIndex.plus(ONE_BI)
-      continue
+      // mathematically, continue is correct,
+      // but due to an issue on a specific testnet where events are duplicated or missing,
+      // it could cause an infinite loop, so changed to break
+      break
     }
 
     const openOrderRemainingUnitAmount = openOrder.unitAmount.minus(
