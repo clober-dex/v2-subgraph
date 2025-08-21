@@ -94,6 +94,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0x0fba475e92cfef19f7dbada8ec2cce4ad7bbc0d9'),
+    symbol: 'CULT',
+    name: 'TEST CULT',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0x164fd2c25e0d7c28496911f8f83649972f93a1d2'),
     symbol: 'MCA',
     name: 'Chewy',
@@ -193,6 +199,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x43d614b1ba4ba469faeaa4557aeafdec039b8795'),
     symbol: 'MOCKB',
     name: 'MockB',
+    decimals: BigInt.fromI32(6),
+  },
+  {
+    address: Address.fromString('0x4804916f7c16c20e1a557feb8e3e29418ddc54dc'),
+    symbol: 'wUSDC',
+    name: 'Wormhole USD Coin',
     decimals: BigInt.fromI32(6),
   },
   {
@@ -340,9 +352,21 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0x93c33b999230ee117863a82889fdb342cd6d5c64'),
+    symbol: 'GMONAD',
+    name: 'GMONAD',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0x93e9cae50424c7a4e3c5eceb7855b6dab74bc803'),
     symbol: 'NAP',
     name: 'Nad Poker',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0xa2426cd97583939e79cfc12ac6e9121e37d0904d'),
+    symbol: 'PINGU',
+    name: 'Pingu',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -355,6 +379,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0xa7bff4fba9719863912d528bb294b5018542d81f'),
     symbol: 'XAU-10x-250901',
     name: 'XAU 10x 2025-09-01',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0xabf39775d23c5b6c0782f3e35b51288bdaf946e2'),
+    symbol: 'CULT',
+    name: 'CULT',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -386,6 +416,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     symbol: 'WETH',
     name: 'Wrapped ETH',
     decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0xb5e5fa5837304fea6b9ce7e09623e63669ad95fb'),
+    symbol: 'NFT',
+    name: 'Mint Monad',
+    decimals: BigInt.fromI32(6),
   },
   {
     address: Address.fromString('0xbb444821e159dd6401bb92fb18c2ac0a37113025'),
@@ -445,6 +481,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0xd57e27d90e04eae2eecbc63ba28e433098f72855'),
     symbol: 'GOOGL-250516',
     name: 'GOOGL 2025-05-16',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0xda054a96254776346386060c480b42a10c870cd2'),
+    symbol: 'JERRY',
+    name: 'Jerry',
     decimals: BigInt.fromI32(18),
   },
   {
