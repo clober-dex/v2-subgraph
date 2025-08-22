@@ -20,8 +20,6 @@ export function handleUpdatePosition(event: UpdatePosition): void {
   const tokenB = getTokenOrLog(pool.tokenB, 'UPDATE_POSITION')
 
   if (tokenA && tokenB) {
-    pool.oraclePrice = event.params.oraclePrice
-
     pool.tickA = BigInt.fromI32(event.params.tickA)
     pool.priceARaw = tickToPrice(event.params.tickA)
     pool.priceA = formatPrice(pool.priceARaw, tokenB.decimals, tokenA.decimals)
