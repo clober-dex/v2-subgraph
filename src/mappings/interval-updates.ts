@@ -281,7 +281,6 @@ export function updatePoolDayData(
     poolDayData.protocolFeesTokenB = ZERO_BD
     poolDayData.protocolFeesAUSD = ZERO_BD
     poolDayData.protocolFeesBUSD = ZERO_BD
-    poolDayData.spreadProfitUSD = ZERO_BD
     poolDayData.totalValueLockedUSD = ZERO_BD
   }
   poolDayData.oraclePrice = pool.oraclePrice
@@ -326,7 +325,6 @@ export function updatePoolHourData(
     poolHourData.protocolFeesTokenB = ZERO_BD
     poolHourData.protocolFeesAUSD = ZERO_BD
     poolHourData.protocolFeesBUSD = ZERO_BD
-    poolHourData.spreadProfitUSD = ZERO_BD
     poolHourData.totalValueLockedUSD = ZERO_BD
   }
   poolHourData.oraclePrice = pool.oraclePrice
