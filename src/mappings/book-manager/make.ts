@@ -1,14 +1,14 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 
 import { Make } from '../../../generated/BookManager/BookManager'
-import { Depth, OpenOrder } from '../../../generated/schema'
+import { Depth, OpenOrder, Pool, Token } from '../../../generated/schema'
 import { unitToBase, unitToQuote } from '../../common/amount'
 import {
   formatInvertedPrice,
   formatPrice,
   tickToPrice,
 } from '../../common/tick'
-import { ZERO_BI } from '../../common/constants'
+import { BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
 import { encodeOrderID } from '../../common/order'
@@ -20,8 +20,57 @@ import {
 import {
   getBookOrLog,
   getOrCreateTransaction,
+  getPoolOrLog,
   getTokenOrLog,
 } from '../../common/entity-getters'
+import { LIQUIDITY_VAULT } from '../../common/chain'
+
+function updatePoolValuation(pool: Pool, quote: Token, base: Token): void {
+  const quoteUSDPrice = getTokenUSDPriceFlat(quote)
+  const baseUSDPrice = getTokenUSDPriceFlat(base)
+  const initialLpAmountDecimal = convertTokenToDecimal(
+    pool.initialTotalSupply,
+    BI_18, // assuming LP token has 18 decimals
+  )
+  // set initial LP price if not set
+  if (
+    pool.initialLPPriceUSD.equals(ZERO_BD) &&
+    initialLpAmountDecimal.gt(ZERO_BD) &&
+    pool.initialTokenAAmount.gt(ZERO_BI) &&
+    pool.initialTokenBAmount.gt(ZERO_BI)
+  ) {
+    const quoteInUSD = convertTokenToDecimal(
+      pool.initialTokenAAmount,
+      quote.decimals,
+    ).times(quoteUSDPrice)
+    const baseInUSD = convertTokenToDecimal(
+      pool.initialTokenBAmount,
+      base.decimals,
+    ).times(baseUSDPrice)
+    pool.initialLPPriceUSD = quoteInUSD
+      .plus(baseInUSD)
+      .div(initialLpAmountDecimal)
+  }
+
+  const lpAmountDecimal = convertTokenToDecimal(
+    pool.totalSupply,
+    BI_18, // assuming LP token has 18 decimals
+  )
+  if (lpAmountDecimal.gt(ZERO_BD)) {
+    const quoteInUSD = convertTokenToDecimal(
+      pool.liquidityA,
+      quote.decimals,
+    ).times(quoteUSDPrice)
+    const baseInUSD = convertTokenToDecimal(
+      pool.liquidityB,
+      base.decimals,
+    ).times(baseUSDPrice)
+    pool.lpPriceUSD = quoteInUSD.plus(baseInUSD).div(lpAmountDecimal)
+    pool.totalValueLockedUSD = pool.lpPriceUSD.times(lpAmountDecimal)
+  }
+
+  pool.save()
+}
 
 export function handleMake(event: Make): void {
   updateDayData(event)
@@ -138,5 +187,18 @@ export function handleMake(event: Make): void {
     quote.save()
     openOrder.save()
     depth.save()
+
+    // code from `handleUpdatePosition`
+    if (
+      book.pool !== null &&
+      Address.fromBytes(openOrder.owner).equals(
+        Address.fromString(LIQUIDITY_VAULT),
+      )
+    ) {
+      const pool = getPoolOrLog(book.pool!, 'MAKE')
+      if (pool) {
+        updatePoolValuation(pool, quote, base)
+      }
+    }
   }
 }

@@ -281,20 +281,12 @@ export function updatePoolDayData(
     poolDayData.protocolFeesTokenB = ZERO_BD
     poolDayData.protocolFeesAUSD = ZERO_BD
     poolDayData.protocolFeesBUSD = ZERO_BD
-    poolDayData.spreadProfitUSD = ZERO_BD
     poolDayData.totalValueLockedUSD = ZERO_BD
   }
-  poolDayData.oraclePrice = pool.oraclePrice
   poolDayData.totalSupply = pool.totalSupply
   poolDayData.liquidityA = pool.liquidityA
   poolDayData.liquidityB = pool.liquidityB
   poolDayData.lpPriceUSD = pool.lpPriceUSD
-  poolDayData.priceA = pool.priceA
-  poolDayData.priceARaw = pool.priceARaw
-  poolDayData.tickA = pool.tickA
-  poolDayData.priceB = pool.priceB
-  poolDayData.priceBRaw = pool.priceBRaw
-  poolDayData.tickB = pool.tickB
   poolDayData.totalValueLockedUSD = pool.totalValueLockedUSD
   poolDayData.save()
 
@@ -326,20 +318,12 @@ export function updatePoolHourData(
     poolHourData.protocolFeesTokenB = ZERO_BD
     poolHourData.protocolFeesAUSD = ZERO_BD
     poolHourData.protocolFeesBUSD = ZERO_BD
-    poolHourData.spreadProfitUSD = ZERO_BD
     poolHourData.totalValueLockedUSD = ZERO_BD
   }
-  poolHourData.oraclePrice = pool.oraclePrice
   poolHourData.totalSupply = pool.totalSupply
   poolHourData.liquidityA = pool.liquidityA
   poolHourData.liquidityB = pool.liquidityB
   poolHourData.lpPriceUSD = pool.lpPriceUSD
-  poolHourData.priceA = pool.priceA
-  poolHourData.priceARaw = pool.priceARaw
-  poolHourData.tickA = pool.tickA
-  poolHourData.priceB = pool.priceB
-  poolHourData.priceBRaw = pool.priceBRaw
-  poolHourData.tickB = pool.tickB
   poolHourData.totalValueLockedUSD = pool.totalValueLockedUSD
   poolHourData.save()
 

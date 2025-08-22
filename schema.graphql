@@ -252,8 +252,6 @@ type Pool @entity(immutable: false) {
   bookB: Book!
 
   # mutable values
-  # oracle price
-  oraclePrice: BigInt!
   # total supply of liquidity tokens
   totalSupply: BigInt!
   # total liquidity of tokenA
@@ -262,14 +260,6 @@ type Pool @entity(immutable: false) {
   liquidityB: BigInt!
   # current lp tracker
   lpPriceUSD: BigDecimal!
-  # current priceA tracker
-  priceA: BigDecimal!
-  priceARaw: BigInt!
-  tickA: BigInt!
-  # current priceB tracker
-  priceB: BigDecimal!
-  priceBRaw: BigInt!
-  tickB: BigInt!
   # all time tokenA swapped
   volumeTokenA: BigDecimal!
   # all time tokenB swapped
@@ -284,8 +274,6 @@ type Pool @entity(immutable: false) {
   protocolFeesAUSD: BigDecimal!
   # protocolFees in tokenB USD
   protocolFeesBUSD: BigDecimal!
-  # all time spread profit in USD
-  spreadProfitUSD: BigDecimal!
   # tvl USD
   totalValueLockedUSD: BigDecimal!
   # hourly snapshots of pool data
@@ -465,8 +453,6 @@ type PoolDayData @entity(immutable: false) {
   # pointer to pool
   pool: Pool!
 
-  # oracle price
-  oraclePrice: BigInt!
   # total supply of liquidity tokens
   totalSupply: BigInt!
   # total liquidity of tokenA
@@ -475,14 +461,6 @@ type PoolDayData @entity(immutable: false) {
   liquidityB: BigInt!
   # current lp tracker
   lpPriceUSD: BigDecimal!
-  # current priceA tracker
-  priceA: BigDecimal!
-  priceARaw: BigInt!
-  tickA: BigInt!
-  # current priceB tracker
-  priceB: BigDecimal!
-  priceBRaw: BigInt!
-  tickB: BigInt!
   # tokenA swapped
   volumeTokenA: BigDecimal!
   # tokenB swapped
@@ -497,8 +475,6 @@ type PoolDayData @entity(immutable: false) {
   protocolFeesAUSD: BigDecimal!
   # protocolFees in tokenB USD
   protocolFeesBUSD: BigDecimal!
-  # spread profit in USD
-  spreadProfitUSD: BigDecimal!
   # tvl derived in USD at end of period
   totalValueLockedUSD: BigDecimal!
 }
@@ -512,8 +488,6 @@ type PoolHourData @entity(immutable: false) {
   # pointer to pool
   pool: Pool!
 
-  # oracle price
-  oraclePrice: BigInt!
   # total supply of liquidity tokens
   totalSupply: BigInt!
   # total liquidity of tokenA
@@ -522,14 +496,6 @@ type PoolHourData @entity(immutable: false) {
   liquidityB: BigInt!
   # current lp tracker
   lpPriceUSD: BigDecimal!
-  # current priceA tracker
-  priceA: BigDecimal!
-  priceARaw: BigInt!
-  tickA: BigInt!
-  # current priceB tracker
-  priceB: BigDecimal!
-  priceBRaw: BigInt!
-  tickB: BigInt!
   # tokenA swapped
   volumeTokenA: BigDecimal!
   # tokenB swapped
@@ -544,8 +510,6 @@ type PoolHourData @entity(immutable: false) {
   protocolFeesAUSD: BigDecimal!
   # protocolFees in tokenB USD
   protocolFeesBUSD: BigDecimal!
-  # spread profit in USD
-  spreadProfitUSD: BigDecimal!
   # tvl derived in USD at end of period
   totalValueLockedUSD: BigDecimal!
 }

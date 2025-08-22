@@ -25,17 +25,10 @@ export function handlePoolOpen(event: Open): void {
     pool.bookA = bookA.id
     pool.bookB = bookB.id
 
-    pool.oraclePrice = ZERO_BI
     pool.totalSupply = ZERO_BI
     pool.liquidityA = ZERO_BI
     pool.liquidityB = ZERO_BI
     pool.lpPriceUSD = ZERO_BD
-    pool.priceA = ZERO_BD
-    pool.priceARaw = ZERO_BI
-    pool.tickA = ZERO_BI
-    pool.priceB = ZERO_BD
-    pool.priceBRaw = ZERO_BI
-    pool.tickB = ZERO_BI
     pool.volumeTokenA = ZERO_BD
     pool.volumeTokenB = ZERO_BD
     pool.volumeUSD = ZERO_BD
@@ -43,7 +36,6 @@ export function handlePoolOpen(event: Open): void {
     pool.protocolFeesTokenB = ZERO_BD
     pool.protocolFeesAUSD = ZERO_BD
     pool.protocolFeesBUSD = ZERO_BD
-    pool.spreadProfitUSD = ZERO_BD
     pool.totalValueLockedUSD = ZERO_BD
 
     // bind book to pool
