@@ -287,12 +287,6 @@ export function updatePoolDayData(
   poolDayData.liquidityA = pool.liquidityA
   poolDayData.liquidityB = pool.liquidityB
   poolDayData.lpPriceUSD = pool.lpPriceUSD
-  poolDayData.priceA = pool.priceA
-  poolDayData.priceARaw = pool.priceARaw
-  poolDayData.tickA = pool.tickA
-  poolDayData.priceB = pool.priceB
-  poolDayData.priceBRaw = pool.priceBRaw
-  poolDayData.tickB = pool.tickB
   poolDayData.totalValueLockedUSD = pool.totalValueLockedUSD
   poolDayData.save()
 
@@ -330,12 +324,6 @@ export function updatePoolHourData(
   poolHourData.liquidityA = pool.liquidityA
   poolHourData.liquidityB = pool.liquidityB
   poolHourData.lpPriceUSD = pool.lpPriceUSD
-  poolHourData.priceA = pool.priceA
-  poolHourData.priceARaw = pool.priceARaw
-  poolHourData.tickA = pool.tickA
-  poolHourData.priceB = pool.priceB
-  poolHourData.priceBRaw = pool.priceBRaw
-  poolHourData.tickB = pool.tickB
   poolHourData.totalValueLockedUSD = pool.totalValueLockedUSD
   poolHourData.save()
 

@@ -1,11 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts'
-
 import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
-import {
-  formatInvertedPrice,
-  formatPrice,
-  tickToPrice,
-} from '../../common/tick'
 import { BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { UpdatePosition } from '../../../generated/SimpleOracleStrategy/SimpleOracleStrategy'
@@ -20,18 +13,6 @@ export function handleUpdatePosition(event: UpdatePosition): void {
   const tokenB = getTokenOrLog(pool.tokenB, 'UPDATE_POSITION')
 
   if (tokenA && tokenB) {
-    pool.tickA = BigInt.fromI32(event.params.tickA)
-    pool.priceARaw = tickToPrice(event.params.tickA)
-    pool.priceA = formatPrice(pool.priceARaw, tokenB.decimals, tokenA.decimals)
-
-    pool.tickB = BigInt.fromI32(event.params.tickB)
-    pool.priceBRaw = tickToPrice(event.params.tickB)
-    pool.priceB = formatInvertedPrice(
-      pool.priceBRaw,
-      tokenA.decimals,
-      tokenB.decimals,
-    )
-
     const tokenAUSDPrice = getTokenUSDPriceFlat(tokenA)
     const tokenBUSDPrice = getTokenUSDPriceFlat(tokenB)
     const initialLpAmountDecimal = convertTokenToDecimal(
