@@ -10,6 +10,7 @@ export enum NETWORK {
   RISE_SEPOLIA = 'rise-sepolia',
   ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
   BERACHAIN_MAINNET = 'berachain-mainnet',
+  GIWA_SEPOLIA = 'giwa-sepolia',
 }
 
 const CHAIN_CONSTANTS_FILE_NAME = 'chain.ts'
