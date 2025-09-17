@@ -89,26 +89,6 @@ dataSources:
         - event: Burn(indexed address,indexed bytes32,uint256,uint256,uint256,uint256,uint256)
           handler: handleBurn
       file: ./src/mappings/core.ts
-  - kind: ethereum
-    name: SimpleOracleStrategy
-    network: {{ network }}
-    source:
-      abi: SimpleOracleStrategy
-      address: "{{ SimpleOracleStrategy.address }}"
-      startBlock: {{ SimpleOracleStrategy.startBlock }}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - Pool
-      abis:
-        - name: SimpleOracleStrategy
-          file: ./abis/SimpleOracleStrategy.json
-      eventHandlers:
-        - event: UpdatePosition(indexed bytes32,uint256,int24,int24,uint256)
-          handler: handleUpdatePosition
-      file: ./src/mappings/core.ts
   {{#hasRouterGateway}}
   - kind: ethereum
     name: RouterGateway
