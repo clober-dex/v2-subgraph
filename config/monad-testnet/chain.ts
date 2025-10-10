@@ -1,6 +1,6 @@
 import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts'
-export const SKIP_TAKE_AND_SWAP = false
-export const SKIP_TX_ANALYTICS = false
+export const SKIP_TAKE_AND_SWAP = true
+export const SKIP_TX_ANALYTICS = true
 export const SKIP_USER_ANALYTICS = false
 export const LIQUIDITY_VAULT = '0x6d8fa3025b6d6604309ca257563cca358c0cf1aa'
 
@@ -106,9 +106,21 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0x1657e623c89d3b8ebcf18e6dd2c0a16d37668de8'),
+    symbol: 'FRENS ',
+    name: 'FRENS ON MONAD ',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0x199c0da6f291a897302300aaae4f20d139162916'),
     symbol: 'stMON',
     name: 'Staked Monad',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x19b05d5474e820d99c0aa588e6d9cdb61884e174'),
+    symbol: '....',
+    name: '....',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -172,6 +184,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(8),
   },
   {
+    address: Address.fromString('0x369cd1e20fa7ea1f8e6dc0759709ba0bd978abe7'),
+    symbol: 'SOL',
+    name: 'Wrapped SOL',
+    decimals: BigInt.fromI32(9),
+  },
+  {
     address: Address.fromString('0x3a98250f98dd388c211206983453837c8365bdc1'),
     symbol: 'shMON',
     name: 'ShMonad',
@@ -181,6 +199,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x3b37b6d72c8149b35f160cdd87f974dd293a094a'),
     symbol: 'RWAGMI',
     name: 'RWAGMI ',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x3bb9afb94c82752e47706a10779ea525cf95dc27'),
+    symbol: 'WNative',
+    name: 'WNative',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -220,6 +244,18 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0x4a5c952c446d5c4bba9f4517b473ec1718c5f27a'),
+    symbol: 'BUN',
+    name: 'BUN',
+    decimals: BigInt.fromI32(6),
+  },
+  {
+    address: Address.fromString('0x4aa50e8208095d9594d18e8e3008abb811125dce'),
+    symbol: 'MOON',
+    name: 'Moon',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0x4c632c40c2dcd39c20ee7ecdd6f9743a3c7ffe6b'),
     symbol: 'TED',
     name: 'Teeeed',
@@ -250,6 +286,24 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0x57c914e3240c837ebe87f096e0b4d9a06e3f489b'),
+    symbol: 'monUSD',
+    name: 'Tadle Monad USD',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x5bcae476d0f29e520597126c1a4394157aec6783'),
+    symbol: 'GMONAD',
+    name: 'Gmonad',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x5c50751a90275c14839ffa476530b8048bf09bb0'),
+    symbol: 'YMTA',
+    name: 'Yamata Token',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0x5d876d73f4441d5f2438b1a3e2a51771b337f27a'),
     symbol: 'USDC',
     name: 'USD Coin',
@@ -277,6 +331,18 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x6593f49ca8d3038ca002314c187b63dd348c2f94'),
     symbol: 'USDT',
     name: 'MockUSDT',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x69c29fe56771f295a73af25cc70edf58af5954d5'),
+    symbol: '$GANG',
+    name: 'MONGANG',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x6c202e06681449a08b4047afa4aef2bd8106fe7b'),
+    symbol: 'Monfa',
+    name: 'Mon Family ',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -313,6 +379,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x7aff20af80321c12211583e60f40c068398a53c7'),
     symbol: 'BTC',
     name: 'BTC',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x7bcf100441d17671b347e31023fe3757358f0ecf'),
+    symbol: '...',
+    name: '...',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -364,6 +436,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0x9febaf65026b87a358fb981fbff50c780a90ab5b'),
+    symbol: 'CHUG',
+    name: 'SM_CHUG',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0xa2426cd97583939e79cfc12ac6e9121e37d0904d'),
     symbol: 'PINGU',
     name: 'Pingu',
@@ -379,6 +457,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0xa7bff4fba9719863912d528bb294b5018542d81f'),
     symbol: 'XAU-10x-250901',
     name: 'XAU 10x 2025-09-01',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0xa998716fdc8da0bd024235dd208a70d257eca763'),
+    symbol: 'APR',
+    name: 'APR',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -412,6 +496,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0xb5481b57ff4e23ea7d2fda70f3137b16d0d99118'),
+    symbol: 'CVE',
+    name: 'Curvance Collective',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0xb5a30b0fdc5ea94a52fdc42e3e9760cb8449fb37'),
     symbol: 'WETH',
     name: 'Wrapped ETH',
@@ -433,6 +523,18 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0xbbf6e450f631c327746284a317bc81a4bc2134cf'),
     symbol: 'wCLV-HIVE-USDC',
     name: 'Wrapped Clober Liquidity Vault HIVE-USDC',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0xc30985471ce0aeb54736a6e81ea225e28f9b004b'),
+    symbol: 'SQUAD',
+    name: 'The 10k Squad NEW',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0xc790b8c949b016e6eed8e3fb0924b704ef26f0cb'),
+    symbol: 'MOANA',
+    name: 'Moana',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -466,6 +568,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0xceb564775415b524640d9f688278490a7f3ef9cd'),
+    symbol: 'iceMON',
+    name: 'Talentum Wrapped MON',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0xcf5a6076cfa32686c0df13abada2b40dec133f1d'),
     symbol: 'WBTC',
     name: 'Wrapped BTC',
@@ -481,6 +589,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0xd57e27d90e04eae2eecbc63ba28e433098f72855'),
     symbol: 'GOOGL-250516',
     name: 'GOOGL 2025-05-16',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0xd5b9f5c584b8f3f0a446b18cbad1eaaa72003b87'),
+    symbol: 'WIK',
+    name: 'SM_WIK_THE_PERPL_MASCOT',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -502,6 +616,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(8),
   },
   {
+    address: Address.fromString('0xdd39b38342ebbd26200a19471ea99ae9220d5147'),
+    symbol: 'GANG',
+    name: 'MONGANG',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0xe0590015a873bf326bd645c3e1266d4db41c4e6b'),
     symbol: 'CHOG',
     name: 'Chog',
@@ -511,96 +631,6 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0xe1d2439b75fb9746e7bc6cb777ae10aa7f7ef9c5'),
     symbol: 'sMON',
     name: 'Kintsu Staked Monad',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xe5eef813563dfbcc3cabc979d889f6e08d1bc6c9'),
-    symbol: 'wCLV-gMON-MON',
-    name: 'Wrapped Clober Liquidity Vault gMON-MON',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xe62448c986499e930a95e782885a5bbaf28ad22e'),
-    symbol: 'BTC',
-    name: 'BTC',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xe679feda8b57d7ba66c240d13f1fc26a38b4e01a'),
-    symbol: 'BTC',
-    name: 'BTC',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xe9e6cef9043a64b0284afe5993da11c1381bbc72'),
-    symbol: 'BTC-250401',
-    name: 'BTC 2025-04-01',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xe9f4c0093b4e94800487cad93fbbf7c3729ccf5c'),
-    symbol: 'MLDK',
-    name: 'MOLANDAK COIN',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xea1dd40be540228a127ddc7a36d9c37a55e439c4'),
-    symbol: 'TBTC',
-    name: 'TBTC',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xeb441902ac56ae1340e178fbccb3ce5890206fca'),
-    symbol: 'sdrWETH',
-    name: 'Sumer WETH Deposit',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xec884fe8df2dc08d6d6f2eb671351e10a14bae7c'),
-    symbol: 'US30Y-30x-250901',
-    name: 'US30Y 30x 2025-09-01',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xf62f63169ca4085af82c3a147475efde3edd4b50'),
-    symbol: 'HIVE',
-    name: 'Hive Stablecoin',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xf817257fed379853cde0fa4f97ab987181b1e5ea'),
-    symbol: 'USDC',
-    name: 'USD Coin',
-    decimals: BigInt.fromI32(6),
-  },
-  {
-    address: Address.fromString('0xf8f1b89073e2a8443ae9a2b070aa353545e283c7'),
-    symbol: 'S&P500-250701',
-    name: 'S&P 500 2025-07-01',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xf99e8acf8740185407a67e09b51e6e574ace3f6c'),
-    symbol: 'wCLV-muBOND-USDC',
-    name: 'Wrapped Clober Liquidity Vault muBOND-USDC',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xfa47b094a9666422848f459b54dab88b0e8255e9'),
-    symbol: 'MONKA',
-    name: 'MONKA GIGA',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xfd64eb341d7811efee1e2a7e1d9a40a4e1de9487'),
-    symbol: 'FROST',
-    name: 'FROST',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0xfe140e1dce99be9f4f15d657cd9b7bf622270c50'),
-    symbol: 'YAKI',
-    name: 'Moyaki',
     decimals: BigInt.fromI32(18),
   },
 ]
