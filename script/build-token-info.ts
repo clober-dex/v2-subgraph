@@ -19,7 +19,7 @@ async function main(): Promise<void> {
     },
     body: JSON.stringify({
       query: `{
-        tokens {
+        tokens (first:1000) {
           id
           name
           symbol
