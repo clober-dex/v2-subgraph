@@ -45,7 +45,11 @@ import {
   encodeChartLogID,
   encodeMarketCode,
 } from '../../common/chart'
-import { LIQUIDITY_VAULT, SKIP_TAKE_AND_SWAP } from '../../common/chain'
+import {
+  LIQUIDITY_VAULT,
+  SKIP_CHART,
+  SKIP_TAKE_AND_SWAP,
+} from '../../common/chain'
 
 function fillOpenOrder(
   openOrder: OpenOrder,
@@ -417,14 +421,16 @@ export function handleTake(event: Take): void {
   baseDayData.protocolFeesUSD =
     baseDayData.protocolFeesUSD.plus(protocolFeesTotalUSD)
 
-  updateChart(
-    event.block,
-    takenBaseAmountDecimal,
-    takenQuoteAmountDecimal,
-    book,
-    base,
-    quote,
-  )
+  if (!SKIP_CHART) {
+    updateChart(
+      event.block,
+      takenBaseAmountDecimal,
+      takenQuoteAmountDecimal,
+      book,
+      base,
+      quote,
+    )
+  }
 
   const take = new TakeEntity(
     event.transaction.hash
