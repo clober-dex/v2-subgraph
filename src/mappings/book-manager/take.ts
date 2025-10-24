@@ -462,7 +462,7 @@ export function handleTake(event: Take): void {
       // mathematically, continue is correct,
       // but due to an issue on a specific testnet where events are duplicated or missing,
       // it could cause an infinite loop, so changed to break
-      break
+      continue
     }
 
     const openOrderRemainingUnitAmount = openOrder.unitAmount.minus(
