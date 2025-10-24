@@ -1,5 +1,5 @@
 import { Address, BigDecimal, BigInt } from '@graphprotocol/graph-ts'
-export const SKIP_CHART = false
+export const SKIP_CHART = true
 export const SKIP_TAKE_AND_SWAP = true
 export const SKIP_TX_ANALYTICS = true
 export const SKIP_USER_ANALYTICS = false
@@ -183,6 +183,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     symbol: 'monWBTC',
     name: 'monWBTC',
     decimals: BigInt.fromI32(8),
+  },
+  {
+    address: Address.fromString('0x3552f8254263ea8880c7f7e25cb8dbbd79c0c4b1'),
+    symbol: 'BMONAD',
+    name: 'buja 💜Monad💜',
+    decimals: BigInt.fromI32(18),
   },
   {
     address: Address.fromString('0x369cd1e20fa7ea1f8e6dc0759709ba0bd978abe7'),
