@@ -123,8 +123,6 @@ type OpenOrder @entity(immutable: false) {
   # immutable values
   # orderId
   id: ID!
-  # which txn the make was included in
-  transaction: Transaction!
   # time of txn
   timestamp: BigInt!
   # book position is within

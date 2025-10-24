@@ -17,11 +17,7 @@ import {
   updateDayData,
   updateTokenDayData,
 } from '../interval-updates'
-import {
-  getBookOrLog,
-  getOrCreateTransaction,
-  getTokenOrLog,
-} from '../../common/entity-getters'
+import { getBookOrLog, getTokenOrLog } from '../../common/entity-getters'
 
 export function handleMake(event: Make): void {
   updateDayData(event)
@@ -64,11 +60,8 @@ export function handleMake(event: Make): void {
     book.totalValueLocked = book.totalValueLocked.plus(quoteAmountDecimal)
     book.totalValueLockedUSD = book.totalValueLocked.times(quoteInUSD)
 
-    const transaction = getOrCreateTransaction(event)
-
     // open order data
     const openOrder = new OpenOrder(orderID.toString())
-    openOrder.transaction = transaction.id
     openOrder.timestamp = event.block.timestamp
     openOrder.book = book.id
     openOrder.quote = quote.id
