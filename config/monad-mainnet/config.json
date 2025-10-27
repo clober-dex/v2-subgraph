@@ -1,0 +1,20 @@
+{
+  "network": "monad-mainnet",
+  "BookManager": {
+    "address": "0x6657d192273731C3cAc646cc82D5F28D0CBE8CCC",
+    "startBlock": 31662843
+  },
+  "LiquidityVault": {
+    "address": "0x0000000000000000000000000000000000000000",
+    "startBlock": 31662843
+  },
+  "SimpleOracleStrategy": {
+    "address": "0x0000000000000000000000000000000000000000",
+    "startBlock": 31662843
+  },
+  "hasRouterGateway": true,
+  "RouterGateway": {
+    "address": "0x7B58A24C5628881a141D630f101Db433D419B372",
+    "startBlock": 31676493
+  }
+}
