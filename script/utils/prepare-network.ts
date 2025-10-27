@@ -7,6 +7,7 @@ import { Argv } from './argv'
 
 export enum NETWORK {
   MONAD_TESTNET = 'monad-testnet',
+  MONAD_MAINNET = 'monad-mainnet',
   RISE_SEPOLIA = 'rise-sepolia',
   ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
   BERACHAIN_MAINNET = 'berachain-mainnet',
