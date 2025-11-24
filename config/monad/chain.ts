@@ -4,8 +4,7 @@ export const SKIP_TAKE_AND_SWAP = false
 export const SKIP_TX_ANALYTICS = false
 export const SKIP_USER_ANALYTICS = false
 
-// TODO
-export const LIQUIDITY_VAULT = '0x0000000000000000000000000000000000000000'
+export const LIQUIDITY_VAULT = '0xb09684f5486d1af80699bbc27f14dd5a905da873'
 
 export class TokenDefinition {
   address: Address
