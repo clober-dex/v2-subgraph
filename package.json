@@ -8,7 +8,8 @@
     "remove-local": "graph remove --node http://localhost:8020/ v2-core-subgraph",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 v2-core-subgraph --network localhost",
     "test": "graph test -d",
-    "build-token-info": "cross-env ts-node ./script/build-token-info"
+    "build-token-info": "cross-env ts-node ./script/build-token-info",
+    "clean": "rm -f tokens.txt && rm -f subgraph.yaml && graph clean"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.97.1",
