@@ -31,7 +31,7 @@ export const STABLE_COINS: string[] = [
   '0x111111d2bf19e43c34263401e0cad979ed1cdb61', // USD1
 ]
 
-export const MINIMUM_USD_LOCKED = BigDecimal.fromString('100')
+export const MINIMUM_USD_LOCKED = BigDecimal.fromString('0')
 
 export const REFERENCE_TOKEN = '0x3bd359c1119da7da1d913d1c4d2b7c461115433a'
 
@@ -112,6 +112,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x512d423a83cd283f23bd1499fcd5cdaa0bd62b07'),
     symbol: 'GONAD',
     name: 'GONAD',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x5a7ce0f36eefbc8c2efdc643043d19775b648888'),
+    symbol: 'DO NOT BUY',
+    name: 'Test monday',
     decimals: BigInt.fromI32(18),
   },
   {
