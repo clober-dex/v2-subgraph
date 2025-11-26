@@ -59,22 +59,22 @@ export function handleUpdatePosition(event: UpdatePosition): void {
         .div(initialLpAmountDecimal)
     }
 
-    // const lpAmountDecimal = convertTokenToDecimal(
-    //   pool.totalSupply,
-    //   BI_18, // assuming LP token has 18 decimals
-    // )
-    // if (lpAmountDecimal.gt(ZERO_BD)) {
-    //   const amountAInUSD = convertTokenToDecimal(
-    //     pool.liquidityA,
-    //     tokenA.decimals,
-    //   ).times(tokenAUSDPrice)
-    //   const amountBInUSD = convertTokenToDecimal(
-    //     pool.liquidityB,
-    //     tokenB.decimals,
-    //   ).times(tokenBUSDPrice)
-    //   pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
-    //   pool.totalValueLockedUSD = pool.lpPriceUSD.times(lpAmountDecimal)
-    // }
+    const lpAmountDecimal = convertTokenToDecimal(
+      pool.totalSupply,
+      BI_18, // assuming LP token has 18 decimals
+    )
+    if (lpAmountDecimal.gt(ZERO_BD)) {
+      const amountAInUSD = convertTokenToDecimal(
+        pool.liquidityA,
+        tokenA.decimals,
+      ).times(tokenAUSDPrice)
+      const amountBInUSD = convertTokenToDecimal(
+        pool.liquidityB,
+        tokenB.decimals,
+      ).times(tokenBUSDPrice)
+      pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
+      pool.totalValueLockedUSD = pool.lpPriceUSD.times(lpAmountDecimal)
+    }
 
     pool.save()
   }
