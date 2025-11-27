@@ -142,6 +142,7 @@ export function handleFeeCollected(event: FeeCollected): void {
       token.decimals,
     )
     const feeAmountUSD = feeAmountDecimal.times(price)
+    // update token fees
     token.routerGatewayProtocolFee =
       token.routerGatewayProtocolFee.plus(feeAmountDecimal)
     token.routerGatewayProtocolFeeUSD =
@@ -150,6 +151,7 @@ export function handleFeeCollected(event: FeeCollected): void {
     token.protocolFeesUSD = token.protocolFeesUSD.plus(feeAmountUSD)
 
     const tokenDayData = updateTokenDayData(token, price, event)
+    // update token day data fees
     tokenDayData.routerGatewayProtocolFee =
       tokenDayData.routerGatewayProtocolFee.plus(feeAmountDecimal)
     tokenDayData.routerGatewayProtocolFeeUSD =

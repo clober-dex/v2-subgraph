@@ -378,6 +378,8 @@ export function handleTake(event: Take): void {
   quote.priceUSD = quoteInUSD
   quote.volume = quote.volume.plus(takenQuoteAmountDecimal)
   quote.volumeUSD = quote.volumeUSD.plus(amountTotalUSD)
+
+  // update quote protocol fees
   quote.liquidityVaultProtocolFee =
     quote.liquidityVaultProtocolFee.plus(protocolFeesQuote)
   quote.liquidityVaultProtocolFeeUSD =
@@ -391,6 +393,8 @@ export function handleTake(event: Take): void {
   base.priceUSD = baseInUSD
   base.volume = base.volume.plus(takenBaseAmountDecimal)
   base.volumeUSD = base.volumeUSD.plus(amountTotalUSD)
+
+  // update base protocol fees
   base.liquidityVaultProtocolFee =
     base.liquidityVaultProtocolFee.plus(protocolFeesBase)
   base.liquidityVaultProtocolFeeUSD =
@@ -419,6 +423,8 @@ export function handleTake(event: Take): void {
 
   quoteDayData.volume = quoteDayData.volume.plus(takenQuoteAmountDecimal)
   quoteDayData.volumeUSD = quoteDayData.volumeUSD.plus(amountTotalUSD)
+
+  // update quote protocol fees
   quoteDayData.liquidityVaultProtocolFee =
     quoteDayData.liquidityVaultProtocolFee.plus(protocolFeesQuote)
   quoteDayData.liquidityVaultProtocolFeeUSD =
@@ -429,6 +435,8 @@ export function handleTake(event: Take): void {
 
   baseDayData.volume = baseDayData.volume.plus(takenBaseAmountDecimal)
   baseDayData.volumeUSD = baseDayData.volumeUSD.plus(amountTotalUSD)
+
+  // update base protocol fees
   baseDayData.liquidityVaultProtocolFee =
     baseDayData.liquidityVaultProtocolFee.plus(protocolFeesBase)
   baseDayData.liquidityVaultProtocolFeeUSD =
