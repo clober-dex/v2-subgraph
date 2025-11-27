@@ -141,15 +141,27 @@ export function handleFeeCollected(event: FeeCollected): void {
       event.params.amount,
       token.decimals,
     )
+    const feeAmountUSD = feeAmountDecimal.times(price)
+    token.routerGatewayProtocolFee =
+      token.routerGatewayProtocolFee.plus(feeAmountDecimal)
+    token.routerGatewayProtocolFeeUSD =
+      token.routerGatewayProtocolFeeUSD.plus(feeAmountUSD)
+    token.protocolFees = token.protocolFees.plus(feeAmountDecimal)
+    token.protocolFeesUSD = token.protocolFeesUSD.plus(feeAmountUSD)
+
     const tokenDayData = updateTokenDayData(token, price, event)
+    tokenDayData.routerGatewayProtocolFee =
+      tokenDayData.routerGatewayProtocolFee.plus(feeAmountDecimal)
+    tokenDayData.routerGatewayProtocolFeeUSD =
+      tokenDayData.routerGatewayProtocolFeeUSD.plus(feeAmountUSD)
     tokenDayData.protocolFees = tokenDayData.protocolFees.plus(feeAmountDecimal)
-    tokenDayData.protocolFeesUSD = tokenDayData.protocolFeesUSD.plus(
-      feeAmountDecimal.times(price),
-    )
+    tokenDayData.protocolFeesUSD =
+      tokenDayData.protocolFeesUSD.plus(feeAmountUSD)
 
     swap.fee = event.params.amount
 
     swap.save()
+    token.save()
     tokenDayData.save()
   }
 }

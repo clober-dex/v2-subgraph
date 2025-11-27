@@ -378,6 +378,10 @@ export function handleTake(event: Take): void {
   quote.priceUSD = quoteInUSD
   quote.volume = quote.volume.plus(takenQuoteAmountDecimal)
   quote.volumeUSD = quote.volumeUSD.plus(amountTotalUSD)
+  quote.liquidityVaultProtocolFee =
+    quote.liquidityVaultProtocolFee.plus(protocolFeesQuote)
+  quote.liquidityVaultProtocolFeeUSD =
+    quote.liquidityVaultProtocolFeeUSD.plus(protocolFeesTotalUSD)
   quote.protocolFees = quote.protocolFees.plus(protocolFeesQuote)
   quote.protocolFeesUSD = quote.protocolFeesUSD.plus(protocolFeesTotalUSD)
   quote.totalValueLocked = quote.totalValueLocked.minus(takenQuoteAmountDecimal)
@@ -387,6 +391,10 @@ export function handleTake(event: Take): void {
   base.priceUSD = baseInUSD
   base.volume = base.volume.plus(takenBaseAmountDecimal)
   base.volumeUSD = base.volumeUSD.plus(amountTotalUSD)
+  base.liquidityVaultProtocolFee =
+    base.liquidityVaultProtocolFee.plus(protocolFeesBase)
+  base.liquidityVaultProtocolFeeUSD =
+    base.liquidityVaultProtocolFeeUSD.plus(protocolFeesTotalUSD)
   base.protocolFees = base.protocolFees.plus(protocolFeesBase)
   base.protocolFeesUSD = base.protocolFeesUSD.plus(protocolFeesTotalUSD)
   // note: do not update base.totalValueLocked
@@ -411,12 +419,20 @@ export function handleTake(event: Take): void {
 
   quoteDayData.volume = quoteDayData.volume.plus(takenQuoteAmountDecimal)
   quoteDayData.volumeUSD = quoteDayData.volumeUSD.plus(amountTotalUSD)
+  quoteDayData.liquidityVaultProtocolFee =
+    quoteDayData.liquidityVaultProtocolFee.plus(protocolFeesQuote)
+  quoteDayData.liquidityVaultProtocolFeeUSD =
+    quoteDayData.liquidityVaultProtocolFeeUSD.plus(protocolFeesTotalUSD)
   quoteDayData.protocolFees = quoteDayData.protocolFees.plus(protocolFeesQuote)
   quoteDayData.protocolFeesUSD =
     quoteDayData.protocolFeesUSD.plus(protocolFeesTotalUSD)
 
   baseDayData.volume = baseDayData.volume.plus(takenBaseAmountDecimal)
   baseDayData.volumeUSD = baseDayData.volumeUSD.plus(amountTotalUSD)
+  baseDayData.liquidityVaultProtocolFee =
+    baseDayData.liquidityVaultProtocolFee.plus(protocolFeesBase)
+  baseDayData.liquidityVaultProtocolFeeUSD =
+    baseDayData.liquidityVaultProtocolFeeUSD.plus(protocolFeesTotalUSD)
   baseDayData.protocolFees = baseDayData.protocolFees.plus(protocolFeesBase)
   baseDayData.protocolFeesUSD =
     baseDayData.protocolFeesUSD.plus(protocolFeesTotalUSD)
