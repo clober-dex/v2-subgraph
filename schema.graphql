@@ -305,6 +305,30 @@ type User @entity(immutable: false) {
   userDayData: [UserDayData!]! @derivedFrom(field: "user")
 }
 
+type UserPoolBalance @entity(immutable: false) {
+  # `${user}-${pool}`
+  id: ID!
+
+  # pointers
+  user: User!
+  pool: Pool!
+
+  # current LP token balance of the user
+  lpBalance: BigDecimal!
+
+  # current value of LP (in USD)
+  lpBalanceUSD: BigDecimal!
+
+  # accumulated cost basis in USD (tolal amount of USD spent to acquire current LP balance)
+  costBasisUSD: BigDecimal!
+
+  # average entry price of LP (average USD price per LP token based on cost basis = costBasisUSD / lpBalance)
+  averageLPPriceUSD: BigDecimal!
+
+  # unrealized PnL in USD = lpBalanceUSD - costBasisUSD
+  pnlUSD: BigDecimal!
+}
+
 type BookDayData @entity(immutable: false) {
   # `${bookId}-{periodStartUnix}`
   id: ID!

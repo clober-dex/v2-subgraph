@@ -8,6 +8,7 @@ import {
   Token,
   Transaction,
   User,
+  UserPoolBalance,
 } from '../../generated/schema'
 
 import { ZERO_BD } from './constants'
@@ -84,4 +85,26 @@ export function getPoolOrLog(poolID: Bytes, eventType: string): Pool | null {
     log.error('[{}] Pool not found: {}', [eventType, poolID.toHexString()])
   }
   return pool
+}
+
+export function getOrCreateUserPoolBalance(
+  userID: Bytes,
+  poolID: Bytes,
+): UserPoolBalance {
+  const key = userID.toHexString().concat('-').concat(poolID.toHexString())
+  let userPoolBalance = UserPoolBalance.load(key)
+  if (userPoolBalance === null) {
+    userPoolBalance = new UserPoolBalance(key)
+    userPoolBalance.user = userID
+    userPoolBalance.pool = poolID
+    userPoolBalance.lpBalance = ZERO_BD
+    userPoolBalance.lpBalanceUSD = ZERO_BD
+
+    userPoolBalance.costBasisUSD = ZERO_BD
+    userPoolBalance.averageLPPriceUSD = ZERO_BD
+    userPoolBalance.pnlUSD = ZERO_BD
+
+    userPoolBalance.save()
+  }
+  return userPoolBalance
 }

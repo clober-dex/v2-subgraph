@@ -55,7 +55,7 @@ dataSources:
         - event: Claim(indexed uint256,uint64)
           handler: handleClaim
         - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
+          handler: handleBookManagerTransfer
       file: ./src/mappings/core.ts
   - kind: ethereum
     name: LiquidityVault
@@ -78,6 +78,7 @@ dataSources:
         - UserDayData
         - TransactionTypeDayData
         - User
+        - UserPoolBalance
       abis:
         - name: LiquidityVault
           file: ./abis/LiquidityVault.json
@@ -88,6 +89,8 @@ dataSources:
           handler: handleMint
         - event: Burn(indexed address,indexed bytes32,uint256,uint256,uint256,uint256,uint256)
           handler: handleBurn
+        - event: Transfer(address,indexed address,indexed address,indexed uint256,uint256)
+          handler: handleLiquidityVaultTransfer
       file: ./src/mappings/core.ts
   - kind: ethereum
     name: SimpleOracleStrategy
