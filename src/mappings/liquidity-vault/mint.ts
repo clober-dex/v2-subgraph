@@ -14,7 +14,7 @@ import { getTokenUSDPriceFlat } from '../../common/pricing'
 import { Mint } from '../../../generated/LiquidityVault/LiquidityVault'
 
 export function handleMint(event: Mint): void {
-  updateDayData(event)
+  updateDayData(event, 'MINT')
 
   const pool = getPoolOrLog(event.params.key, 'MINT')
   if (!pool || event.params.lpAmount.equals(ZERO_BI)) {

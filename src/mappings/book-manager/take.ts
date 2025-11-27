@@ -287,7 +287,7 @@ function updatePool(
 }
 
 export function handleTake(event: Take): void {
-  updateDayData(event)
+  updateDayData(event, 'TAKE')
 
   if (event.params.unit.isZero()) {
     return

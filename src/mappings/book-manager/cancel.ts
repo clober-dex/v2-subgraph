@@ -22,7 +22,7 @@ import {
 } from '../interval-updates'
 
 export function handleCancel(event: Cancel): void {
-  updateDayData(event)
+  updateDayData(event, 'CANCEL')
 
   if (event.params.unit.isZero()) {
     return

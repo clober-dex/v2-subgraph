@@ -4,7 +4,7 @@ import { getOpenOrderOrLog } from '../../common/entity-getters'
 import { updateDayData } from '../interval-updates'
 
 export function handleTransfer(event: Transfer): void {
-  updateDayData(event)
+  updateDayData(event, 'TRANSFER')
 
   const from = event.params.from
   const to = event.params.to

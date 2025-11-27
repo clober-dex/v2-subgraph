@@ -19,7 +19,7 @@ import {
 } from './interval-updates'
 
 export function handleSwap(event: Swap): void {
-  updateDayData(event)
+  updateDayData(event, 'SWAP')
 
   const inputToken = Token.load(event.params.inToken)
   const outputToken = Token.load(event.params.outToken)

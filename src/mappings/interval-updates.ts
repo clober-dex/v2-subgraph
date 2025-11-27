@@ -43,7 +43,7 @@ import { convertTokenToDecimal } from '../common/utils'
  * Tracks global aggregate data over daily windows
  * @param event
  */
-export function updateDayData(event: ethereum.Event): void {
+export function updateDayData(event: ethereum.Event, eventType: string): void {
   const timestamp = event.block.timestamp.toI32()
   const dayID = timestamp / 86400 // rounded
   const dayStartTimestamp = dayID * 86400
@@ -79,6 +79,8 @@ export function updateDayData(event: ethereum.Event): void {
     txTypeDayData.type = functionSignature
     txTypeDayData.txCount = ZERO_BI
   }
+
+  const isExternalCall = false
 
   if (!SKIP_USER_ANALYTICS && User.load(Address.fromString(user)) === null) {
     cloberDayData.newWalletCount = cloberDayData.newWalletCount.plus(ONE_BI)

@@ -20,7 +20,7 @@ import {
 import { getBookOrLog, getTokenOrLog } from '../../common/entity-getters'
 
 export function handleMake(event: Make): void {
-  updateDayData(event)
+  updateDayData(event, 'MAKE')
 
   const book = getBookOrLog(event.params.bookId.toString(), 'MAKE')
   if (book === null) {

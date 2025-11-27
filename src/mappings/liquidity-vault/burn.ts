@@ -11,7 +11,7 @@ import { getTokenUSDPriceFlat } from '../../common/pricing'
 import { Burn } from '../../../generated/LiquidityVault/LiquidityVault'
 
 export function handleBurn(event: Burn): void {
-  updateDayData(event)
+  updateDayData(event, 'BURN')
 
   const pool = getPoolOrLog(event.params.key, 'BURN')
   if (!pool || event.params.lpAmount.equals(ZERO_BI)) {

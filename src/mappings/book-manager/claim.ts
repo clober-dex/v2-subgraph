@@ -97,7 +97,7 @@ function updatePool(
 }
 
 export function handleClaim(event: Claim): void {
-  updateDayData(event)
+  updateDayData(event, 'CLAIM')
 
   if (event.params.unit.isZero()) {
     return

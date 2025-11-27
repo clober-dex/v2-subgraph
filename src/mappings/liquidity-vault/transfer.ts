@@ -56,7 +56,7 @@ function sellLpToken(
 }
 
 export function handleTransfer(event: Transfer): void {
-  updateDayData(event)
+  updateDayData(event, 'TRANSFER')
 
   const key = Bytes.fromHexString(
     '0x' + event.params.id.toHexString().slice(2).padStart(64, '0'),
