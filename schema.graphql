@@ -16,10 +16,22 @@ type Token @entity(immutable: false) {
   volume: BigDecimal!
   # volume in derived USD
   volumeUSD: BigDecimal!
-  # protocolFees in token units
+
+  # liquidity vault protocol fee
+  liquidityVaultProtocolFee: BigDecimal!
+  # liquidity vault protocol fee USD
+  liquidityVaultProtocolFeeUSD: BigDecimal!
+
+  # router gateway protocol fee
+  routerGatewayProtocolFee: BigDecimal!
+  # router gateway protocol fee USD
+  routerGatewayProtocolFeeUSD: BigDecimal!
+
+  # protocolFees in token units (liquidity vault + router gateway)
   protocolFees: BigDecimal!
-  # protocolFees in USD
+  # protocolFees in USD (liquidity vault + router gateway)
   protocolFeesUSD: BigDecimal!
+
   # number of pools containing this token
   bookCount: BigInt!
   # liquidity across all books in token units
@@ -386,10 +398,22 @@ type TokenDayData @entity(immutable: false) {
   totalValueLockedUSD: BigDecimal!
   # price at end of period in USD
   priceUSD: BigDecimal!
-  # protocolFees in token units
+
+  # liquidity vault protocol fee
+  liquidityVaultProtocolFee: BigDecimal!
+  # liquidity vault protocol fee USD
+  liquidityVaultProtocolFeeUSD: BigDecimal!
+
+  # router gateway protocol fee
+  routerGatewayProtocolFee: BigDecimal!
+  # router gateway protocol fee USD
+  routerGatewayProtocolFeeUSD: BigDecimal!
+
+  # protocolFees in token units (liquidity vault + router gateway)
   protocolFees: BigDecimal!
-  # protocolFees in USD
+  # protocolFees in USD (liquidity vault + router gateway)
   protocolFeesUSD: BigDecimal!
+
   # opening price USD
   open: BigDecimal!
   # high price USD

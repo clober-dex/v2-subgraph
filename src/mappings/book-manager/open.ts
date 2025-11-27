@@ -46,8 +46,14 @@ export function handleBookOpen(event: Open): void {
     quote.decimals = decimals
     quote.volume = ZERO_BD
     quote.volumeUSD = ZERO_BD
+
+    quote.liquidityVaultProtocolFee = ZERO_BD
+    quote.liquidityVaultProtocolFeeUSD = ZERO_BD
+    quote.routerGatewayProtocolFee = ZERO_BD
+    quote.routerGatewayProtocolFeeUSD = ZERO_BD
     quote.protocolFees = ZERO_BD
     quote.protocolFeesUSD = ZERO_BD
+
     quote.bookCount = ZERO_BI
     quote.totalValueLocked = ZERO_BD
     quote.totalValueLockedUSD = ZERO_BD
@@ -71,8 +77,14 @@ export function handleBookOpen(event: Open): void {
     base.decimals = decimals
     base.volume = ZERO_BD
     base.volumeUSD = ZERO_BD
+
+    base.liquidityVaultProtocolFee = ZERO_BD
+    base.liquidityVaultProtocolFeeUSD = ZERO_BD
+    base.routerGatewayProtocolFee = ZERO_BD
+    base.routerGatewayProtocolFeeUSD = ZERO_BD
     base.protocolFees = ZERO_BD
     base.protocolFeesUSD = ZERO_BD
+
     base.bookCount = ZERO_BI
     base.totalValueLocked = ZERO_BD
     base.totalValueLockedUSD = ZERO_BD

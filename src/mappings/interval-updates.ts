@@ -248,8 +248,14 @@ export function updateTokenDayData(
     // things that dont get initialized always
     tokenDayData.volume = ZERO_BD
     tokenDayData.volumeUSD = ZERO_BD
+
+    tokenDayData.liquidityVaultProtocolFee = ZERO_BD
+    tokenDayData.liquidityVaultProtocolFeeUSD = ZERO_BD
+    tokenDayData.routerGatewayProtocolFee = ZERO_BD
+    tokenDayData.routerGatewayProtocolFeeUSD = ZERO_BD
     tokenDayData.protocolFees = ZERO_BD
     tokenDayData.protocolFeesUSD = ZERO_BD
+
     tokenDayData.open = tokenPrice
     tokenDayData.high = tokenPrice
     tokenDayData.low = tokenPrice
