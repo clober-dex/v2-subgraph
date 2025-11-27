@@ -42,8 +42,23 @@ import { convertTokenToDecimal } from '../common/utils'
 /**
  * Tracks global aggregate data over daily windows
  * @param event
+ * @param eventType
  */
 export function updateDayData(event: ethereum.Event, eventType: string): void {
+  const functionSignature = event.transaction.input.toHexString().slice(0, 10)
+  let isExternalCall = false
+  if (eventType == 'TAKE' && functionSignature != '0xb305b94c') {
+    // make
+    isExternalCall = true
+  }
+  if (eventType == 'TAKE' && functionSignature != '0x08b2c1d8') {
+    // limit
+    isExternalCall = true
+  }
+  if (isExternalCall) {
+    return
+  }
+
   const timestamp = event.block.timestamp.toI32()
   const dayID = timestamp / 86400 // rounded
   const dayStartTimestamp = dayID * 86400
@@ -69,7 +84,6 @@ export function updateDayData(event: ethereum.Event, eventType: string): void {
     cloberDayData.walletCount = cloberDayData.walletCount.plus(ONE_BI)
   }
 
-  const functionSignature = event.transaction.input.toHexString().slice(0, 10)
   const txDayID = functionSignature.concat('-').concat(dayID.toString())
   let txTypeDayData = TransactionTypeDayData.load(txDayID)
   if (txTypeDayData === null) {
@@ -79,8 +93,6 @@ export function updateDayData(event: ethereum.Event, eventType: string): void {
     txTypeDayData.type = functionSignature
     txTypeDayData.txCount = ZERO_BI
   }
-
-  const isExternalCall = false
 
   if (!SKIP_USER_ANALYTICS && User.load(Address.fromString(user)) === null) {
     cloberDayData.newWalletCount = cloberDayData.newWalletCount.plus(ONE_BI)
