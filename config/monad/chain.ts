@@ -61,15 +61,33 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
-    address: Address.fromString('0x0555e30da8f98308edb960aa94c0db47230d2b9c'),
-    symbol: 'WBTC',
-    name: 'Wrapped BTC',
-    decimals: BigInt.fromI32(8),
+    address: Address.fromString('0x08be71f350e9b708b0b2537db99d2c0fa49f7a4d'),
+    symbol: '$MONK',
+    name: 'Monk The Monkey King of Monad',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x0c65a0bc65a5d819235b71f554d210d3f80e0852'),
+    symbol: 'aprMON',
+    name: 'aPriori Monad LST',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x0f34afb47736f69fe84c1f712114fed9c58b8b07'),
+    symbol: 'more! ',
+    name: 'MORE!',
+    decimals: BigInt.fromI32(18),
   },
   {
     address: Address.fromString('0x10aeaf63194db8d453d4d85a06e5efe1dd0b5417'),
     symbol: 'wstETH',
     name: 'Wrapped liquid staked Ether 2.0',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x1361d007e8f6abdd7a873f413513a381aefed404'),
+    symbol: 'DUKO',
+    name: 'MONAD DUKO',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -82,6 +100,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x1d4795a4670033f47f572b910553be0295077b51'),
     symbol: 'mcMON',
     name: 'mcMON',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x350035555e10d9afaf1566aaebfced5ba6c27777'),
+    symbol: 'CHOG',
+    name: 'Chog',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -100,6 +124,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x405b6330e213ded490240cbcdd64790806827777'),
     symbol: 'moncock',
     name: 'moncock',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x441a941b925fbfd5e33b5a820ffcc21d196faa76'),
+    symbol: 'MONK',
+    name: 'Monk The Monkey King of Monad',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -139,10 +169,34 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(18),
   },
   {
+    address: Address.fromString('0x81a224f8a62f52bde942dbf23a56df77a10b7777'),
+    symbol: 'emo',
+    name: 'emonad',
+    decimals: BigInt.fromI32(18),
+  },
+  {
     address: Address.fromString('0x8498312a6b3cbd158bf0c93abdcf29e6e4f55081'),
     symbol: 'gMON',
     name: 'gMON',
     decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x87deeb3696ec069d5460c389cc78925df50d7777'),
+    symbol: 'IDGAF',
+    name: 'IDGAF',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x91b81bfbe3a747230f0529aa28d8b2bc898e6d56'),
+    symbol: 'LVMON',
+    name: 'LeverUp MON',
+    decimals: BigInt.fromI32(18),
+  },
+  {
+    address: Address.fromString('0x99635b74d21a5db42b940b653e6e8df66629805b'),
+    symbol: 'FLUFFY',
+    name: 'Fluffy By Matt Furie',
+    decimals: BigInt.fromI32(9),
   },
   {
     address: Address.fromString('0xb0f70c0bd6fd87dbeb7c10dc692a2a6106817072'),
