@@ -380,12 +380,18 @@ export function handleTake(event: Take): void {
   quote.volumeUSD = quote.volumeUSD.plus(amountTotalUSD)
 
   // update quote protocol fees
-  quote.liquidityVaultProtocolFee =
-    quote.liquidityVaultProtocolFee.plus(protocolFeesQuote)
-  quote.liquidityVaultProtocolFeeUSD =
-    quote.liquidityVaultProtocolFeeUSD.plus(protocolFeesTotalUSD)
-  quote.protocolFees = quote.protocolFees.plus(protocolFeesQuote)
-  quote.protocolFeesUSD = quote.protocolFeesUSD.plus(protocolFeesTotalUSD)
+  quote.liquidityVaultProtocolFee = quote.liquidityVaultProtocolFee.plus(
+    book.isTakerFeeInQuote ? protocolFeesQuote : ZERO_BD,
+  )
+  quote.liquidityVaultProtocolFeeUSD = quote.liquidityVaultProtocolFeeUSD.plus(
+    book.isTakerFeeInQuote ? protocolFeesTotalUSD : ZERO_BD,
+  )
+  quote.protocolFees = quote.protocolFees.plus(
+    book.isTakerFeeInQuote ? protocolFeesQuote : ZERO_BD,
+  )
+  quote.protocolFeesUSD = quote.protocolFeesUSD.plus(
+    book.isTakerFeeInQuote ? protocolFeesTotalUSD : ZERO_BD,
+  )
   quote.totalValueLocked = quote.totalValueLocked.minus(takenQuoteAmountDecimal)
   quote.totalValueLockedUSD = quote.totalValueLocked.times(quoteInUSD)
 
@@ -395,12 +401,18 @@ export function handleTake(event: Take): void {
   base.volumeUSD = base.volumeUSD.plus(amountTotalUSD)
 
   // update base protocol fees
-  base.liquidityVaultProtocolFee =
-    base.liquidityVaultProtocolFee.plus(protocolFeesBase)
-  base.liquidityVaultProtocolFeeUSD =
-    base.liquidityVaultProtocolFeeUSD.plus(protocolFeesTotalUSD)
-  base.protocolFees = base.protocolFees.plus(protocolFeesBase)
-  base.protocolFeesUSD = base.protocolFeesUSD.plus(protocolFeesTotalUSD)
+  base.liquidityVaultProtocolFee = base.liquidityVaultProtocolFee.plus(
+    book.isTakerFeeInQuote ? ZERO_BD : protocolFeesBase,
+  )
+  base.liquidityVaultProtocolFeeUSD = base.liquidityVaultProtocolFeeUSD.plus(
+    book.isTakerFeeInQuote ? ZERO_BD : protocolFeesTotalUSD,
+  )
+  base.protocolFees = base.protocolFees.plus(
+    book.isTakerFeeInQuote ? ZERO_BD : protocolFeesBase,
+  )
+  base.protocolFeesUSD = base.protocolFeesUSD.plus(
+    book.isTakerFeeInQuote ? ZERO_BD : protocolFeesTotalUSD,
+  )
   // note: do not update base.totalValueLocked
 
   // interval data
@@ -426,24 +438,38 @@ export function handleTake(event: Take): void {
 
   // update quote protocol fees
   quoteDayData.liquidityVaultProtocolFee =
-    quoteDayData.liquidityVaultProtocolFee.plus(protocolFeesQuote)
+    quoteDayData.liquidityVaultProtocolFee.plus(
+      book.isTakerFeeInQuote ? protocolFeesQuote : ZERO_BD,
+    )
   quoteDayData.liquidityVaultProtocolFeeUSD =
-    quoteDayData.liquidityVaultProtocolFeeUSD.plus(protocolFeesTotalUSD)
-  quoteDayData.protocolFees = quoteDayData.protocolFees.plus(protocolFeesQuote)
-  quoteDayData.protocolFeesUSD =
-    quoteDayData.protocolFeesUSD.plus(protocolFeesTotalUSD)
+    quoteDayData.liquidityVaultProtocolFeeUSD.plus(
+      book.isTakerFeeInQuote ? protocolFeesTotalUSD : ZERO_BD,
+    )
+  quoteDayData.protocolFees = quoteDayData.protocolFees.plus(
+    book.isTakerFeeInQuote ? protocolFeesQuote : ZERO_BD,
+  )
+  quoteDayData.protocolFeesUSD = quoteDayData.protocolFeesUSD.plus(
+    book.isTakerFeeInQuote ? protocolFeesTotalUSD : ZERO_BD,
+  )
 
   baseDayData.volume = baseDayData.volume.plus(takenBaseAmountDecimal)
   baseDayData.volumeUSD = baseDayData.volumeUSD.plus(amountTotalUSD)
 
   // update base protocol fees
   baseDayData.liquidityVaultProtocolFee =
-    baseDayData.liquidityVaultProtocolFee.plus(protocolFeesBase)
+    baseDayData.liquidityVaultProtocolFee.plus(
+      book.isTakerFeeInQuote ? ZERO_BD : protocolFeesBase,
+    )
   baseDayData.liquidityVaultProtocolFeeUSD =
-    baseDayData.liquidityVaultProtocolFeeUSD.plus(protocolFeesTotalUSD)
-  baseDayData.protocolFees = baseDayData.protocolFees.plus(protocolFeesBase)
-  baseDayData.protocolFeesUSD =
-    baseDayData.protocolFeesUSD.plus(protocolFeesTotalUSD)
+    baseDayData.liquidityVaultProtocolFeeUSD.plus(
+      book.isTakerFeeInQuote ? ZERO_BD : protocolFeesTotalUSD,
+    )
+  baseDayData.protocolFees = baseDayData.protocolFees.plus(
+    book.isTakerFeeInQuote ? ZERO_BD : protocolFeesBase,
+  )
+  baseDayData.protocolFeesUSD = baseDayData.protocolFeesUSD.plus(
+    book.isTakerFeeInQuote ? ZERO_BD : protocolFeesTotalUSD,
+  )
 
   if (!SKIP_CHART) {
     updateChart(
