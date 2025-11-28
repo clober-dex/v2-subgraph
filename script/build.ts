@@ -24,6 +24,11 @@ async function main(): Promise<void> {
       type: 'boolean',
       default: false,
     })
+    .option('ormi', {
+      description: 'Deploy the subgraph to Ormi',
+      type: 'boolean',
+      default: false,
+    })
     .help().argv
   const { doDeploy } = validateNetwork(argv)
   await build(argv.network)

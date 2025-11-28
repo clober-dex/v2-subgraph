@@ -46,7 +46,7 @@ export function validateNetwork(argv: Argv): {
     process.exit(-1)
   }
 
-  if (argv.goldsky || argv.alchemy) {
+  if (argv.goldsky || argv.alchemy || argv.ormi) {
     switch (argv.network) {
       case NETWORK.RISE_SEPOLIA:
         if (argv.alchemy) {
