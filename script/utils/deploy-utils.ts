@@ -37,6 +37,18 @@ const buildAlchemyDeployCommand = (
   return `graph deploy v2-subgraph-${network} --version-label ${gitHashString} --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key ${deployKey} --ipfs https://ipfs.satsuma.xyz`
 }
 
+const buildOrmiDeployCommand = (
+  network: string,
+  gitHashString: string,
+): string => {
+  dotenv.config()
+  if (!process.env.ORMI_DEPLOY_KEY) {
+    throw new Error('ORMI_DEPLOY_KEY must be set')
+  }
+  const deployKey = process.env.ORMI_DEPLOY_KEY
+  return `graph deploy v2-subgraph-${network} --version-label ${gitHashString} --node https://api.subgraph.ormilabs.com/deploy --deploy-key ${deployKey} --ipfs https://api.subgraph.ormilabs.com/ipfs`
+}
+
 const codegen = async (): Promise<void> => {
   const { stdout, stderr } = await exec(`graph codegen subgraph.yaml`)
   console.log(stdout)
@@ -75,6 +87,8 @@ export const deploy = async (argv: Argv): Promise<void> => {
     command = await buildGoldskyDeployCommand(argv.network, gitHashString)
   } else if (argv?.alchemy) {
     command = buildAlchemyDeployCommand(argv.network, gitHashString)
+  } else if (argv?.ormi) {
+    command = buildOrmiDeployCommand(argv.network, gitHashString)
   }
 
   try {
