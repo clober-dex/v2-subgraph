@@ -49,7 +49,11 @@ function sellLpToken(
     userPoolBalance.costBasisUSD,
   )
 
-  userPoolBalance.save()
+  if (userPoolBalance.lpBalance.equals(ZERO_BD)) {
+    store.remove('UserPoolBalance', userPoolBalance.id)
+  } else {
+    userPoolBalance.save()
+  }
 }
 
 export function handleTransfer(event: Transfer): void {
