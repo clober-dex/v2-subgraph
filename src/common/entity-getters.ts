@@ -115,7 +115,6 @@ export function getOrCreateUserPoolBalance(
 
     userPoolBalance.costBasisUSD = ZERO_BD
     userPoolBalance.averageLPPriceUSD = ZERO_BD
-    userPoolBalance.pnlUSD = ZERO_BD
 
     userPoolBalance.save()
   }
