@@ -90,12 +90,13 @@ export function getPoolOrLog(poolID: Bytes, eventType: string): Pool | null {
 export function getOrCreateUserPoolBalance(
   userID: Bytes,
   poolID: Bytes,
+  event: ethereum.Event,
 ): UserPoolBalance {
   const key = userID.toHexString().concat('-').concat(poolID.toHexString())
   let userPoolBalance = UserPoolBalance.load(key)
   if (userPoolBalance === null) {
     userPoolBalance = new UserPoolBalance(key)
-    userPoolBalance.user = userID
+    userPoolBalance.user = getOrCreateUser(event).id
     userPoolBalance.pool = poolID
     userPoolBalance.lpBalance = ZERO_BD
     userPoolBalance.lpBalanceUSD = ZERO_BD

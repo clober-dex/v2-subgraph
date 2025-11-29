@@ -71,7 +71,7 @@ export function handleTransfer(event: Transfer): void {
 
   if (isMint && !event.params.to.equals(Bytes.fromHexString(ADDRESS_ZERO))) {
     buyLpToken(
-      getOrCreateUserPoolBalance(event.params.to, key),
+      getOrCreateUserPoolBalance(event.params.to, key, event),
       amountBD,
       pool.lpPriceUSD,
     )
@@ -80,7 +80,7 @@ export function handleTransfer(event: Transfer): void {
     !event.params.from.equals(Bytes.fromHexString(ADDRESS_ZERO))
   ) {
     sellLpToken(
-      getOrCreateUserPoolBalance(event.params.from, key),
+      getOrCreateUserPoolBalance(event.params.from, key, event),
       amountBD,
       pool.lpPriceUSD,
     )
@@ -91,12 +91,12 @@ export function handleTransfer(event: Transfer): void {
     !event.params.to.equals(Bytes.fromHexString(ADDRESS_ZERO))
   ) {
     sellLpToken(
-      getOrCreateUserPoolBalance(event.params.from, key),
+      getOrCreateUserPoolBalance(event.params.from, key, event),
       amountBD,
       pool.lpPriceUSD,
     )
     buyLpToken(
-      getOrCreateUserPoolBalance(event.params.to, key),
+      getOrCreateUserPoolBalance(event.params.to, key, event),
       amountBD,
       pool.lpPriceUSD,
     )
