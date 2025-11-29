@@ -30,7 +30,7 @@ import {
 } from '../common/constants'
 import {
   getOrCreateTransaction,
-  getOrCreateUser,
+  getOrCreateUserByFrom,
 } from '../common/entity-getters'
 import {
   REFERENCE_TOKEN,
@@ -97,7 +97,7 @@ export function updateDayData(event: ethereum.Event, eventType: string): void {
   if (!SKIP_USER_ANALYTICS && User.load(Address.fromString(user)) === null) {
     cloberDayData.newWalletCount = cloberDayData.newWalletCount.plus(ONE_BI)
 
-    getOrCreateUser(event)
+    getOrCreateUserByFrom(event)
   }
 
   if (
@@ -144,7 +144,7 @@ export function updateUserNativeVolume(
   const nativeAmount = isInputNative
     ? convertTokenToDecimal(inputAmount, BI_18)
     : convertTokenToDecimal(outputAmount, BI_18)
-  const user = getOrCreateUser(event)
+  const user = getOrCreateUserByFrom(event)
   user.nativeVolume = user.nativeVolume.plus(nativeAmount)
   user.save()
 }

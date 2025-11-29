@@ -13,7 +13,7 @@ import {
 
 import { ZERO_BD } from './constants'
 
-export function getOrCreateUser(event: ethereum.Event): User {
+export function getOrCreateUserByFrom(event: ethereum.Event): User {
   let user = User.load(event.transaction.from)
   if (user === null) {
     user = new User(event.transaction.from)
@@ -96,7 +96,7 @@ export function getOrCreateUserPoolBalance(
   let userPoolBalance = UserPoolBalance.load(key)
   if (userPoolBalance === null) {
     userPoolBalance = new UserPoolBalance(key)
-    userPoolBalance.user = getOrCreateUser(event).id
+    userPoolBalance.user = getOrCreateUserByFrom(event).id
     userPoolBalance.pool = poolID
     userPoolBalance.lpBalance = ZERO_BD
     userPoolBalance.lpBalanceUSD = ZERO_BD
