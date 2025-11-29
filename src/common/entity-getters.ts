@@ -25,6 +25,18 @@ export function getOrCreateUserByFrom(event: ethereum.Event): User {
   return user as User
 }
 
+export function getOrCreateUser(userID: Bytes, block: ethereum.Block): User {
+  let user = User.load(userID)
+  if (user === null) {
+    user = new User(userID)
+    user.firstSeenTimestamp = block.timestamp
+    user.firstSeenBlockNumber = block.number
+    user.nativeVolume = ZERO_BD
+  }
+  user.save()
+  return user as User
+}
+
 export function getOrCreateTransaction(event: ethereum.Event): Transaction {
   let transaction = Transaction.load(event.transaction.hash.toHexString())
   if (transaction === null) {
@@ -96,7 +108,7 @@ export function getOrCreateUserPoolBalance(
   let userPoolBalance = UserPoolBalance.load(key)
   if (userPoolBalance === null) {
     userPoolBalance = new UserPoolBalance(key)
-    userPoolBalance.user = getOrCreateUserByFrom(event).id
+    userPoolBalance.user = getOrCreateUser(userID, event.block).id
     userPoolBalance.pool = poolID
     userPoolBalance.lpBalance = ZERO_BD
     userPoolBalance.lpBalanceUSD = ZERO_BD

@@ -1,4 +1,4 @@
-import { BigDecimal, Bytes } from '@graphprotocol/graph-ts'
+import { store, BigDecimal, Bytes } from '@graphprotocol/graph-ts'
 
 import { Transfer } from '../../../generated/LiquidityVault/LiquidityVault'
 import { updateDayData } from '../interval-updates'
@@ -29,7 +29,11 @@ function buyLpToken(
     userPoolBalance.costBasisUSD,
   )
 
-  userPoolBalance.save()
+  if (userPoolBalance.lpBalance.equals(ZERO_BD)) {
+    store.remove('UserPoolBalance', userPoolBalance.id)
+  } else {
+    userPoolBalance.save()
+  }
 }
 
 function sellLpToken(
