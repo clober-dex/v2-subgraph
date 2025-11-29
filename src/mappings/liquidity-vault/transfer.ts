@@ -10,13 +10,6 @@ import { ADDRESS_ZERO, BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { UserPoolBalance } from '../../../generated/schema'
 
-function updatePnL(userPoolBalance: UserPoolBalance): void {
-  userPoolBalance.pnlUSD = userPoolBalance.lpBalanceUSD.minus(
-    userPoolBalance.costBasisUSD,
-  )
-  userPoolBalance.save()
-}
-
 function buyLpToken(
   userPoolBalance: UserPoolBalance,
   amountBD: BigDecimal,
@@ -76,19 +69,27 @@ export function handleTransfer(event: Transfer): void {
 
   const amountBD = convertTokenToDecimal(event.params.amount, BI_18)
 
-  if (isMint) {
+  if (isMint && !event.params.to.equals(Bytes.fromHexString(ADDRESS_ZERO))) {
     buyLpToken(
       getOrCreateUserPoolBalance(event.params.to, key),
       amountBD,
       pool.lpPriceUSD,
     )
-  } else if (isBurn) {
+  } else if (
+    isBurn &&
+    !event.params.from.equals(Bytes.fromHexString(ADDRESS_ZERO))
+  ) {
     sellLpToken(
       getOrCreateUserPoolBalance(event.params.from, key),
       amountBD,
       pool.lpPriceUSD,
     )
-  } else if (isTransfer) {
+  } else if (
+    isTransfer &&
+    !event.params.from.equals(event.params.to) &&
+    !event.params.from.equals(Bytes.fromHexString(ADDRESS_ZERO)) &&
+    !event.params.to.equals(Bytes.fromHexString(ADDRESS_ZERO))
+  ) {
     sellLpToken(
       getOrCreateUserPoolBalance(event.params.from, key),
       amountBD,
