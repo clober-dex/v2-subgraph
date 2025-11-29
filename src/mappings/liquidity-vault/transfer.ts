@@ -24,11 +24,6 @@ function buyLpToken(
     ? userPoolBalance.costBasisUSD.div(userPoolBalance.lpBalance)
     : ZERO_BD
 
-  // Update PnL
-  userPoolBalance.pnlUSD = userPoolBalance.lpBalanceUSD.minus(
-    userPoolBalance.costBasisUSD,
-  )
-
   if (userPoolBalance.lpBalance.equals(ZERO_BD)) {
     store.remove('UserPoolBalance', userPoolBalance.id)
   } else {
@@ -43,11 +38,6 @@ function sellLpToken(
 ): void {
   userPoolBalance.lpBalance = userPoolBalance.lpBalance.minus(amountBD)
   userPoolBalance.lpBalanceUSD = userPoolBalance.lpBalance.times(lpPriceUSD)
-
-  // Update PnL
-  userPoolBalance.pnlUSD = userPoolBalance.lpBalanceUSD.minus(
-    userPoolBalance.costBasisUSD,
-  )
 
   if (userPoolBalance.lpBalance.equals(ZERO_BD)) {
     store.remove('UserPoolBalance', userPoolBalance.id)
