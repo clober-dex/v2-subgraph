@@ -23,7 +23,7 @@ import { OPERATOR } from '../../common/chain'
 export function handleMake(event: Make): void {
   if (
     event.transaction.to &&
-    !event.transaction.to.equals(Address.fromString(OPERATOR))
+    !event.transaction.to!.equals(Address.fromString(OPERATOR))
   ) {
     updateDayData(event, 'MAKE')
   }

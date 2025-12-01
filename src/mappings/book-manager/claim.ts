@@ -99,7 +99,7 @@ function updatePool(
 export function handleClaim(event: Claim): void {
   if (
     event.transaction.to &&
-    !event.transaction.to.equals(Address.fromString(OPERATOR))
+    !event.transaction.to!.equals(Address.fromString(OPERATOR))
   ) {
     updateDayData(event, 'CLAIM')
   }
