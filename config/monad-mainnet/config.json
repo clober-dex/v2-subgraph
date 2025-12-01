@@ -1,5 +1,5 @@
 {
-  "network": "monad",
+  "network": "monad-mainnet",
   "BookManager": {
     "address": "0x6657d192273731C3cAc646cc82D5F28D0CBE8CCC",
     "startBlock": 31662843
