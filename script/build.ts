@@ -1,10 +1,7 @@
 import yargs from 'yargs'
 
 import { build, deploy } from './utils/deploy-utils'
-import {
-  validateDeploymentEnvironment,
-  validateNetwork,
-} from './utils/prepare-network'
+import { validateNetwork } from './utils/prepare-network'
 
 async function main(): Promise<void> {
   const argv = yargs(process.argv.slice(2))
