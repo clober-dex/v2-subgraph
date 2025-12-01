@@ -1,4 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 
 import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
 import {
@@ -34,10 +34,10 @@ export function handleUpdatePosition(event: UpdatePosition): void {
       tokenB.decimals,
     )
 
-    const tokenAUSDPrice = isStableCoin(tokenA.id)
+    const tokenAUSDPrice = isStableCoin(Address.fromBytes(tokenA.id))
       ? ONE_BD
       : convertTokenToDecimal(event.params.oraclePrice, BI_8)
-    const tokenBUSDPrice = isStableCoin(tokenB.id)
+    const tokenBUSDPrice = isStableCoin(Address.fromBytes(tokenB.id))
       ? ONE_BD
       : convertTokenToDecimal(event.params.oraclePrice, BI_8)
     const initialLpAmountDecimal = convertTokenToDecimal(
