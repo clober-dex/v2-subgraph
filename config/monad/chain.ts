@@ -55,10 +55,10 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     decimals: BigInt.fromI32(6),
   },
   {
-    address: Address.fromString('0x04f8c38ae80bcf690b947f60f62bda18145c3d67'),
-    symbol: 'MVT',
-    name: 'Monad Vault',
-    decimals: BigInt.fromI32(18),
+    address: Address.fromString('0x0555e30da8f98308edb960aa94c0db47230d2b9c'),
+    symbol: 'WBTC',
+    name: 'Wrapped BTC',
+    decimals: BigInt.fromI32(8),
   },
   {
     address: Address.fromString('0x08be71f350e9b708b0b2537db99d2c0fa49f7a4d'),
@@ -88,12 +88,6 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x1361d007e8f6abdd7a873f413513a381aefed404'),
     symbol: 'DUKO',
     name: 'MONAD DUKO',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0x1b68626dca36c7fe922fd2d55e4f631d962de19c'),
-    symbol: 'shMON',
-    name: 'ShMonad',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -130,12 +124,6 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     address: Address.fromString('0x441a941b925fbfd5e33b5a820ffcc21d196faa76'),
     symbol: 'MONK',
     name: 'Monk The Monkey King of Monad',
-    decimals: BigInt.fromI32(18),
-  },
-  {
-    address: Address.fromString('0x4917a5ec9fcb5e10f47cbb197abe6ab63be81fe8'),
-    symbol: 'AZND',
-    name: 'Asian Dollar',
     decimals: BigInt.fromI32(18),
   },
   {
@@ -203,6 +191,12 @@ export const STATIC_TOKEN_DEFINITIONS: TokenDefinition[] = [
     symbol: 'BTC.b',
     name: 'Bitcoin',
     decimals: BigInt.fromI32(8),
+  },
+  {
+    address: Address.fromString('0xd32e9ddd968b18e8429f2d1da7efb2cc1f01d42d'),
+    symbol: 'MOLANDAK',
+    name: 'molandak',
+    decimals: BigInt.fromI32(18),
   },
   {
     address: Address.fromString('0xe7cd86e13ac4309349f30b3435a9d337750fc82d'),
