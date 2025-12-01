@@ -4,6 +4,7 @@ export const SKIP_TAKE_AND_SWAP = false
 export const SKIP_TX_ANALYTICS = false
 export const SKIP_USER_ANALYTICS = false
 
+export const OPERATOR = '0xcbd3c0b81a9a36356a3669a7f60a0d2f0846195b'
 export const LIQUIDITY_VAULT = '0xb09684f5486d1af80699bbc27f14dd5a905da873'
 
 export class TokenDefinition {

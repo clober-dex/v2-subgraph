@@ -3,6 +3,7 @@ export const SKIP_CHART = true
 export const SKIP_TAKE_AND_SWAP = true
 export const SKIP_TX_ANALYTICS = true
 export const SKIP_USER_ANALYTICS = false
+export const OPERATOR = '0x0000000000000000000000000000000000000000'
 export const LIQUIDITY_VAULT = '0x6d8fa3025b6d6604309ca257563cca358c0cf1aa'
 
 export class TokenDefinition {
