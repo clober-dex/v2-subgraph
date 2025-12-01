@@ -3,4 +3,5 @@ export type Argv = {
   goldsky?: boolean
   alchemy?: boolean
   ormi?: boolean
+  sentio?: boolean
 }

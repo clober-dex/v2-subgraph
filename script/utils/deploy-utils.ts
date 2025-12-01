@@ -49,6 +49,18 @@ const buildOrmiDeployCommand = (
   return `graph deploy v2-subgraph-${network} --version-label ${gitHashString} --node https://api.subgraph.ormilabs.com/deploy --deploy-key ${deployKey} --ipfs https://api.subgraph.ormilabs.com/ipfs`
 }
 
+const buildSentioDeployCommand = (
+  network: string,
+  gitHashString: string,
+): string => {
+  dotenv.config()
+  if (!process.env.SENTIO_DEPLOY_KEY) {
+    throw new Error('SENTIO_DEPLOY_KEY must be set')
+  }
+  const deployKey = process.env.SENTIO_DEPLOY_KEY
+  return `graph deploy v2-subgraph-${network} --version-label ${gitHashString} --node https://app.sentio.xyz/api/v1/graph-node --deploy-key ${deployKey} --ipfs https://app.sentio.xyz/api/v1/ipfs`
+}
+
 const codegen = async (): Promise<void> => {
   const { stdout, stderr } = await exec(`graph codegen subgraph.yaml`)
   console.log(stdout)
@@ -89,6 +101,8 @@ export const deploy = async (argv: Argv): Promise<void> => {
     command = buildAlchemyDeployCommand(argv.network, gitHashString)
   } else if (argv?.ormi) {
     command = buildOrmiDeployCommand(argv.network, gitHashString)
+  } else if (argv?.sentio) {
+    command = buildSentioDeployCommand(argv.network, gitHashString)
   }
 
   try {

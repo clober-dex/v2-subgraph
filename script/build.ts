@@ -26,6 +26,11 @@ async function main(): Promise<void> {
       type: 'boolean',
       default: false,
     })
+    .option('sentio', {
+      description: 'Deploy the subgraph to Sentio',
+      type: 'boolean',
+      default: false,
+    })
     .help().argv
   const { doDeploy } = validateNetwork(argv)
   await build(argv.network)
