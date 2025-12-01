@@ -5,9 +5,19 @@ import { ERC20 } from '../../generated/BookManager/ERC20'
 import { ERC20SymbolBytes } from '../../generated/BookManager/ERC20SymbolBytes'
 import { ERC20NameBytes } from '../../generated/BookManager/ERC20NameBytes'
 
-import { TokenDefinition } from './chain'
+import { STABLE_COINS, TokenDefinition } from './chain'
 import { getStaticDefinition } from './static-token-definition'
 import { isNullEthValue } from './utils'
+
+export function isStableCoin(tokenAddress: Address): boolean {
+  let staticStableCoinAddresses = STABLE_COINS
+  for (let i = 0; i < staticStableCoinAddresses.length; i++) {
+    if (tokenAddress.equals(Address.fromString(staticStableCoinAddresses[i]))) {
+      return true
+    }
+  }
+  return false
+}
 
 export function fetchTokenSymbol(tokenAddress: Address): string {
   let staticDefinition = getStaticDefinition(tokenAddress)
