@@ -21,7 +21,10 @@ import { getBookOrLog, getTokenOrLog } from '../../common/entity-getters'
 import { OPERATOR } from '../../common/chain'
 
 export function handleMake(event: Make): void {
-  if (!event.transaction.to?.equals(Address.fromString(OPERATOR))) {
+  if (
+    event.transaction.to &&
+    !event.transaction.to.equals(Address.fromString(OPERATOR))
+  ) {
     updateDayData(event, 'MAKE')
   }
 

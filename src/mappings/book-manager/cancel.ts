@@ -23,7 +23,10 @@ import {
 import { OPERATOR } from '../../common/chain'
 
 export function handleCancel(event: Cancel): void {
-  if (!event.transaction.to?.equals(Address.fromString(OPERATOR))) {
+  if (
+    event.transaction.to &&
+    !event.transaction.to.equals(Address.fromString(OPERATOR))
+  ) {
     updateDayData(event, 'CANCEL')
   }
 

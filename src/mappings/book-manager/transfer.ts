@@ -7,7 +7,10 @@ import { updateDayData } from '../interval-updates'
 import { OPERATOR } from '../../common/chain'
 
 export function handleTransfer(event: Transfer): void {
-  if (!event.transaction.to?.equals(Address.fromString(OPERATOR))) {
+  if (
+    event.transaction.to &&
+    !event.transaction.to.equals(Address.fromString(OPERATOR))
+  ) {
     updateDayData(event, 'TRANSFER')
   }
 
