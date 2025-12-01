@@ -36,6 +36,7 @@ import {
   REFERENCE_TOKEN,
   SKIP_USER_ANALYTICS,
   SKIP_TX_ANALYTICS,
+  OPERATOR,
 } from '../common/chain'
 import { convertTokenToDecimal } from '../common/utils'
 
@@ -56,6 +57,29 @@ export function updateDayData(event: ethereum.Event, eventType: string): void {
     isExternalCall = true
   }
   if (isExternalCall) {
+    return
+  }
+
+  let isMarketMakeCall = false
+  if (
+    eventType == 'MAKE' &&
+    event.transaction.to.equals(Address.fromString(OPERATOR))
+  ) {
+    isMarketMakeCall = true
+  }
+  if (
+    eventType == 'CANCEL' &&
+    event.transaction.to.equals(Address.fromString(OPERATOR))
+  ) {
+    isMarketMakeCall = true
+  }
+  if (
+    eventType == 'CLAIM' &&
+    event.transaction.to.equals(Address.fromString(OPERATOR))
+  ) {
+    isMarketMakeCall = true
+  }
+  if (isMarketMakeCall) {
     return
   }
 
