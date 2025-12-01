@@ -58,6 +58,7 @@ const buildSentioDeployCommand = (
     throw new Error('SENTIO_DEPLOY_KEY must be set')
   }
   const deployKey = process.env.SENTIO_DEPLOY_KEY
+  network = network.includes('testnet') ? network : `${network}-mainnet`
   return `graph deploy clober-dex/v2-subgraph-${network} --version-label ${gitHashString} --node https://app.sentio.xyz/api/v1/graph-node --deploy-key ${deployKey} --ipfs https://app.sentio.xyz/api/v1/ipfs`
 }
 
