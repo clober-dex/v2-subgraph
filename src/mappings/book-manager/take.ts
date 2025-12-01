@@ -287,7 +287,14 @@ function updatePool(
 }
 
 export function handleTake(event: Take): void {
-  updateDayData(event, 'TAKE')
+  const functionSignature = event.transaction.input.toHexString().slice(0, 10)
+  const isInternalOrderCall =
+    functionSignature == '0xb305b94c' || // make
+    functionSignature == '0x08b2c1d8' // limit
+
+  if (isInternalOrderCall) {
+    updateDayData(event, 'TAKE')
+  }
 
   if (event.params.unit.isZero()) {
     return

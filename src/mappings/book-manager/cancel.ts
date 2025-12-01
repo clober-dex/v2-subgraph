@@ -1,4 +1,4 @@
-import { store } from '@graphprotocol/graph-ts'
+import { Address, store } from '@graphprotocol/graph-ts'
 
 import { Cancel } from '../../../generated/BookManager/BookManager'
 import {
@@ -20,9 +20,12 @@ import {
   updateDayData,
   updateTokenDayData,
 } from '../interval-updates'
+import { OPERATOR } from '../../common/chain'
 
 export function handleCancel(event: Cancel): void {
-  updateDayData(event, 'CANCEL')
+  if (!event.transaction.to?.equals(Address.fromString(OPERATOR))) {
+    updateDayData(event, 'CANCEL')
+  }
 
   if (event.params.unit.isZero()) {
     return

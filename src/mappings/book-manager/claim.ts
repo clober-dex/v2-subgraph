@@ -31,7 +31,7 @@ import {
   updatePoolHourData,
   updateTokenDayData,
 } from '../interval-updates'
-import { LIQUIDITY_VAULT } from '../../common/chain'
+import { LIQUIDITY_VAULT, OPERATOR } from '../../common/chain'
 
 function updatePool(
   pool: Pool,
@@ -97,7 +97,9 @@ function updatePool(
 }
 
 export function handleClaim(event: Claim): void {
-  updateDayData(event, 'CLAIM')
+  if (!event.transaction.to?.equals(Address.fromString(OPERATOR))) {
+    updateDayData(event, 'CLAIM')
+  }
 
   if (event.params.unit.isZero()) {
     return

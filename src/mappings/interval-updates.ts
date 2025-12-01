@@ -1,9 +1,9 @@
 import {
   Address,
   BigDecimal,
+  BigInt,
   Bytes,
   ethereum,
-  BigInt,
 } from '@graphprotocol/graph-ts'
 
 import {
@@ -34,9 +34,8 @@ import {
 } from '../common/entity-getters'
 import {
   REFERENCE_TOKEN,
-  SKIP_USER_ANALYTICS,
   SKIP_TX_ANALYTICS,
-  OPERATOR,
+  SKIP_USER_ANALYTICS,
 } from '../common/chain'
 import { convertTokenToDecimal } from '../common/utils'
 
@@ -47,44 +46,6 @@ import { convertTokenToDecimal } from '../common/utils'
  */
 export function updateDayData(event: ethereum.Event, eventType: string): void {
   const functionSignature = event.transaction.input.toHexString().slice(0, 10)
-  let isExternalCall = false
-  if (eventType == 'TAKE' && functionSignature != '0xb305b94c') {
-    // make
-    isExternalCall = true
-  }
-  if (eventType == 'TAKE' && functionSignature != '0x08b2c1d8') {
-    // limit
-    isExternalCall = true
-  }
-  if (isExternalCall) {
-    return
-  }
-
-  let isMarketMakeCall = false
-  if (
-    eventType == 'MAKE' &&
-    event.transaction.to &&
-    event.transaction.to!.equals(Address.fromString(OPERATOR))
-  ) {
-    isMarketMakeCall = true
-  }
-  if (
-    eventType == 'CANCEL' &&
-    event.transaction.to &&
-    event.transaction.to!.equals(Address.fromString(OPERATOR))
-  ) {
-    isMarketMakeCall = true
-  }
-  if (
-    eventType == 'CLAIM' &&
-    event.transaction.to &&
-    event.transaction.to!.equals(Address.fromString(OPERATOR))
-  ) {
-    isMarketMakeCall = true
-  }
-  if (isMarketMakeCall) {
-    return
-  }
 
   const timestamp = event.block.timestamp.toI32()
   const dayID = timestamp / 86400 // rounded

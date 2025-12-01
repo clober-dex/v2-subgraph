@@ -1,4 +1,4 @@
-import { BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 
 import { Make } from '../../../generated/BookManager/BookManager'
 import { Depth, OpenOrder } from '../../../generated/schema'
@@ -18,9 +18,12 @@ import {
   updateTokenDayData,
 } from '../interval-updates'
 import { getBookOrLog, getTokenOrLog } from '../../common/entity-getters'
+import { OPERATOR } from '../../common/chain'
 
 export function handleMake(event: Make): void {
-  updateDayData(event, 'MAKE')
+  if (!event.transaction.to?.equals(Address.fromString(OPERATOR))) {
+    updateDayData(event, 'MAKE')
+  }
 
   const book = getBookOrLog(event.params.bookId.toString(), 'MAKE')
   if (book === null) {
