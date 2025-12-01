@@ -63,18 +63,21 @@ export function updateDayData(event: ethereum.Event, eventType: string): void {
   let isMarketMakeCall = false
   if (
     eventType == 'MAKE' &&
+    event.transaction.to &&
     event.transaction.to.equals(Address.fromString(OPERATOR))
   ) {
     isMarketMakeCall = true
   }
   if (
     eventType == 'CANCEL' &&
+    event.transaction.to &&
     event.transaction.to.equals(Address.fromString(OPERATOR))
   ) {
     isMarketMakeCall = true
   }
   if (
     eventType == 'CLAIM' &&
+    event.transaction.to &&
     event.transaction.to.equals(Address.fromString(OPERATOR))
   ) {
     isMarketMakeCall = true
