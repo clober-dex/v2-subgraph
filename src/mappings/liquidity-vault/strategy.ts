@@ -68,15 +68,17 @@ export function handleUpdatePosition(event: UpdatePosition): void {
       BI_18, // assuming LP token has 18 decimals
     )
     if (lpAmountDecimal.gt(ZERO_BD)) {
-      const amountAInUSD = convertTokenToDecimal(
+      const liquidityAInUSD = convertTokenToDecimal(
         pool.liquidityA,
         tokenA.decimals,
       ).times(tokenAUSDPrice)
-      const amountBInUSD = convertTokenToDecimal(
+      const liquidityBInUSD = convertTokenToDecimal(
         pool.liquidityB,
         tokenB.decimals,
       ).times(tokenBUSDPrice)
-      pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
+      pool.lpPriceUSD = liquidityAInUSD
+        .plus(liquidityBInUSD)
+        .div(lpAmountDecimal)
       pool.totalValueLockedUSD = pool.lpPriceUSD.times(lpAmountDecimal)
     }
 
