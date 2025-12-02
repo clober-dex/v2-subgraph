@@ -1,4 +1,10 @@
-import { store, BigDecimal, Bytes, BigInt } from '@graphprotocol/graph-ts'
+import {
+  store,
+  BigDecimal,
+  Bytes,
+  BigInt,
+  Address,
+} from '@graphprotocol/graph-ts'
 
 import { Transfer } from '../../../generated/LiquidityVault/LiquidityVault'
 import { updateDayData } from '../interval-updates'
@@ -11,11 +17,13 @@ import {
   ADDRESS_ZERO,
   BI_18,
   BI_8,
+  ONE_BD,
   ZERO_BD,
   ZERO_BI,
 } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { UserPoolBalance } from '../../../generated/schema'
+import { isStableCoin } from '../../common/token'
 
 function buyLpToken(
   userPoolBalance: UserPoolBalance,
@@ -79,17 +87,30 @@ export function handleTransfer(event: Transfer): void {
     return
   }
 
+  const oraclePrice = convertTokenToDecimal(pool.oraclePrice, BI_8)
+  const tokenAUSDPrice = isStableCoin(Address.fromBytes(tokenA.id))
+    ? ONE_BD
+    : oraclePrice
+  const tokenBUSDPrice = isStableCoin(Address.fromBytes(tokenB.id))
+    ? ONE_BD
+    : oraclePrice
+
   const isMint = event.params.from.equals(Bytes.fromHexString(ADDRESS_ZERO))
   const isBurn = event.params.to.equals(Bytes.fromHexString(ADDRESS_ZERO))
   const isTransfer = !isMint && !isBurn
 
-  const oraclePrice = convertTokenToDecimal(pool.oraclePrice, BI_8)
-  const liquidityA = convertTokenToDecimal(pool.liquidityA, tokenA.decimals)
-  const liquidityB = convertTokenToDecimal(pool.liquidityB, tokenB.decimals)
+  const liquidityAInUSD = convertTokenToDecimal(
+    pool.liquidityA,
+    tokenA.decimals,
+  ).times(tokenAUSDPrice)
+  const liquidityBInUSD = convertTokenToDecimal(
+    pool.liquidityB,
+    tokenB.decimals,
+  ).times(tokenBUSDPrice)
   const totalSupply = convertTokenToDecimal(pool.totalSupply, BI_18)
   const lpPriceUSD =
     oraclePrice.gt(ZERO_BD) && totalSupply.gt(ZERO_BD)
-      ? liquidityA.plus(liquidityB).div(totalSupply)
+      ? liquidityAInUSD.plus(liquidityBInUSD).div(totalSupply)
       : pool.lpPriceUSD
 
   if (isMint) {
