@@ -48,15 +48,15 @@ export function handleMint(event: Mint): void {
       pool.totalSupply,
       BI_18, // assuming LP token has 18 decimals
     )
-    const amountAInUSD = convertTokenToDecimal(
+    const liquidityAInUSD = convertTokenToDecimal(
       pool.liquidityA,
       tokenA.decimals,
     ).times(priceAUSD)
-    const amountBInUSD = convertTokenToDecimal(
+    const liquidityBInUSD = convertTokenToDecimal(
       pool.liquidityB,
       tokenB.decimals,
     ).times(priceBUSD)
-    pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
+    pool.lpPriceUSD = liquidityAInUSD.plus(liquidityBInUSD).div(lpAmountDecimal)
     pool.totalValueLockedUSD = lpAmountDecimal.times(pool.lpPriceUSD)
 
     // @dev: To calculate the protocol's TVL, we need token.totalValueLocked + pool.totalValueLockedUSD

@@ -49,15 +49,17 @@ export function handleBurn(event: Burn): void {
       BI_18, // assuming LP token has 18 decimals
     )
     if (lpAmountDecimal.gt(ZERO_BD)) {
-      const amountAInUSD = convertTokenToDecimal(
+      const liquidityAInUSD = convertTokenToDecimal(
         pool.liquidityA,
         tokenA.decimals,
       ).times(priceAUSD)
-      const amountBInUSD = convertTokenToDecimal(
+      const liquidityBInUSD = convertTokenToDecimal(
         pool.liquidityB,
         tokenB.decimals,
       ).times(priceBUSD)
-      pool.lpPriceUSD = amountAInUSD.plus(amountBInUSD).div(lpAmountDecimal)
+      pool.lpPriceUSD = liquidityAInUSD
+        .plus(liquidityBInUSD)
+        .div(lpAmountDecimal)
       pool.totalValueLockedUSD = lpAmountDecimal.times(pool.lpPriceUSD)
     } else {
       pool.lpPriceUSD = ZERO_BD
