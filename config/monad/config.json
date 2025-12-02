@@ -2,19 +2,19 @@
   "network": "monad",
   "BookManager": {
     "address": "0x6657d192273731C3cAc646cc82D5F28D0CBE8CCC",
-    "startBlock": 31662842
+    "startBlock": 31662841
   },
   "LiquidityVault": {
     "address": "0xB09684f5486d1af80699BbC27f14dd5A905da873",
-    "startBlock": 37272486
+    "startBlock": 37272485
   },
   "SimpleOracleStrategy": {
     "address": "0x54cd5332b1689b6506Ce089DA5651B1A814e9E7D",
-    "startBlock": 37272518
+    "startBlock": 37272517
   },
   "hasRouterGateway": true,
   "RouterGateway": {
     "address": "0x7B58A24C5628881a141D630f101Db433D419B372",
-    "startBlock": 31676492
+    "startBlock": 31676491
   }
 }
