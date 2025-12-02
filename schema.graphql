@@ -326,7 +326,7 @@ type UserPoolBalance @entity(immutable: false) {
   pool: Pool!
 
   # current LP token balance of the user
-  lpBalance: BigDecimal!
+  lpBalance: BigInt!
 
   # current value of LP (in USD)
   lpBalanceUSD: BigDecimal!

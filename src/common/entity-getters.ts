@@ -11,7 +11,7 @@ import {
   UserPoolBalance,
 } from '../../generated/schema'
 
-import { ZERO_BD } from './constants'
+import { ZERO_BD, ZERO_BI } from './constants'
 
 export function getOrCreateUserByFrom(event: ethereum.Event): User {
   let user = User.load(event.transaction.from)
@@ -110,7 +110,7 @@ export function getOrCreateUserPoolBalance(
     userPoolBalance = new UserPoolBalance(key)
     userPoolBalance.user = getOrCreateUser(userID, event.block).id
     userPoolBalance.pool = poolID
-    userPoolBalance.lpBalance = ZERO_BD
+    userPoolBalance.lpBalance = ZERO_BI
     userPoolBalance.lpBalanceUSD = ZERO_BD
 
     userPoolBalance.costBasisUSD = ZERO_BD

@@ -1,30 +1,39 @@
-import { store, BigDecimal, Bytes } from '@graphprotocol/graph-ts'
+import { store, BigDecimal, Bytes, BigInt } from '@graphprotocol/graph-ts'
 
 import { Transfer } from '../../../generated/LiquidityVault/LiquidityVault'
 import { updateDayData } from '../interval-updates'
 import {
   getOrCreateUserPoolBalance,
   getPoolOrLog,
+  getTokenOrLog,
 } from '../../common/entity-getters'
-import { ADDRESS_ZERO, BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
+import {
+  ADDRESS_ZERO,
+  BI_18,
+  BI_8,
+  ZERO_BD,
+  ZERO_BI,
+} from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import { UserPoolBalance } from '../../../generated/schema'
 
 function buyLpToken(
   userPoolBalance: UserPoolBalance,
-  amountBD: BigDecimal,
+  amount: BigInt,
   lpPriceUSD: BigDecimal,
 ): void {
-  const costToAdd = amountBD.times(lpPriceUSD)
-  userPoolBalance.lpBalance = userPoolBalance.lpBalance.plus(amountBD)
+  const costToAdd = convertTokenToDecimal(amount, BI_18).times(lpPriceUSD)
+  userPoolBalance.lpBalance = userPoolBalance.lpBalance.plus(amount)
   userPoolBalance.costBasisUSD = userPoolBalance.costBasisUSD.plus(costToAdd)
-  userPoolBalance.lpBalanceUSD = userPoolBalance.lpBalance.times(lpPriceUSD)
 
-  userPoolBalance.averageLPPriceUSD = userPoolBalance.lpBalance.gt(ZERO_BD)
-    ? userPoolBalance.costBasisUSD.div(userPoolBalance.lpBalance)
+  const lpBalanceBD = convertTokenToDecimal(userPoolBalance.lpBalance, BI_18)
+  userPoolBalance.lpBalanceUSD = lpBalanceBD.times(lpPriceUSD)
+
+  userPoolBalance.averageLPPriceUSD = userPoolBalance.lpBalance.gt(ZERO_BI)
+    ? userPoolBalance.costBasisUSD.div(lpBalanceBD)
     : ZERO_BD
 
-  if (userPoolBalance.lpBalance.equals(ZERO_BD)) {
+  if (userPoolBalance.lpBalance.equals(ZERO_BI)) {
     store.remove('UserPoolBalance', userPoolBalance.id)
   } else {
     userPoolBalance.save()
@@ -33,13 +42,16 @@ function buyLpToken(
 
 function sellLpToken(
   userPoolBalance: UserPoolBalance,
-  amountBD: BigDecimal,
+  amount: BigInt,
   lpPriceUSD: BigDecimal,
 ): void {
-  userPoolBalance.lpBalance = userPoolBalance.lpBalance.minus(amountBD)
-  userPoolBalance.lpBalanceUSD = userPoolBalance.lpBalance.times(lpPriceUSD)
+  userPoolBalance.lpBalance = userPoolBalance.lpBalance.minus(amount)
+  userPoolBalance.lpBalanceUSD = convertTokenToDecimal(
+    userPoolBalance.lpBalance,
+    BI_18,
+  ).times(lpPriceUSD)
 
-  if (userPoolBalance.lpBalance.equals(ZERO_BD)) {
+  if (userPoolBalance.lpBalance.equals(ZERO_BI)) {
     store.remove('UserPoolBalance', userPoolBalance.id)
   } else {
     userPoolBalance.save()
@@ -61,26 +73,36 @@ export function handleTransfer(event: Transfer): void {
     return
   }
 
+  const tokenA = getTokenOrLog(pool.tokenA, 'TRANSFER')
+  const tokenB = getTokenOrLog(pool.tokenB, 'TRANSFER')
+  if (!tokenA || !tokenB) {
+    return
+  }
+
   const isMint = event.params.from.equals(Bytes.fromHexString(ADDRESS_ZERO))
   const isBurn = event.params.to.equals(Bytes.fromHexString(ADDRESS_ZERO))
   const isTransfer = !isMint && !isBurn
 
-  const amountBD = convertTokenToDecimal(event.params.amount, BI_18)
+  const oraclePrice = convertTokenToDecimal(pool.oraclePrice, BI_8)
+  const liquidityA = convertTokenToDecimal(pool.liquidityA, tokenA.decimals)
+  const liquidityB = convertTokenToDecimal(pool.liquidityB, tokenB.decimals)
+  const totalSupply = convertTokenToDecimal(pool.totalSupply, BI_18)
+  const lpPriceUSD =
+    oraclePrice.gt(ZERO_BD) && totalSupply.gt(ZERO_BD)
+      ? liquidityA.plus(liquidityB).div(totalSupply)
+      : pool.lpPriceUSD
 
-  if (isMint && !event.params.to.equals(Bytes.fromHexString(ADDRESS_ZERO))) {
+  if (isMint) {
     buyLpToken(
       getOrCreateUserPoolBalance(event.params.to, key, event),
-      amountBD,
-      pool.lpPriceUSD,
+      event.params.amount,
+      lpPriceUSD,
     )
-  } else if (
-    isBurn &&
-    !event.params.from.equals(Bytes.fromHexString(ADDRESS_ZERO))
-  ) {
+  } else if (isBurn) {
     sellLpToken(
       getOrCreateUserPoolBalance(event.params.from, key, event),
-      amountBD,
-      pool.lpPriceUSD,
+      event.params.amount,
+      lpPriceUSD,
     )
   } else if (
     isTransfer &&
@@ -90,13 +112,13 @@ export function handleTransfer(event: Transfer): void {
   ) {
     sellLpToken(
       getOrCreateUserPoolBalance(event.params.from, key, event),
-      amountBD,
-      pool.lpPriceUSD,
+      event.params.amount,
+      lpPriceUSD,
     )
     buyLpToken(
       getOrCreateUserPoolBalance(event.params.to, key, event),
-      amountBD,
-      pool.lpPriceUSD,
+      event.params.amount,
+      lpPriceUSD,
     )
   }
 }
