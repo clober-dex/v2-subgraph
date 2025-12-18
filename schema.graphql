@@ -336,6 +336,15 @@ type UserPoolBalance @entity(immutable: false) {
 
   # average entry price of LP (average USD price per LP token based on cost basis = costBasisUSD / lpBalance)
   averageLPPriceUSD: BigDecimal!
+
+  # accumulate token0 deposited by user
+  totalTokenADeposited: BigInt!
+
+  # accumulate token1 deposited by user
+  totalTokenBDeposited: BigInt!
+
+  # accumulate lp tokens minted to user
+  totalLPMinted: BigInt!
 }
 
 type BookDayData @entity(immutable: false) {

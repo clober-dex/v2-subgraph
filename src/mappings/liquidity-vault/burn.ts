@@ -1,4 +1,8 @@
-import { getPoolOrLog, getTokenOrLog } from '../../common/entity-getters'
+import {
+  getOrCreateUserPoolBalance,
+  getPoolOrLog,
+  getTokenOrLog,
+} from '../../common/entity-getters'
 import { BI_18, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
 import {
@@ -65,6 +69,21 @@ export function handleBurn(event: Burn): void {
       pool.lpPriceUSD = ZERO_BD
       pool.totalValueLockedUSD = ZERO_BD
     }
+
+    const userPoolBalance = getOrCreateUserPoolBalance(
+      event.transaction.from,
+      pool.id,
+      event,
+    )
+
+    userPoolBalance.totalTokenADeposited =
+      userPoolBalance.totalTokenADeposited.minus(event.params.amountA)
+    userPoolBalance.totalTokenBDeposited =
+      userPoolBalance.totalTokenBDeposited.minus(event.params.amountB)
+    userPoolBalance.lpBalance = userPoolBalance.lpBalance.minus(
+      event.params.lpAmount,
+    )
+    userPoolBalance.save()
 
     // @dev: To calculate the protocol's TVL, we need token.totalValueLocked + pool.totalValueLockedUSD
     // since, reducing totalValueLocked twice (cancel -> burn)

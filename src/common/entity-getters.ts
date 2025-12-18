@@ -116,6 +116,10 @@ export function getOrCreateUserPoolBalance(
     userPoolBalance.costBasisUSD = ZERO_BD
     userPoolBalance.averageLPPriceUSD = ZERO_BD
 
+    userPoolBalance.totalTokenADeposited = ZERO_BI
+    userPoolBalance.totalTokenBDeposited = ZERO_BI
+    userPoolBalance.totalLPMinted = ZERO_BI
+
     userPoolBalance.save()
   }
   return userPoolBalance

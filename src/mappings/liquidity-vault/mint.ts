@@ -1,5 +1,6 @@
 import {
   getOrCreateTransaction,
+  getOrCreateUserPoolBalance,
   getPoolOrLog,
   getTokenOrLog,
 } from '../../common/entity-getters'
@@ -58,6 +59,21 @@ export function handleMint(event: Mint): void {
     ).times(priceBUSD)
     pool.lpPriceUSD = liquidityAInUSD.plus(liquidityBInUSD).div(lpAmountDecimal)
     pool.totalValueLockedUSD = lpAmountDecimal.times(pool.lpPriceUSD)
+
+    const userPoolBalance = getOrCreateUserPoolBalance(
+      event.transaction.from,
+      pool.id,
+      event,
+    )
+
+    userPoolBalance.totalTokenADeposited =
+      userPoolBalance.totalTokenADeposited.plus(event.params.amountA)
+    userPoolBalance.totalTokenBDeposited =
+      userPoolBalance.totalTokenBDeposited.plus(event.params.amountB)
+    userPoolBalance.lpBalance = userPoolBalance.lpBalance.plus(
+      event.params.lpAmount,
+    )
+    userPoolBalance.save()
 
     // @dev: To calculate the protocol's TVL, we need token.totalValueLocked + pool.totalValueLockedUSD
     // tokenA.totalValueLocked = tokenA.totalValueLocked.plus(amountAInDecimals)
