@@ -58,23 +58,11 @@ function updatePool(
     base.decimals,
   )
 
-  const quoteClaimedAmount = unitToQuote(book.unitSize, claimedUnitAmount)
-  const quoteClaimedAmountDecimal = convertTokenToDecimal(
-    quoteClaimedAmount,
-    quote.decimals,
-  )
-  const claimedAmountInUSD = calculateValueUSD(
-    quoteClaimedAmountDecimal,
-    quoteInUSD,
-    baseClaimedAmountDecimal,
-    baseInUSD,
-  )
-
   if (
     BigInt.fromString(pool.bookA).equals(BigInt.fromString(openOrder.book)) ||
     BigInt.fromString(pool.bookB).equals(BigInt.fromString(openOrder.book))
   ) {
-    const spreadDelta = spread.div(TWO_BD).times(claimedAmountInUSD)
+    const spreadDelta = spread.div(TWO_BD).times(baseClaimedAmountDecimal)
     pool.spreadProfitUSD = pool.spreadProfitUSD.plus(spreadDelta)
 
     const poolHourData = updatePoolHourData(pool, event)
