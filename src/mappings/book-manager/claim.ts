@@ -20,10 +20,10 @@ import {
 } from '../../common/entity-getters'
 import { unitToBase, unitToQuote } from '../../common/amount'
 import { tickToPrice } from '../../common/tick'
-import { Book, OpenOrder, Pool, Token } from '../../../generated/schema'
+import { OpenOrder, Pool } from '../../../generated/schema'
 import { TWO_BD, ZERO_BD } from '../../common/constants'
 import { convertTokenToDecimal } from '../../common/utils'
-import { calculateValueUSD, getTokenUSDPriceFlat } from '../../common/pricing'
+import { getTokenUSDPriceFlat } from '../../common/pricing'
 import {
   updateBookDayData,
   updateDayData,
@@ -35,43 +35,32 @@ import { LIQUIDITY_VAULT, OPERATOR } from '../../common/chain'
 
 function updatePool(
   pool: Pool,
-  book: Book,
-  base: Token,
-  quote: Token,
-  baseInUSD: BigDecimal,
-  quoteInUSD: BigDecimal,
+  baseClaimedAmountDecimal: BigDecimal,
   openOrder: OpenOrder,
-  claimedUnitAmount: BigInt,
   event: ethereum.Event,
 ): void {
-  let spread = pool.priceB.minus(pool.priceA)
-  if (spread.lt(BigDecimal.zero())) {
-    spread = ZERO_BD
+  let spreadInUsd = pool.priceB.minus(pool.priceA)
+  if (spreadInUsd.lt(BigDecimal.zero())) {
+    spreadInUsd = ZERO_BD
   }
-  const baseClaimedAmount = unitToBase(
-    book.unitSize,
-    claimedUnitAmount,
-    openOrder.priceRaw,
-  )
-  const baseClaimedAmountDecimal = convertTokenToDecimal(
-    baseClaimedAmount,
-    base.decimals,
-  )
 
   if (
     BigInt.fromString(pool.bookA).equals(BigInt.fromString(openOrder.book)) ||
     BigInt.fromString(pool.bookB).equals(BigInt.fromString(openOrder.book))
   ) {
-    const spreadDelta = spread.div(TWO_BD).times(baseClaimedAmountDecimal)
-    pool.spreadProfitUSD = pool.spreadProfitUSD.plus(spreadDelta)
+    const spreadDeltaInUsd = spreadInUsd
+      .div(TWO_BD)
+      .times(baseClaimedAmountDecimal)
+    pool.spreadProfitUSD = pool.spreadProfitUSD.plus(spreadDeltaInUsd)
 
     const poolHourData = updatePoolHourData(pool, event)
     const poolDayData = updatePoolDayData(pool, event)
 
     // update intervals
     poolHourData.spreadProfitUSD =
-      poolHourData.spreadProfitUSD.plus(spreadDelta)
-    poolDayData.spreadProfitUSD = poolDayData.spreadProfitUSD.plus(spreadDelta)
+      poolHourData.spreadProfitUSD.plus(spreadDeltaInUsd)
+    poolDayData.spreadProfitUSD =
+      poolDayData.spreadProfitUSD.plus(spreadDeltaInUsd)
 
     pool.save()
     poolHourData.save()
@@ -143,18 +132,14 @@ export function handleClaim(event: Claim): void {
       )
     ) {
       const pool = getPoolOrLog(book.pool!, 'CLAIM')
+      const isClaimingBidBook = BigInt.fromString(pool.bookA).equals(
+        BigInt.fromString(bookID),
+      )
+      const baseClaimedAmountDecimal = isClaimingBidBook
+        ? convertTokenToDecimal(baseAmount, base.decimals)
+        : convertTokenToDecimal(quoteAmount, quote.decimals)
       if (pool) {
-        updatePool(
-          pool,
-          book,
-          base,
-          quote,
-          baseInUSD,
-          quoteInUSD,
-          openOrder,
-          event.params.unit,
-          event,
-        )
+        updatePool(pool, baseClaimedAmountDecimal, openOrder, event)
       }
     }
 
