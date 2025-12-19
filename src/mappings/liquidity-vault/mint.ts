@@ -70,9 +70,6 @@ export function handleMint(event: Mint): void {
       userPoolBalance.totalTokenADeposited.plus(event.params.amountA)
     userPoolBalance.totalTokenBDeposited =
       userPoolBalance.totalTokenBDeposited.plus(event.params.amountB)
-    userPoolBalance.lpBalance = userPoolBalance.lpBalance.plus(
-      event.params.lpAmount,
-    )
     userPoolBalance.save()
 
     // @dev: To calculate the protocol's TVL, we need token.totalValueLocked + pool.totalValueLockedUSD

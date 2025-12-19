@@ -118,7 +118,6 @@ export function getOrCreateUserPoolBalance(
 
     userPoolBalance.totalTokenADeposited = ZERO_BI
     userPoolBalance.totalTokenBDeposited = ZERO_BI
-    userPoolBalance.totalLPMinted = ZERO_BI
 
     userPoolBalance.save()
   }

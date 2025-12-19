@@ -342,9 +342,6 @@ type UserPoolBalance @entity(immutable: false) {
 
   # accumulate token1 deposited by user
   totalTokenBDeposited: BigInt!
-
-  # accumulate lp tokens minted to user
-  totalLPMinted: BigInt!
 }
 
 type BookDayData @entity(immutable: false) {

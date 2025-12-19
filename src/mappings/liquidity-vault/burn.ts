@@ -80,9 +80,6 @@ export function handleBurn(event: Burn): void {
       userPoolBalance.totalTokenADeposited.minus(event.params.amountA)
     userPoolBalance.totalTokenBDeposited =
       userPoolBalance.totalTokenBDeposited.minus(event.params.amountB)
-    userPoolBalance.lpBalance = userPoolBalance.lpBalance.minus(
-      event.params.lpAmount,
-    )
     userPoolBalance.save()
 
     // @dev: To calculate the protocol's TVL, we need token.totalValueLocked + pool.totalValueLockedUSD
