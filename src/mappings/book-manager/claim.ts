@@ -132,8 +132,8 @@ export function handleClaim(event: Claim): void {
         Address.fromString(LIQUIDITY_VAULT),
       )
     ) {
-      const pool = getPoolOrLog(book.pool!, 'CLAIM')
-      const isClaimingBidBook = BigInt.fromString(pool.bookA).equals(
+      const pool = getPoolOrLog(book.pool!, 'CLAIM') as Pool
+      const isClaimingBidBook = BigInt.fromString(pool.bookA!).equals(
         BigInt.fromString(bookID),
       )
       const baseClaimedAmountDecimal = isClaimingBidBook
