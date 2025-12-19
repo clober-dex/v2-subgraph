@@ -36,10 +36,11 @@ import { LIQUIDITY_VAULT, OPERATOR } from '../../common/chain'
 function updatePool(
   pool: Pool,
   baseClaimedAmountDecimal: BigDecimal,
+  marketQuoteInUSD: BigDecimal,
   openOrder: OpenOrder,
   event: ethereum.Event,
 ): void {
-  let spreadInUsd = pool.priceB.minus(pool.priceA)
+  let spreadInUsd = pool.priceB.minus(pool.priceA).times(marketQuoteInUSD)
   if (spreadInUsd.lt(BigDecimal.zero())) {
     spreadInUsd = ZERO_BD
   }
@@ -138,8 +139,15 @@ export function handleClaim(event: Claim): void {
       const baseClaimedAmountDecimal = isClaimingBidBook
         ? convertTokenToDecimal(baseAmount, base.decimals)
         : convertTokenToDecimal(quoteAmount, quote.decimals)
+      const marketQuoteInUSD = isClaimingBidBook ? quoteInUSD : baseInUSD
       if (pool) {
-        updatePool(pool, baseClaimedAmountDecimal, openOrder, event)
+        updatePool(
+          pool,
+          baseClaimedAmountDecimal,
+          marketQuoteInUSD,
+          openOrder,
+          event,
+        )
       }
     }
 
