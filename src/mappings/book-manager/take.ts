@@ -23,6 +23,9 @@ export function handleTake(event: Take): void {
   ) {
     return
   }
+  if (!event.transaction.to) {
+    return
+  }
 
   const timestamp = event.block.timestamp.toI32()
   const dayID = timestamp / 86400 // rounded
@@ -33,7 +36,7 @@ export function handleTake(event: Take): void {
     cloberDayData.date = dayStartTimestamp
   }
 
-  const contract = event.transaction.to
+  const contract = event.transaction.to!
   const contractInteractionDayDataId = contract
     .toHexString()
     .concat('-')

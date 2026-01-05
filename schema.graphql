@@ -19,5 +19,5 @@ type ContractInteractionDayData @entity(immutable: false) {
   # contract address
   contract: Bytes!
   # count of interactions
-  callCount: Int!
+  callCount: BigInt!
 }
