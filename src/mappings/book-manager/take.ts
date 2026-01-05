@@ -5,7 +5,9 @@ import {
   CloberDayData,
   ContractInteractionDayData,
 } from '../../../generated/schema'
-import { ONE_BI, ZERO_BI } from '../../common/constants'
+
+const ZERO_BI = BigInt.fromI32(0)
+const ONE_BI = BigInt.fromI32(1)
 
 export function handleTake(event: Take): void {
   const bookId = event.params.bookId
