@@ -20,4 +20,6 @@ type ContractInteractionDayData @entity(immutable: false) {
   contract: Bytes!
   # count of interactions
   callCount: BigInt!
+  # accumulated volume in USD
+  volumeUSD: BigDecimal!
 }
