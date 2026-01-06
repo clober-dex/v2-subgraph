@@ -69,6 +69,7 @@ export function handleTake(event: Take): void {
     contractInteractionDayData.contract = contract
     contractInteractionDayData.callCount = ZERO_BI
     contractInteractionDayData.volumeUSD = ZERO_BD
+    contractInteractionDayData.cloberDayData = cloberDayData.id
   }
 
   contractInteractionDayData.callCount =
