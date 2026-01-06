@@ -83,11 +83,12 @@ export function handleTake(event: Take): void {
     contractInteractionDayData.callCount.plus(ONE_BI)
   contractInteractionDayData.volumeUSD =
     contractInteractionDayData.volumeUSD.plus(volumeUsdBD)
-  contractInteractionDayData.save()
 
   contractInteraction.callCount = contractInteraction.callCount.plus(ONE_BI)
   contractInteraction.volumeUSD =
     contractInteraction.volumeUSD.plus(volumeUsdBD)
 
+  contractInteractionDayData.save()
+  contractInteraction.save()
   cloberDayData.save()
 }
