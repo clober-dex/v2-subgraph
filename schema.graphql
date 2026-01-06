@@ -9,6 +9,15 @@ type CloberDayData @entity(immutable: false) {
   contractInteractionDayData: [ContractInteractionDayData!]! @derivedFrom(field: "cloberDayData")
 }
 
+type ContractInteraction @entity(immutable: false) {
+  # `${contractAddress}`
+  id: ID!
+  # count of interactions
+  callCount: BigInt!
+  # accumulated volume in USD
+  volumeUSD: BigDecimal!
+}
+
 type ContractInteractionDayData @entity(immutable: false) {
   # `${contractAddress}-{periodStartUnix}`
   id: ID!

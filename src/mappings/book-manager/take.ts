@@ -3,6 +3,7 @@ import { BigInt } from '@graphprotocol/graph-ts'
 import { Take } from '../../../generated/BookManager/BookManager'
 import {
   CloberDayData,
+  ContractInteraction,
   ContractInteractionDayData,
 } from '../../../generated/schema'
 import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
@@ -71,11 +72,22 @@ export function handleTake(event: Take): void {
     contractInteractionDayData.volumeUSD = ZERO_BD
     contractInteractionDayData.cloberDayData = cloberDayData.id
   }
+  let contractInteraction = ContractInteraction.load(contract.toHexString())
+  if (contractInteraction === null) {
+    contractInteraction = new ContractInteraction(contract.toHexString())
+    contractInteraction.callCount = ZERO_BI
+    contractInteraction.volumeUSD = ZERO_BD
+  }
 
   contractInteractionDayData.callCount =
     contractInteractionDayData.callCount.plus(ONE_BI)
   contractInteractionDayData.volumeUSD =
     contractInteractionDayData.volumeUSD.plus(volumeUsdBD)
   contractInteractionDayData.save()
+
+  contractInteraction.callCount = contractInteraction.callCount.plus(ONE_BI)
+  contractInteraction.volumeUSD =
+    contractInteraction.volumeUSD.plus(volumeUsdBD)
+
   cloberDayData.save()
 }
