@@ -56,4 +56,5 @@ export function handleTake(event: Take): void {
   contractInteractionDayData.callCount =
     contractInteractionDayData.callCount.plus(ONE_BI)
   contractInteractionDayData.save()
+  cloberDayData.save()
 }
