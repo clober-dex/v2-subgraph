@@ -1,0 +1,16 @@
+{
+  "network": "base",
+  "BookManager": {
+    "address": "0x8ca3a6f4a6260661fcb9a25584c796a1fa380112",
+    "startBlock": 40941003
+  },
+  "LiquidityVault": {
+    "address": "0x5b351C9eED322616F76b8669176412e1808c06B5",
+    "startBlock": 41148235
+  },
+  "SimpleOracleStrategy": {
+    "address": "0x454b85d03ffbf86c2bfb0dacd21d2687d36fe892",
+    "startBlock": 41148235
+  },
+  "hasRouterGateway": false
+}

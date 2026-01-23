@@ -6,6 +6,7 @@ import * as fsExtra from 'fs-extra'
 import { Argv } from './argv'
 
 export enum NETWORK {
+  BASE = 'base',
   MONAD_TESTNET = 'monad-testnet',
   MONAD_MAINNET = 'monad-mainnet',
   MONAD = 'monad', // monad-mainnet alias
