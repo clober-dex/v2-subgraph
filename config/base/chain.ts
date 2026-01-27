@@ -4,8 +4,8 @@ export const SKIP_TAKE_AND_SWAP = true
 export const SKIP_TX_ANALYTICS = true
 export const SKIP_USER_ANALYTICS = true
 
-export const OPERATOR = '0x7ba560d09bd5379216f1e4393906701210cb63fb'
-export const LIQUIDITY_VAULT = '0x5b351c9eed322616f76b8669176412e1808c06b5'
+export const OPERATOR = '0x00f7a0c7e66f0e3a10d9e980e0854ebe0e308625'
+export const LIQUIDITY_VAULT = '0xca1f6e4ae690d06e3bf943b9019c5ca060c0b834'
 
 export class TokenDefinition {
   address: Address
