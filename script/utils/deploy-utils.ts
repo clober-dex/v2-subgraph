@@ -21,7 +21,7 @@ const buildGoldskyDeployCommand = async (
     process.exit(1)
   }
 
-  const subgraphName = `v2-subgraph-${network}/${gitHashString}`
+  const subgraphName = `interaction-contracts-${network}/${gitHashString}`
   return `goldsky subgraph deploy ${subgraphName} --path .`
 }
 
@@ -34,7 +34,7 @@ const buildAlchemyDeployCommand = (
     throw new Error('ALCHEMY_DEPLOY_KEY must be set')
   }
   const deployKey = process.env.ALCHEMY_DEPLOY_KEY
-  return `graph deploy v2-subgraph-${network} --version-label ${gitHashString} --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key ${deployKey} --ipfs https://ipfs.satsuma.xyz`
+  return `graph deploy interaction-contracts-${network} --version-label ${gitHashString} --node https://subgraphs.alchemy.com/api/subgraphs/deploy --deploy-key ${deployKey} --ipfs https://ipfs.satsuma.xyz`
 }
 
 const buildOrmiDeployCommand = (
@@ -46,7 +46,7 @@ const buildOrmiDeployCommand = (
     throw new Error('ORMI_DEPLOY_KEY must be set')
   }
   const deployKey = process.env.ORMI_DEPLOY_KEY
-  return `graph deploy v2-subgraph-${network} --version-label ${gitHashString} --node https://api.subgraph.ormilabs.com/deploy --deploy-key ${deployKey} --ipfs https://api.subgraph.ormilabs.com/ipfs`
+  return `graph deploy interaction-contracts-${network} --version-label ${gitHashString} --node https://api.subgraph.ormilabs.com/deploy --deploy-key ${deployKey} --ipfs https://api.subgraph.ormilabs.com/ipfs`
 }
 
 const buildSentioDeployCommand = (
@@ -59,7 +59,7 @@ const buildSentioDeployCommand = (
   }
   const deployKey = process.env.SENTIO_DEPLOY_KEY
   network = network.includes('testnet') ? network : `${network}-mainnet`
-  return `graph deploy clober-dex/v2-subgraph-${network} --version-label ${gitHashString} --node https://app.sentio.xyz/api/v1/graph-node --deploy-key ${deployKey} --ipfs https://app.sentio.xyz/api/v1/ipfs`
+  return `graph deploy clober-dex/interaction-contracts-${network} --version-label ${gitHashString} --node https://app.sentio.xyz/api/v1/graph-node --deploy-key ${deployKey} --ipfs https://app.sentio.xyz/api/v1/ipfs`
 }
 
 const codegen = async (): Promise<void> => {
