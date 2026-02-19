@@ -10,8 +10,7 @@ import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { tickToPrice } from '../../common/tick'
 import { unitToBase } from '../../common/amount'
 import { convertTokenToDecimal } from '../../common/utils'
-import { BID_BOOK_ID } from '../../common/chain'
-import { ASK_BOOK_ID } from '../../../config/base/chain'
+import { BID_BOOK_ID, ASK_BOOK_ID } from '../../common/chain'
 
 export function handleTake(event: Take): void {
   const bookId = event.params.bookId
