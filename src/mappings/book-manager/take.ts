@@ -10,31 +10,18 @@ import { ONE_BI, ZERO_BD, ZERO_BI } from '../../common/constants'
 import { tickToPrice } from '../../common/tick'
 import { unitToBase } from '../../common/amount'
 import { convertTokenToDecimal } from '../../common/utils'
+import { BID_BOOK_ID } from '../../common/chain'
+import { ASK_BOOK_ID } from '../../../config/base/chain'
 
 export function handleTake(event: Take): void {
   const bookId = event.params.bookId
-  if (
-    !bookId.equals(
-      BigInt.fromString(
-        '3875727077379471850923186002296331935053867847116966170720', // ask
-      ),
-    ) &&
-    !bookId.equals(
-      BigInt.fromString(
-        '5954885684956363054050231031211743946744177791604395877538', // bid
-      ),
-    )
-  ) {
+  if (!bookId.equals(BID_BOOK_ID) && !bookId.equals(ASK_BOOK_ID)) {
     return
   }
   if (!event.transaction.to) {
     return
   }
-  const isTakingBidBook = bookId.equals(
-    BigInt.fromString(
-      '5954885684956363054050231031211743946744177791604395877538',
-    ),
-  )
+  const isTakingBidBook = bookId.equals(ASK_BOOK_ID)
   const priceRaw = tickToPrice(event.params.tick)
   const volumeUsd = isTakingBidBook
     ? event.params.unit
