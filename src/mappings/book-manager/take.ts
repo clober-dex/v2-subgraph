@@ -20,7 +20,7 @@ export function handleTake(event: Take): void {
   if (!event.transaction.to) {
     return
   }
-  const isTakingBidBook = bookId.equals(ASK_BOOK_ID)
+  const isTakingBidBook = bookId.equals(BID_BOOK_ID)
   const priceRaw = tickToPrice(event.params.tick)
   const volumeUsd = isTakingBidBook
     ? event.params.unit
