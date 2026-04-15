@@ -1,0 +1,16 @@
+{
+  "network": "arbitrum-mainnet",
+  "BookManager": {
+    "address": "0x74ffE45757DB60B24A7574b3B5948DAd368c2fdF",
+    "startBlock": 423337439
+  },
+  "LiquidityVault": {
+    "address": "0x21bb8709Fe339b227795809B0cb8Eb5a152Ad7E1",
+    "startBlock": 452615536
+  },
+  "SimpleOracleStrategy": {
+    "address": "0x2610DC1F2e625E57F07B0ce17152b0f4C6520bcA",
+    "startBlock": 452615588
+  },
+  "hasRouterGateway": false
+}

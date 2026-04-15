@@ -12,6 +12,7 @@ export enum NETWORK {
   MONAD = 'monad', // monad-mainnet alias
   RISE_SEPOLIA = 'rise-sepolia',
   ARBITRUM_SEPOLIA = 'arbitrum-sepolia',
+  ARBITRUM_MAINNET = 'arbitrum-mainnet',
   BERACHAIN_MAINNET = 'berachain-mainnet',
   GIWA_SEPOLIA = 'giwa-sepolia',
 }
