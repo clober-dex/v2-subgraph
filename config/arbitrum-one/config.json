@@ -1,5 +1,5 @@
 {
-  "network": "arbitrum-mainnet",
+  "network": "arbitrum-one",
   "BookManager": {
     "address": "0x74ffE45757DB60B24A7574b3B5948DAd368c2fdF",
     "startBlock": 423337439
